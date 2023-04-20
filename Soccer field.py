@@ -1,6 +1,7 @@
 import pygame, sys,random
 
-#class 
+
+#class to generate 11 sprite that represent the players
 class Crosshair(pygame.sprite.Sprite):
     def __init__(self,picture_path):
         super().__init__()
