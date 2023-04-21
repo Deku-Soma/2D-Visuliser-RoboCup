@@ -1,4 +1,5 @@
-import pygame, sys,random
+import sys,random
+import pygame
 
 #class 
 class Crosshair(pygame.sprite.Sprite):
@@ -20,10 +21,11 @@ class players(pygame.sprite.Sprite):
 
 #general area
 
+
 pygame.init()
 clock = pygame.time.Clock()
 
-#Game Screen 
+#Game Screen
 screen_width = 800
 screen_height = 600
 screen = pygame.display.set_mode((screen_width,screen_height))
