@@ -1,6 +1,27 @@
 # Import required libraries
 from tkinter import *
 from PIL import ImageTk, Image
+import os
+from Field_Objects import *
+from Team import *
+#===========================================================================================================
+#function section
+def key(event):
+    print("pressed")
+def display_teams(teams,canvas):
+    ct =1
+    for team in teams:
+        for player in team.team:
+            print(player.sprite_file_path)
+            playerImage = Image.open(player.sprite_file_path)
+            playerImage = playerImage.resize((50,50),Image.ANTIALIAS)
+            playerObject = ImageTk.PhotoImage(playerImage) 
+            canvas.create_image(player.x(), player.y(), image=playerObject)
+            #cts = str(ct)
+            #canvas.tag_bind(playerIM,"<Button-"+cts+">", key)
+            ct = ct+1
+
+
 
 #===========================================================================================================
 
@@ -9,17 +30,20 @@ win = Tk()
 
 #============================================================================================================
 # Define the properties of the Main window
-win.geometry("1500x700") #aspect ratio
+win.geometry("1000x800") #aspect ratio
 win.config(bg="black")# background colour
 
+
+#=============================================================================================================
+
+#=============================================================================================================
 
 #=============================================================================================================
 # creating the frams that will be used to place all the elements of the gui design
 
 # this is the frame that is set to house the field image and is already set to 75% of screen space
-fieldFrame = Frame(win, width=750, height=600)
-fieldFrame.pack()
-fieldFrame.place(x=0,y=0) 
+canvas = Canvas(win, bg="black", width=1920, height=1080)
+canvas.pack()
 # the relx and rely values are values between 0 and 1, 
 # the x and y values specify the position of the top left corner of the frame
 #used to place the frame on a percentace value on the screens x,y values
@@ -37,25 +61,61 @@ frameTimer.place(anchor=NW, relx=0.8, rely=0.01)
 
 #===============================================================================================================
 
+field_file = "Soccer_Field_HD-downsized.png"
+
+folder = "Assets"
+
+cwd = os.getcwd()
+
+path_to_field_file = os.path.join(cwd,folder,field_file)
 # Create a field object that taks up 75% of total screen space
-fieldImage = Image.open("horizontal_field.png") # fetchs field image, note the field image must be in the same folder for this function to work
+fieldImage = Image.open(path_to_field_file) # fetchs field image, note the field image must be in the same folder for this function to work
 fieldImage = fieldImage.resize((750, 600), Image.ANTIALIAS) # resize the field image so it matches the desired aspect ratio
-fieldImageObject = ImageTk.PhotoImage(fieldImage)# this variable is used to create a viable image object that can be called
+fieldImageObject = ImageTk.PhotoImage(fieldImage)# this variable is used to create a viable image object that can be called\
+#create image objects 
+fieldIM=canvas.create_image(0, 0, image=fieldImageObject, anchor=NW)
 
 #================================================================================================================
 # Create a Label Widget to display the field
-labelField = Label(fieldFrame, image = fieldImageObject)
-labelField.pack()
 #================================================================================================================
-# crosshair image is used to represent a player and serve as an example to visualise the cooridnate system
+#  image is used to represent a player and serve as an example to visualise the cooridnate system
 # refer to the Co-ordinate system for soccer field tect file
 
-playerImage = Image.open("crosshair_blue_small.png")
-playerImage = playerImage.resize((50,50),Image.ANTIALIAS)
-playerObject = ImageTk.PhotoImage(playerImage) 
-labelPlayer = Label(fieldFrame,image = playerObject)
-labelPlayer.pack()
-labelPlayer.place(x=0,y=0)
+player1_file = "nonselectedplayer1-removebg.png"
+player2_file = "nonselectedplayer2-removebg.png"
+folder = "Assets"
+
+cwd = os.getcwd()
+
+path_to_player1_file = os.path.join(cwd, folder, player1_file)
+path_to_player2_file = os.path.join(cwd, folder, player2_file)
+
+team1 = Team()
+team2 = Team()
+
+for i in range(0,11) :
+    player1 = Player(path_to_player1_file,i,100)
+    player2 = Player(path_to_player2_file,i*50,100)
+    team1.add_player(player1) 
+    team2.add_player(player2)
+teams = [team1,team2]
+
+#display_teams(teams,canvas)
+ct =1
+for team in teams:
+    for player in team.team:
+        print(player.sprite_file_path)
+        playerImage = Image.open(player.sprite_file_path)
+        playerImage = playerImage.resize((50,50),Image.ANTIALIAS)
+        playerObject = ImageTk.PhotoImage(playerImage) 
+        canvas.create_image(player.x(), player.y(), image=playerObject,anchor=NW)
+        #cts = str(ct)
+        #canvas.tag_bind(playerIM,"<Button-"+cts+">", key)
+        ct = ct+1
+
+
+#=================================================================================================================
+
 
 #=================================================================================================================
 
@@ -75,5 +135,4 @@ labelTimer.pack()
 
 win.mainloop()# main loop that runs the window, defualt exit condition is clicking the close button.
 
-def function(a,b):
-    return a+b
+
