@@ -1,7 +1,13 @@
 import json
+import os
+
 def loadJSONFile(PlayerNum):
         jsondata=[]
-        f=open(str(PlayerNum)+'.json','r')
+        log = str(PlayerNum)+'.json'
+        folder = "BehaviourLogs"
+        cwd = os.getcwd()
+        path_to_logs = os.path.join(cwd, folder, log)
+        f=open(path_to_logs,'r')
         for line in f:
             jsondata.append(json.loads(line))
         return jsondata

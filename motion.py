@@ -2,6 +2,7 @@ import json
 from tkinter import Tk, Canvas, NW
 from PIL import ImageTk, Image
 import tkinter as tk
+import os
 
 
 
@@ -66,25 +67,34 @@ class ParseData:
         self.TeamMatePositions=playerData[TimeInterval]['TeamMatePositions']
 
     
-    def getMyPosition():
+    def getMyPosition(self):
         playerData=loadJSONFile(1)
         self.MyPosition=playerData[0]['MyPosition']
         return playerData[0]['MyPosition']
-    def getBallPosition():
+    def getBallPosition(self):
         return self.BallPosition
-    def getTeamMateDistanceToBall():
+    def getTeamMateDistanceToBall(self):
         return self.TeamMateDistanceToBall
-    def getOpponentPositions():
+    def getOpponentPositions(self):
         return self.OpponentPositions
-    def getTeamMatePositions():
+    def getTeamMatePositions(self):
         return self.TeamMatePositions
     def __str__(self):
         return f"Player: {self.Player} BallPosition: {self.BallPosition} MyPosition: {self.MyPosition} TeamMateDistanceToBall: {self.TeamMateDistanceToBall} OpponentPositions: {self.OpponentPositions} TeamMatePositions: {self.TeamMatePositions}"
     
 
 win = Tk()
-fieldimage = ImageTk.PhotoImage(file="horizontal_field.png")
-playerimage= ImageTk.PhotoImage(file="nonselectedplayer1-removebg-smaller.png")
+
+player_file = "nonselectedplayer2-removebg.png"
+field_file = "Soccer_Field_HD-downsized.png"
+folder = "Assets"
+cwd = os.getcwd()
+path_to_player_file = os.path.join(cwd, folder, player_file)
+path_to_field_file = os.path.join(cwd, folder, field_file)
+player = Image.open(path_to_player_file)
+field = Image.open(path_to_field_file)
+fieldimage = ImageTk.PhotoImage(field)
+playerimage= ImageTk.PhotoImage(player)
 
 #set canvas
 width, height = fieldimage.width(), fieldimage.height()
@@ -106,8 +116,8 @@ for i in range(1,12):
     playerIM[i]=canvas.create_image(convCoords[0],convCoords[1], image=playerimage, anchor=NW)
 
 
-begin= Timer(win)
-begin.start_timer
+#begin= Timer(win)
+#begin.start_timer
 #while(begin.remaining>0):
  #   for i in range(1,12):
   #      playerData=loadJSONFile(i)
