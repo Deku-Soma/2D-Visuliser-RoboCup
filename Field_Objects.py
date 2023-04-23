@@ -1,27 +1,3 @@
-<<<<<<< Updated upstream
-import pygame
-import numpy as np
-
-
-class FieldObjects(pygame.sprite.Sprite):
-
-    centre = ()
-
-    def __init__(self, team1_sprite_path, pos_x, pos_y):
-        super().__init__()
-        self.image = pygame.image.load(team1_sprite_path)
-        self.imageUpdate = pygame.transform.scale(self.image, (1, 1))
-        self.rect = self.imageUpdate.get_rect()
-        self.rect.center = (pos_x, pos_y)
-        self.centre = self.rect.center
-
-    def change_centre(self, pos_x, pos_y):
-
-        self.rect.center(pos_x, pos_y)
-
-    def print_centre(self):
-        print(self.rect.center)
-=======
 import math
 import numpy as np
 
@@ -48,31 +24,18 @@ class FieldObjects():
     def y(self):
         return self.centre[1]
 
->>>>>>> Stashed changes
 
 
 class Player(FieldObjects):
 
-<<<<<<< Updated upstream
-    def __init__(self, team1_sprite_path, pos_x, pos_y):
-        super().__init__(team1_sprite_path, pos_x, pos_y)
-        self.distance_to_ball = np.zeros([2])
-
-    def print_centre(self):
-        print(self.rect.center)
-=======
     distance_to_ball = 0
 
     def set_distance_to_ball(self, ball):
         return math.sqrt((self.x() - ball.x()) ** 2 + (self.y() - ball.y()) ** 2)
->>>>>>> Stashed changes
 
 
 class Ball(FieldObjects):
 
-<<<<<<< Updated upstream
-    closest_player = ""
-=======
     closest_player = -1
 
     def find_closest_player(self, all_players):
@@ -92,4 +55,3 @@ class Ball(FieldObjects):
 
         self.closest_player = player_i
 
->>>>>>> Stashed changes
