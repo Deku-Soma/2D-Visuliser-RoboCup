@@ -1,0 +1,3 @@
+tkinte
+pytest
+PIL
