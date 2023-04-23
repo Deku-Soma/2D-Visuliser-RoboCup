@@ -12,8 +12,10 @@ class Team:
     def add_player(self, player):
         self.team = np.append(self.team, player)
 
-    def change_team_position(self, new_team_positions):
+    def update_team_position(self, new_team_positions):
 
         for player in range(len(self.team)):
             self.team[player].change_position(new_team_positions[player][0], new_team_positions[player][1])
 
+    def update_score(self):
+        self.score += 1
