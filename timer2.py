@@ -1,7 +1,7 @@
 import tkinter as tk
 
 # Set the duration of the game in seconds
-GAME_DURATION = 90 * 60 #or (90 * (2/9)) for the match to end in 20 minutes
+GAME_DURATION = 90 * 60 #or (20 * 60) for the match to end in 20 minutes
 
 class Timer:
     def __init__(self, master):
