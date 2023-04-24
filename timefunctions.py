@@ -1,10 +1,9 @@
-from tkinter import Tk, Canvas, NW, Button
 import time
-
-class Timer:
-    def __init__(self, master):
-        self.master = master
-        self.remaining = 20 * 60  # 20 minutes in seconds
+import sys
+sys.setrecursionlimit(6000)
+class SoccerTimer:
+    def __init__(self):
+        self.elapsed = 0
         self.paused = False
         self.speedup = False
         self.start_time = None
@@ -17,18 +16,20 @@ class Timer:
 
     def run_timer(self):
         if self.paused:
-            self.master.after(100, self.run_timer)
+            time.sleep(0.1)
+            self.run_timer()
             return
 
-        elapsed = time.monotonic() - self.start_time - self.pause_time
-        self.remaining = max(0, int((20 * 60) - elapsed))
+        self.elapsed = time.monotonic() - self.start_time - self.pause_time
         if self.speedup:
-            self.remaining //= 2
-        mins = self.remaining // 60
-        secs = self.remaining % 60
-        self.master.title(f"Time remaining: {mins:02}:{secs:02}")
-        if self.remaining > 0:
-            self.master.after(100, self.run_timer)
+            self.elapsed *= 2
+        if self.elapsed >= 5400:  # stop the timer if it exceeds 90 minutes
+            return
+        mins = int(self.elapsed // 60)
+        secs = int(self.elapsed % 60)
+        print(f"Time elapsed: {mins:02}:{secs:02}")
+        time.sleep(0.1)
+        self.run_timer()
 
     def pause_timer(self):
         self.paused = True
@@ -37,25 +38,24 @@ class Timer:
     def unpause_timer(self):
         self.paused = False
         self.pause_time += time.monotonic() - self.pause_start
-        self.run_timer()
 
     def toggle_speedup(self):
         self.speedup = not self.speedup
 
     def rewind_timer(self):
-        if self.remaining > 10:
-            self.remaining -= 10
+        if self.elapsed > 10:
+            self.elapsed -= 10
         else:
-            self.remaining = 0
-        self.run_timer()
+            self.elapsed = 0
 
     def fast_forward_timer(self):
-        self.remaining += 10
-        self.run_timer()
+        self.elapsed += 10
 
-   
-win = Tk()
-timer = Timer(win)
+
+# Create a new soccer timer
+timer = SoccerTimer()
+
+# Start the timer
 timer.start_timer()
 
 # Pause the timer
@@ -72,5 +72,3 @@ timer.rewind_timer()
 
 # Fast forward the timer by 10 seconds
 timer.fast_forward_timer()
-
-win.mainloop()
