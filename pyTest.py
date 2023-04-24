@@ -1,11 +1,11 @@
 import unittest
-import Field_UI
+import Visualiser
 
 
 class TestStringMethods(unittest.TestCase):
 
     def test_function(self):
-        self.assertEqual(Field_UI.function(1,2),3)
+        self.assertEqual(Visualiser.function(1,2),3)
 
     def test_upper(self):
         self.assertEqual('foo'.upper(), 'FOO')

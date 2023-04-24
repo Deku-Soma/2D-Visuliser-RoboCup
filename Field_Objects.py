@@ -4,11 +4,13 @@ import numpy as np
 
 class FieldObjects():
 
+    centre = []
     sprite_file_path = ""
 
     def __init__(self, image_path, x, y):
         self.sprite_file_path = image_path
-        self.centre = [x, y]
+        self.centre.append(x)
+        self.centre.append(y)
 
     def change_position(self, x, y):
         self.centre = [x, y]

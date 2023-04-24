@@ -70,7 +70,7 @@ cwd = os.getcwd()
 path_to_field_file = os.path.join(cwd,folder,field_file)
 # Create a field object that taks up 75% of total screen space
 fieldImage = Image.open(path_to_field_file) # fetchs field image, note the field image must be in the same folder for this function to work
-fieldImage = fieldImage.resize((750, 600), Image.ANTIALIAS) # resize the field image so it matches the desired aspect ratio
+fieldImage = fieldImage.resize((750, 600), Image.LANCZOS) # resize the field image so it matches the desired aspect ratio
 fieldImageObject = ImageTk.PhotoImage(fieldImage)# this variable is used to create a viable image object that can be called\
 #create image objects 
 fieldIM=canvas.create_image(0, 0, image=fieldImageObject, anchor=NW)
@@ -95,24 +95,34 @@ team2 = Team()
 
 for i in range(0,11) :
     player1 = Player(path_to_player1_file,i,100)
-    player2 = Player(path_to_player2_file,i*50,100)
+    player2 = Player(path_to_player2_file,i*50,1000)
     team1.add_player(player1) 
     team2.add_player(player2)
 teams = [team1,team2]
 
 #display_teams(teams,canvas)
-ct =1
-for team in teams:
-    for player in team.team:
-        print(player.sprite_file_path)
-        playerImage = Image.open(player.sprite_file_path)
-        playerImage = playerImage.resize((50,50),Image.ANTIALIAS)
-        playerObject = ImageTk.PhotoImage(playerImage) 
-        canvas.create_image(player.x(), player.y(), image=playerObject,anchor=NW)
-        #cts = str(ct)
-        #canvas.tag_bind(playerIM,"<Button-"+cts+">", key)
-        ct = ct+1
-
+playerIM = [None]*22
+playerlist=[] 
+ct =0
+for x in range(0,2):
+    if x == 0:
+        for i in range(0,11):
+            playerImage = Image.open(teams[x].team[i].sprite_file_path)
+            playerImage = playerImage.resize((50,50),Image.LANCZOS)
+            playerObject = ImageTk.PhotoImage(playerImage) 
+            playerIM[i]=canvas.create_image(teams[x].team[i].x(),teams[x].team[i].y(), image=playerObject, anchor=NW)
+            #cts = str(ct)
+            #canvas.tag_bind(playerIM,"<Button-"+cts+">", key)
+    else:
+        for i in range(0,11):
+            playerImage = Image.open(teams[x].team[i].sprite_file_path)
+            playerImage = playerImage.resize((50,50),Image.LANCZOS)
+            playerObject = ImageTk.PhotoImage(playerImage) 
+            playerIM[i+11]=canvas.create_image(teams[x].team[i].x(),teams[x].team[i].y(), image=playerObject, anchor=NW)
+            print(playerIM)
+            #cts = str(ct)
+            #canvas.tag_bind(playerIM,"<Button-"+cts+">", key)
+   
 
 #=================================================================================================================
 
