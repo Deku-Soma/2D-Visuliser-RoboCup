@@ -8,6 +8,8 @@ class Timer:
         self.paused = False
         self.speedup = False
         self.start_time = None
+        self.pause_start = None
+        self.pause_time = 0
 
     def start_timer(self):
         self.start_time = time.monotonic()
@@ -18,7 +20,7 @@ class Timer:
             self.master.after(100, self.run_timer)
             return
 
-        elapsed = time.monotonic() - self.start_time
+        elapsed = time.monotonic() - self.start_time - self.pause_time
         self.remaining = max(0, int((20 * 60) - elapsed))
         if self.speedup:
             self.remaining //= 2
@@ -30,10 +32,11 @@ class Timer:
 
     def pause_timer(self):
         self.paused = True
+        self.pause_start = time.monotonic()
 
     def unpause_timer(self):
         self.paused = False
-        self.start_time += time.monotonic() - self.pause_time
+        self.pause_time += time.monotonic() - self.pause_start
         self.run_timer()
 
     def toggle_speedup(self):
@@ -51,7 +54,7 @@ class Timer:
         self.run_timer()
 
    
-win = tk.Tk()
+win = Tk()
 timer = Timer(win)
 timer.start_timer()
 
@@ -71,4 +74,3 @@ timer.rewind_timer()
 timer.fast_forward_timer()
 
 win.mainloop()
-
