@@ -1,63 +1,74 @@
 from tkinter import Tk, Canvas, NW, Button
-import loadJSONFile
-from PIL import ImageTk, Image
-import tkinter as tk
-import time as Timer
+import time
 
-def pause():
-    global paused
-    paused = not paused
+class Timer:
+    def __init__(self, master):
+        self.master = master
+        self.remaining = 20 * 60  # 20 minutes in seconds
+        self.paused = False
+        self.speedup = False
+        self.start_time = None
 
-def rewind():
-    global t
-    t = max(0, t - 120)
+    def start_timer(self):
+        self.start_time = time.monotonic()
+        self.run_timer()
 
-def speedup():
-    global speed
-    speed = min(10, speed + 2)
+    def run_timer(self):
+        if self.paused:
+            self.master.after(100, self.run_timer)
+            return
 
-def update_canvas():
-    global t, paused, speed
-    if not paused:
-        canvas.delete("players")
-        for i in range(1,12):
-            playerData=loadJSONFile(i)
-            myCoords=playerData[t]['MyPosition']
-            convCoords= convert(myCoords[0],myCoords[1])
-            playerIM[i]=canvas.create_image(convCoords[0],convCoords[1], image=playerimage, anchor=NW, tag="players")
-        t = min(t + speed, len(playerData)-1)
-    win.after(50, update_canvas)
+        elapsed = time.monotonic() - self.start_time
+        self.remaining = max(0, int((20 * 60) - elapsed))
+        if self.speedup:
+            self.remaining //= 2
+        mins = self.remaining // 60
+        secs = self.remaining % 60
+        self.master.title(f"Time remaining: {mins:02}:{secs:02}")
+        if self.remaining > 0:
+            self.master.after(100, self.run_timer)
 
-    
-win = Tk()
-fieldimage = ImageTk.PhotoImage(file="horizontal_field.png")
-playerimage= ImageTk.PhotoImage(file="nonselectedplayer1-removebg-smaller.png")
-width, height = fieldimage.width(), fieldimage.height()
-canvas = Canvas(win, bg="white", width=width, height=height)
-canvas.pack()
-fieldIM=canvas.create_image(0, 0, image=fieldimage, anchor=NW)
+    def pause_timer(self):
+        self.paused = True
 
-test=ParseData(1)
-test.initialGameState(1)
-playerData=loadJSONFile(1)
-myCoords=playerData[0]['MyPosition']
-playerIM=[None]*12
-for i in range(1,12):
-    playerData=loadJSONFile(i)
-    myCoords=playerData[0]['MyPosition']
-    convCoords= convert(myCoords[0],myCoords[1])
-    playerIM[i]=canvas.create_image(convCoords[0],convCoords[1], image=playerimage, anchor=NW, tag="players")
+    def unpause_timer(self):
+        self.paused = False
+        self.start_time += time.monotonic() - self.pause_time
+        self.run_timer()
 
-begin= Timer(win)
-begin.start_timer()
+    def toggle_speedup(self):
+        self.speedup = not self.speedup
 
-speed = 1
-paused = False
-t = 0
+    def rewind_timer(self):
+        if self.remaining > 10:
+            self.remaining -= 10
+        else:
+            self.remaining = 0
+        self.run_timer()
 
-Button(win, text="Pause/Play", command=pause).pack()
-Button(win, text="Rewind", command=rewind).pack()
-Button(win, text="Speed Up", command=speedup).pack()
+    def fast_forward_timer(self):
+        self.remaining += 10
+        self.run_timer()
 
-win.after(0, update_canvas)
+   
+win = tk.Tk()
+timer = Timer(win)
+timer.start_timer()
+
+# Pause the timer
+timer.pause_timer()
+
+# Unpause the timer
+timer.unpause_timer()
+
+# Toggle speedup mode
+timer.toggle_speedup()
+
+# Rewind the timer by 10 seconds
+timer.rewind_timer()
+
+# Fast forward the timer by 10 seconds
+timer.fast_forward_timer()
+
 win.mainloop()
+
