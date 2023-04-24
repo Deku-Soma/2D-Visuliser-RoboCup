@@ -8,7 +8,7 @@ class TestTimer(unittest.TestCase):
         timer = Timer(root)
         
         # Test initial time remaining
-        self.assertEqual(timer.remaining, 90 * 60)
+        self.assertEqual(timer.remaining, 90 * 60) #90 minutes
         
         # Test timer_tick method
         timer.timer_tick()
