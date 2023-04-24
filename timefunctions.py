@@ -28,6 +28,7 @@ def update_canvas():
         t = min(t + speed, len(playerData)-1)
     win.after(50, update_canvas)
 
+    
 win = Tk()
 fieldimage = ImageTk.PhotoImage(file="horizontal_field.png")
 playerimage= ImageTk.PhotoImage(file="nonselectedplayer1-removebg-smaller.png")
