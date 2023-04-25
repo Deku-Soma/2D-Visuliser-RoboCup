@@ -19,12 +19,12 @@ class Timer:
         self._resume_button.pack(side=tk.LEFT, padx=5, pady=5)
 
         # Create third button and pack it
-        self._rewind_button = tk.Button(master, text="Rewind", command=self.rewind)
-        self._rewind_button.pack(side=tk.LEFT, padx=5, pady=5)
+        self._speedup_button = tk.Button(master, text="Speedup", command=self.speedup)
+        self._speedup_button.pack(side=tk.LEFT, padx=5, pady=5)
 
         # Create fourth button and pack it
-        self._speedup_button = tk.Button(master, text="Speed Up", command=self.speedup)
-        self._speedup_button.pack(side=tk.LEFT, padx=5, pady=5)
+        self._rewind_button = tk.Button(master, text="Rewind", command=self.rewind)
+        self._rewind_button.pack(side=tk.LEFT, padx=5, pady=5)
 
         # Create label to display timer
         self._timer_label = tk.Label(master, text="0:00")
@@ -46,21 +46,23 @@ class Timer:
         self._speed = 1.0
 
     def pause(self):
-        # Pause the timer
-        self._paused = not self._paused
+    # Pause the timer
+        if not self._paused:
+            self._paused_time = time.monotonic()  # Record the time the timer was paused
+            self._paused = True  # Set the paused flag to True
 
     def resume(self):
-        # Resume the timer
+    # Resume the timer
         if self._paused:
-            self._start += time.monotonic() - self._paused_time
-            self._paused_time = 0
-            self._paused = False
+            self._start += time.monotonic() - self._paused_time  # Update the start time with the time the timer was paused
+            self._paused_time = 0  # Reset the paused time to zero
+            self._paused = False  # Set the paused flag to False
 
-    def rewind(self):
+    def speedup(self):
         # Rewind the timer by 10 seconds
         self._start -= 30
 
-    def speedup(self):
+    def rewind(self):
         # Double the speed of the timer
         self._speed *= 2
 
@@ -84,3 +86,10 @@ class Timer:
 # Create the main window
 root = tk.Tk()
 root.title("Soccer Game Timer")
+# Create the Timer object inside the window
+timer = Timer(root)
+timer.start()
+
+# Start the main event loop
+root.mainloop()
+
