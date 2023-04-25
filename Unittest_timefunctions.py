@@ -1,21 +1,53 @@
 import unittest
-import time
+import tkinter as tk
+from tkinter import ttk
+from tkinter import messagebox
+from unittest.mock import patch
 
-class TestSoccerTimer(unittest.TestCase):
-    def test_timer(self):
-        timer = SoccerTimer()
-        timer.start_timer()
-        time.sleep(1)  # Wait for 1 second
-        timer.pause_timer()
-        pause_time = timer.pause_time
-        self.assertTrue(pause_time > 0)
-        timer.unpause_timer()
-        time.sleep(1)  # Wait for 1 second
-        self.assertTrue(timer.elapsed > 0)
-        timer.toggle_speedup()
-        time.sleep(1)  # Wait for 1 second
-        self.assertTrue(timer.elapsed > 120)
-        timer.rewind_timer()
-        self.assertTrue(timer.elapsed < 120)
-        timer.fast_forward_timer()
-        self.assertTrue(timer.elapsed > 120)
+from timefunctions import Timer
+
+
+class TestTimer(unittest.TestCase):
+
+    def setUp(self):
+        self.root = tk.Tk()
+        self.timer = Timer(self.root)
+
+    def tearDown(self):
+        self.root.destroy()
+
+    def test_format_time(self):
+        self.assertEqual(self.timer.format_time(60), '00:01:00')
+        self.assertEqual(self.timer.format_time(3600), '01:00:00')
+        self.assertEqual(self.timer.format_time(3661), '01:01:01')
+
+    def test_start_timer(self):
+        with patch.object(self.timer, 'timer_tick') as mock_timer_tick:
+            self.timer.start_timer()
+            mock_timer_tick.assert_called()
+
+    def test_stop_timer(self):
+        self.timer.stop_timer()
+
+    def test_rewind_timer(self):
+        initial_remaining = self.timer.remaining
+        self.timer.rewind_timer()
+        self.assertEqual(self.timer.remaining, initial_remaining + 60)
+
+    def test_speedup_timer(self):
+        initial_remaining = self.timer.remaining
+        self.timer.speedup_timer()
+        self.assertEqual(self.timer.remaining, initial_remaining - 60)
+
+    def test_timer_tick(self):
+        initial_remaining = self.timer.remaining
+        self.timer.timer_tick()
+        self.assertEqual(self.timer.remaining, initial_remaining - 1)
+
+    def test_game_over(self):
+        self.timer.remaining = 0
+        self.timer.timer_tick()
+        self.assertEqual(self.timer.timer_label['text'], 'Game over!')
+
+if __name__ == '__main__':
+    unittest.main()
