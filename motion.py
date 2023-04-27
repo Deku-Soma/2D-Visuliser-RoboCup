@@ -138,7 +138,7 @@ while (t<20*60):
     for i in range(1,12):
         playerData=loadJSONFile(i)
         currCoords=playerData[t]['MyPosition']
-        nextCoords=playerData[t+9]['MyPosition']
+        nextCoords=playerData[t+18]['MyPosition']
         convCurrCoords= convert(currCoords[0],currCoords[1])
         convNextCoords= convert(nextCoords[0],nextCoords[1])
         canvas.move(playerIM[i],convNextCoords[0]-convCurrCoords[0], convNextCoords[1]-convCurrCoords[1] )
