@@ -145,12 +145,11 @@ team2 = Team()
 
 for i in range(0,11) :
     player1 = Player(path_to_player1_file, i*50, i*50)
-
     player2 = Player(path_to_player2_file,i*50,500)
     team1.add_player(player1)
-    team1.team[i].print_centre()
     team2.add_player(player2)
-teams = [team1,team2]
+
+teams = [team1, team2]
 
 #display_teams(teams,canvas)
 playerIM = [None]*22
@@ -170,7 +169,6 @@ for x in range(0,2):
     else:
         for i in range(0,11):
             playerIM[i+11]=canvas_visualiser.create_image(teams[x].team[i].x(),teams[x].team[i].y(), image=teams[x].team[i].get_sprite_image(), anchor=NW)
-            print(playerIM)
             #cts = str(ct)
             #canvas.tag_bind(playerIM,"<Button-"+cts+">", key)
    
