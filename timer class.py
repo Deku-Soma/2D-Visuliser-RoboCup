@@ -18,8 +18,9 @@ class Timer:
         self.current_position = None
         self.time_step = 1  # in seconds
         self.paused = False
-        self.speedup = False
+        self.speedup = 1
         self.data = data
+        self.rewind = False
 
     # Define the update_position function
     def update_position(self):
@@ -29,9 +30,7 @@ class Timer:
                 self.current_position = 0
             else:
                 elapsed_time = time.time() - self.start_time
-                #if speedup is True, the elapsed time is multiplied by 2 to simulate a 2x speedup.
-                if self.speedup:
-                    elapsed_time *= 2
+
                 target_position = int(elapsed_time / self.time_step)
                 if target_position != self.current_position:
                     self.current_position = min(target_position, len(self.counter_array) - 1)
@@ -46,16 +45,17 @@ class Timer:
     # Resume function
     def resume(self):
         self.paused = False
+        self.rewind = False
+        self.speedup = 1
 
     # Rewind function with while loop: stops when pause is selected or counter <= 0
     def rewind(self):
-        while not self.paused and self.counter > 0:
-            self.counter -= 1
-        # Get the data at the current position
-            data_at_position = self.data[self.counter_array[self.counter]]
-        # Code to update display with the data_at_position goes here
-            time.sleep(self.time_step)  # Wait for time_step seconds before moving to previous position
 
+        if not self.rewind:
+            self.rewind = True
+            self.speedup = 1
+        else:
+            self.speedup += 1
 
     # Get data at current position
     def get_data_at_current_position(self):
@@ -77,7 +77,7 @@ class Timer:
             # Code to update display with data_at_position goes here
     
     # Define the speedup function
-    def toggle_speedup(self):
-        self.speedup = not self.speedup
+    def speed_up(self):
+        self.speedup += 1
 
 
