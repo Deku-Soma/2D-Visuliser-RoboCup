@@ -100,9 +100,9 @@ canvas_visualiser.pack()
 # basically if the x runs from 0-100 a relx=0,3 will place the center x of the frame at x = 30 (30% to the right of x =0)
 # Anchor is the alignemnt of the frame
 
-time_button_frame = Frame(Frame_visualiser, width=500, height=50)
+time_button_frame = Frame(Frame_visualiser, width=500, height=50, )
 time_button_frame.pack()
-time_button_frame.place(anchor=NW, relx=0.2, rely=0.9)
+time_button_frame.place(anchor=N, relx=0.5, rely=0.9)
 
 # frame for timer 
 frameTimer = Frame(Frame_visualiser, width=50, height=20)
@@ -144,9 +144,11 @@ team1 = Team()
 team2 = Team()
 
 for i in range(0,11) :
-    player1 = Player(path_to_player1_file,i,100)
-    player2 = Player(path_to_player2_file,i*50,1000)
-    team1.add_player(player1) 
+    player1 = Player(path_to_player1_file, i*50, i*50)
+
+    player2 = Player(path_to_player2_file,i*50,500)
+    team1.add_player(player1)
+    team1.team[i].print_centre()
     team2.add_player(player2)
 teams = [team1,team2]
 
@@ -154,21 +156,20 @@ teams = [team1,team2]
 playerIM = [None]*22
 playerlist=[] 
 ct =0
+playerImage = Image.open(path_to_player1_file)
+playerImage = playerImage.resize((50, 50), Image.LANCZOS)
+playerObject = ImageTk.PhotoImage(playerImage)
+
 for x in range(0,2):
     if x == 0:
         for i in range(0,11):
-            playerImage = Image.open(teams[x].team[i].sprite_file_path)
-            playerImage = playerImage.resize((50,50),Image.LANCZOS)
-            playerObject = ImageTk.PhotoImage(playerImage) 
-            playerIM[i]=canvas_visualiser.create_image(teams[x].team[i].x(),teams[x].team[i].y(), image=playerObject, anchor=NW)
+
+            playerIM[i] = canvas_visualiser.create_image(teams[x].team[i].x(), teams[x].team[i].y(), image=teams[x].team[i].get_sprite_image(), anchor=NW)
             #cts = str(ct)
             #canvas.tag_bind(playerIM,"<Button-"+cts+">", key)
     else:
         for i in range(0,11):
-            playerImage = Image.open(teams[x].team[i].sprite_file_path)
-            playerImage = playerImage.resize((50,50),Image.LANCZOS)
-            playerObject = ImageTk.PhotoImage(playerImage) 
-            playerIM[i+11]=canvas_visualiser.create_image(teams[x].team[i].x(),teams[x].team[i].y(), image=playerObject, anchor=NW)
+            playerIM[i+11]=canvas_visualiser.create_image(teams[x].team[i].x(),teams[x].team[i].y(), image=teams[x].team[i].get_sprite_image(), anchor=NW)
             print(playerIM)
             #cts = str(ct)
             #canvas.tag_bind(playerIM,"<Button-"+cts+">", key)
