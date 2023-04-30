@@ -1,0 +1,16 @@
+This file explains the coordinate system that will be use to map values to the soccer field.
+the fields dimensions are width = 750, height = 600 , this is the total space allocated to the field
+the co-ordinates branch out as such:
+first left pixel = 0 last right pixel = 750
+first top pixel row = 0 last bottom pixel row is 600
+thus the top left pixel is 0,0 and the bottom right pixel is 750,600
+
+when using the x and y arguments of the place function for the player sprite the top left corner is the point that will be 
+offset by the x and y arguments
+This means when at default the top left pixel of the image is at 0,0 the top right is 0,image_x, bottem left is 0,y_image and 
+bottom right is image_x ,image_y
+
+to map the field to the 0,0 being the kick off spot we need to half both the x and y values hence the 0,0 = 375,300
+with 375,300 as the new 0,0 any values of the orignal coordinate system must be scaled to this
+the math would be of this nature
+# get the old co-ordinates space so you can convert it to the new one 
