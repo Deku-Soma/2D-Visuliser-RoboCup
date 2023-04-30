@@ -4,6 +4,7 @@ from PIL import ImageTk, Image
 import os
 from Field_Objects import *
 from Team import *
+from timefunctions import *
 #===========================================================================================================
 #function section
 def key(event):
@@ -139,7 +140,9 @@ buttonPlay.pack(side=LEFT)
 buttonForward.pack(side=LEFT)
 #=================================================================================================================
 # label for timer 
-labelTimer = Label(frameTimer,text ="00:00",bg="grey",padx=5 )
+soccer_timer = SoccerTimer()
+
+labelTimer = Label(frameTimer,text =soccer_timer.start_time(),bg="grey",padx=5 )
 labelTimer.pack()
 
 
