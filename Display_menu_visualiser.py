@@ -5,7 +5,7 @@ import os
 from PIL import ImageTk, Image
 from Team import *
 from Field_Objects import *
-
+from timefunctions import Timer
 win = tk.Tk()
 
 win.geometry("1000x800") #aspect ratio
@@ -20,6 +20,12 @@ def go_to_visualiser(event):
     if menu.get() == "Game 1":
         Frame_menu.pack_forget()
         Frame_visualiser.pack(fill="both",expand=True)
+
+        timer = Timer(Frame_menu)
+
+        
+
+
     else:
         messagebox.showinfo("Warning", "You have not selected a game. \n Please selecte a game")
 

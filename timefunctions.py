@@ -11,6 +11,7 @@ class Timer:
         # Create buttons and added it to a TKinter Label
         self.master = master
         self.remaining = self.GAME_DURATION
+        '''
         self.timer_label = tk.Label(master, text=self.format_time(self.GAME_DURATION))
         self.timer_label.pack()
         self.start_button = tk.Button(master, text="Start", command=self.start_timer)
@@ -20,7 +21,7 @@ class Timer:
         self.rewind_button = tk.Button(master, text="Rewind", command=self.rewind_timer)
         self.rewind_button.pack(side=tk.LEFT, padx=5)
         self.speedup_button = tk.Button(master, text="Speed Up", command=self.speedup_timer)
-        self.speedup_button.pack(side=tk.LEFT, padx=5)
+        self.speedup_button.pack(side=tk.LEFT, padx=5)'''
 
         # Speed up is determines the tick speed, Ticking determines if the clock is running
         # Rewind determines if the clock is ticking backwards
@@ -65,7 +66,7 @@ class Timer:
         self.remaining += 1 * (-1) ** self.rewind
 
         self.timer_label.configure(text=self.format_time(self.remaining))
-        if self.remaining <= 0:
+        if self.remaining <= 0: # This needs to be altered in the future
             self.timer_label.configure(text="Game over!")
         else:
             # This determines the rate at which the clock ticks, 1000 = 1 sec
