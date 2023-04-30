@@ -4,7 +4,7 @@ import tkinter as tk
 class Timer:
     # Set the duration of the game in seconds
 
-    GAME_DURATION = 90 * 60  # or (20 * 60) for the match to end in 20 minutes
+    GAME_DURATION = 0  # or (20 * 60) for the match to end in 20 minutes
 
     def __init__(self, master, print_timer):
         self.master = master
@@ -21,19 +21,31 @@ class Timer:
         self.speedup_button.pack(side=tk.LEFT, padx=5)
 
         self.speed_up = 1
+        self.ticking = False
+        self.rewind = False
 
     def start_timer(self):
-        self.timer_tick()
+        self.speed_up = 1
+        self.rewind = False
+
+        if not self.ticking:
+            self.ticking = True
+            self.timer_tick()
 
     def stop_timer(self):
         # Pause function
-        self.master.after_cancel(self.timer)
-
         self.speed_up = 1
+        self.rewind = False
+
+        if self.ticking:
+            self.master.after_cancel(self.timer)
+            self.ticking = False
+
 
     def rewind_timer(self):
-        self.remaining += 60  # rewind by one minute
-        self.timer_label.configure(text=self.format_time(self.remaining))
+        self.rewind = True
+
+        #self.timer_label.configure(text=self.format_time(self.remaining))
 
     def speedup_timer(self):
 
@@ -43,15 +55,14 @@ class Timer:
         self.timer_label.configure(text=self.format_time(self.remaining))'''
 
     def timer_tick(self):
-        self.remaining -= 1 * self.speed_up
+        self.remaining += 1 * (-1) ** self.rewind
 
-        print_time.print(self.remaining)
         self.timer_label.configure(text=self.format_time(self.remaining))
         if self.remaining <= 0:
             self.timer_label.configure(text="Game over!")
         else:
             # ensures that a 90 minute game is completed in 20 minutes
-            self.timer = self.master.after(1000, self.timer_tick)  # increment timer by a factor of 4.5 (90/20)
+            self.timer = self.master.after(int(1000/self.speed_up), self.timer_tick)  # increment timer by a factor of 4.5 (90/20)
 
     def format_time(self, seconds):
         minutes, seconds = divmod(seconds, 60)
