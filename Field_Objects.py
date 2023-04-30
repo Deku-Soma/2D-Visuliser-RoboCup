@@ -1,57 +1,92 @@
-import math
 import numpy as np
+from PIL import Image, ImageTk
 
 
-class FieldObjects():
+# This is the class that will store all the information for the sprites on screen
 
-    centre = np.array([])
-    sprite_file_path = ""
+class FieldObjects:
 
-    def __init__(self, image_path, x, y):
-        self.sprite_file_path = image_path
-        self.centre = np.append(self.centre, [x,y])
+    # Enter a file path and the x and y position of the object. x and y are ints
+    def __init__(self, image_path, x, y, ):
 
+        # Here we set the position of the object on the screen
+        self.centre = np.array([0, 0])
+        self.centre[0] = x
+        self.centre[1] = y
+
+        # Here we create the image, rize it and turn it into an object the TKinter canvas can use
+        self.sprite_image = Image.open(image_path)
+        self.sprite_image = self.sprite_image.resize((50, 50), Image.LANCZOS)
+        self.sprite_image_object = ImageTk.PhotoImage(self.sprite_image)
+
+    # This changes the positions of the sprite. enter x and y as ints
     def change_position(self, x, y):
         self.centre = np.array([x, y])
 
-    def change_sprite_file_path(self, new_file_path):
+    # This changes the sprites image
+    def change_sprite_image(self, new_file_path):
+        self.sprite_image = Image.open(new_file_path)
+        self.sprite_image = self.sprite_image.resize((50, 50), Image.LANCZOS)
+        self.sprite_image_object = ImageTk.PhotoImage(self.sprite_image)
 
-        self.sprite_file_path = new_file_path
+    # This gets the sprite image stored as the ImageTK for the TKinter canvas
+    def get_sprite_image(self):
+        return self.sprite_image_object
 
+    # Returns the x value of the sprite
     def x(self):
         return self.centre[0]
 
+    # Returns the y value of the sprite
     def y(self):
         return self.centre[1]
 
+    # Returns the x and y position in a Numpy Array
+    def print_centre(self):
+        print(self.centre)
 
 
+# This is a subclass of Field Objects to store Player objects
 class Player(FieldObjects):
 
-    distance_to_ball = 0
+    # Enter a file path and the x and y position of the object. x and y are ints
+    def __init__(self, image_path, x, y, distance_to_ball=0):
+        super().__init__(image_path, x, y)
 
-    def set_distance_to_ball(self, ball):
-        return math.sqrt((self.x() - ball.x()) ** 2 + (self.y() - ball.y()) ** 2)
+        # creates a variable to store the Player's distance to the ball
+        self.distance_to_ball = distance_to_ball
+
+    # This sets the Player's distance to the ball to some value
+    def set_distance_to_ball(self, distance_to_ball):
+        self.distance_to_ball = distance_to_ball
+
+    def get_distance_to_ball(self):
+        return self.distance_to_ball
 
 
+# This is a subclass of Field Objects to Ball objects
 class Ball(FieldObjects):
 
-    closest_player = -1
+    # Enter a file path and the x and y position of the object. x and y are ints
+    def __init__(self, image_path, x, y):
+        super().__init__(image_path, x, y)
 
-    def find_closest_player(self, all_players):
+        # Created a variable that stores which Player is the closest
+        self.closest_player = -1
 
-        distance = 1000000000
-        i = 0
+    # This function find the closest player to the ball
+    def find_closest_player(self, teams):
+
+        distance = 99999999999
         player_i = 0
-        for player in all_players:
+        i = 0
 
-            if distance > math.sqrt((self.x() - player.x()) ** 2 + (self.y() - player.y()) ** 2):
+        for team in teams:
+            for player in team:
+                if player.get_distance_to_ball() < distance:
+                    distance = player.get_distance_to_ball()
+                    player_i = i
 
-                player_i = i
-
-                distance = math.sqrt((self.x() - player.x()) ** 2 + (self.y() - player.y()) ** 2)
-
-            i += 1
+                i += 1
 
         self.closest_player = player_i
-
