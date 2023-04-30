@@ -4,10 +4,10 @@ from Field_Objects import *
 
 class Team:
 
-    team = np.array([])
-
     def __init__(self):
         self.score = 0
+        self.team = np.array([])
+
 
     def add_player(self, player):
         self.team = np.append(self.team, player)

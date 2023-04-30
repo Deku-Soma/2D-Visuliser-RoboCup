@@ -13,8 +13,8 @@ def display_teams(teams,canvas):
     ct =1
     for team in teams:
         for player in team.team:
-            print(player.sprite_file_path)
-            playerImage = Image.open(player.sprite_file_path)
+            print(player.sprite_image)
+            playerImage = Image.open(player.sprite_image)
             playerImage = playerImage.resize((50,50),Image.ANTIALIAS)
             playerObject = ImageTk.PhotoImage(playerImage) 
             canvas.create_image(player.x(), player.y(), image=playerObject)
@@ -108,7 +108,7 @@ ct =0
 for x in range(0,2):
     if x == 0:
         for i in range(0,11):
-            playerImage = Image.open(teams[x].team[i].sprite_file_path)
+            playerImage = Image.open(teams[x].team[i].sprite_image)
             playerImage = playerImage.resize((50,50),Image.LANCZOS)
             playerObject = ImageTk.PhotoImage(playerImage) 
             playerIM[i]=canvas.create_image(teams[x].team[i].x(),teams[x].team[i].y(), image=playerObject, anchor=NW)
@@ -116,7 +116,7 @@ for x in range(0,2):
             #canvas.tag_bind(playerIM,"<Button-"+cts+">", key)
     else:
         for i in range(0,11):
-            playerImage = Image.open(teams[x].team[i].sprite_file_path)
+            playerImage = Image.open(teams[x].team[i].sprite_image)
             playerImage = playerImage.resize((50,50),Image.LANCZOS)
             playerObject = ImageTk.PhotoImage(playerImage) 
             playerIM[i+11]=canvas.create_image(teams[x].team[i].x(),teams[x].team[i].y(), image=playerObject, anchor=NW)
