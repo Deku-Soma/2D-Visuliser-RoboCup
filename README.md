@@ -1,5 +1,7 @@
 This is the RoboCup git repository for the MacroHard group
 
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/Deku-Soma/2D-Visuliser-RoboCup/tree/tkinter.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/Deku-Soma/2D-Visuliser-RoboCup/tree/tkinter)
+
 Field_Objects Class:
 
 to initialise the class you need to pass it the path way to file (E.g. c:/MacroHard/image) and an x and y coordinate
