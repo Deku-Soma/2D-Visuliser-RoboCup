@@ -11,6 +11,9 @@ jobs:
       - python/install-deps
       - python/save-cache
       - python/test
+      - run:
+          name: Run Tests
+          command: npm test -- --coverage
        - run:
           name: Upload coverage report to Codecov
           command: |
