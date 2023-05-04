@@ -9,7 +9,13 @@ jobs:
     steps:
       - checkout
       - python/install-deps
+      - python/save-cache
       - python/test
+       - run:
+          name: Upload coverage report to Codecov
+          command: |
+            bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
+  
 
 workflows:
   main:
