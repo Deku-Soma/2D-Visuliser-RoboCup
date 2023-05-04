@@ -11,6 +11,7 @@ class Timer:
         # Create buttons and added it to a TKinter Label
         self.master = master
         self.remaining = self.GAME_DURATION
+
         self.timer_label = tk.Label(master, text=self.format_time(self.GAME_DURATION))
         self.timer_label.pack()
         self.start_button = tk.Button(master, text="Start", command=self.start_timer)
@@ -65,7 +66,7 @@ class Timer:
         self.remaining += 1 * (-1) ** self.rewind
 
         self.timer_label.configure(text=self.format_time(self.remaining))
-        if self.remaining <= 0:
+        if self.remaining <= 0: # This needs to be altered in the future
             self.timer_label.configure(text="Game over!")
         else:
             # This determines the rate at which the clock ticks, 1000 = 1 sec
@@ -78,13 +79,4 @@ class Timer:
         return "{:02d}:{:02d}:{:02d}".format(hours, minutes, seconds)
 
 
-root = tk.Tk()
-root.title("Soccer Game Timer")
-# Create the Timer object inside the window
-
-# timer.start()
-
-timer = Timer(root)
-
-root.mainloop()
 

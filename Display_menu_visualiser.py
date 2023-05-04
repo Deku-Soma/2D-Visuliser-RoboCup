@@ -5,7 +5,7 @@ import os
 from PIL import ImageTk, Image
 from Team import *
 from Field_Objects import *
-
+from timefunctions import Timer
 win = tk.Tk()
 
 win.geometry("1000x800") #aspect ratio
@@ -16,10 +16,14 @@ def go_to_menu(event):
     Frame_welcome.pack_forget()
     Frame_menu.pack(fill="both",expand=True)
 
-def go_to_visualiser(event):
+def go_to_visualiser(event, ):
     if menu.get() == "Game 1":
         Frame_menu.pack_forget()
         Frame_visualiser.pack(fill="both",expand=True)
+
+        timer = Timer(frameTimer)
+
+
     else:
         messagebox.showinfo("Warning", "You have not selected a game. \n Please selecte a game")
 
@@ -181,7 +185,7 @@ for x in range(0,2):
 
 #   creating test buttons for GUI design purposes, these buttons will later be changed to match the desired effects
 #   as of right now these buttons have no effect (change this list as buttons are implemeneted)
-buttonPlay = Button(time_button_frame, text = "Pause/player",bg="grey") #not initiated yet
+'''buttonPlay = Button(time_button_frame, text = "Pause/player",bg="grey") #not initiated yet
 buttonRewind = Button(time_button_frame, text= "Rewind",bg="grey")# not initiated yet
 buttonForward = Button(time_button_frame,text = "Forward",bg="grey")# not initiated yet
 buttonRewind.pack(side=LEFT) # used the side property to place the buttons next to each other.
@@ -190,7 +194,7 @@ buttonForward.pack(side=LEFT)
 #=================================================================================================================
 # label for timer 
 labelTimer = Label(frameTimer,text ="00:00",bg="grey",padx=5 )
-labelTimer.pack()
+labelTimer.pack()'''
 
 
 
