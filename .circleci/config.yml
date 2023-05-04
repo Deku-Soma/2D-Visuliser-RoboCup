@@ -1,23 +1,18 @@
-version: 2.1
+version : 2.1
+
+orbs: 
+  python: circlceci/python@0.3.2
+
 jobs:
-  build_and_test:
-    executor: python:3.9
+  build-and-test:
+    executor : python/default
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            python -m pip install --upgrade pip
-            pip install -r requirements.txt
-      - run:
-          name: Run tests
-          command: |
-            python -m pytest
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - .
+      - python/install-deps
+      - python/test
+
 workflows:
-  build:
+  main:
     jobs:
-      - build_and_test
+    - build-and-test
+
