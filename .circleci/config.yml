@@ -9,7 +9,6 @@ jobs:
     steps:
       - checkout
       - python/install-deps
-      - python/save-cache
       - python/test
       - run:
           name: Run Tests
