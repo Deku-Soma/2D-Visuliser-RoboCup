@@ -140,10 +140,7 @@ buttonPlay.pack(side=LEFT)
 buttonForward.pack(side=LEFT)
 #=================================================================================================================
 # label for timer 
-soccer_timer = SoccerTimer()
 
-labelTimer = Label(frameTimer,text =soccer_timer.start_time(),bg="grey",padx=5 )
-labelTimer.pack()
 
 
 win.mainloop()# main loop that runs the window, defualt exit condition is clicking the close button.
