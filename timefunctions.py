@@ -6,11 +6,13 @@ class Timer:
 
     GAME_DURATION = 0  # or (20 * 60) for the match to end in 20 minutes
 
-    def __init__(self, master):
+    def __init__(self, master, game_duration=1000000000):
 
         # Create buttons and added it to a TKinter Label
         self.master = master
-        self.remaining = self.GAME_DURATION
+        self.time_step = 0
+        self.game_duration = game_duration
+
 
         self.timer_label = tk.Label(master, text=self.format_time(self.GAME_DURATION))
         self.timer_label.pack()
@@ -63,10 +65,10 @@ class Timer:
     # This is where the clock updates, If rewind = True it will run backwards, speed_up will determine
     # the clock tick rate
     def timer_tick(self):
-        self.remaining += 1 * (-1) ** self.rewind
+        self.time_step += 1 * (-1) ** self.rewind
 
-        self.timer_label.configure(text=self.format_time(self.remaining))
-        if self.remaining <= 0: # This needs to be altered in the future
+        self.timer_label.configure(text=self.format_time(self.time_step))
+        if self.time_step <= 0: # This needs to be altered in the future
             self.timer_label.configure(text="Game over!")
         else:
             # This determines the rate at which the clock ticks, 1000 = 1 sec
