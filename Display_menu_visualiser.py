@@ -6,6 +6,7 @@ from PIL import ImageTk, Image
 from Team import *
 from Field_Objects import *
 from timefunctions import Timer
+import Welcome
 win = tk.Tk()
 
 win.geometry("1000x800") #aspect ratio
@@ -13,10 +14,10 @@ win.config(bg="green")# background colour
 #============================================================
 #functions
 def go_to_menu(event):
-    Frame_welcome.pack_forget()
-    Frame_menu.pack(fill="both",expand=True)
+        Frame_welcome.pack_forget()
+        Frame_menu.pack(fill="both",expand=True)
 
-def go_to_visualiser(event, ):
+def go_to_visualiser(event):
     if menu.get() == "Game 1":
         Frame_menu.pack_forget()
         Frame_visualiser.pack(fill="both",expand=True)
@@ -29,16 +30,18 @@ def go_to_visualiser(event, ):
 
 #=============================================================
 Frame_welcome = tk.Frame(win,bg="blue",width=1000,height=800)
+Frame_menu = tk.Frame(win,bg="black",width=1000,height=800)
 #=============================================================
 #welcome frame components
+folder = "Assets"
+
+cwd = os.getcwd()
 canvas = tk.Canvas(Frame_welcome, bg="black", width=1000, height=800)
 
 
 welcomeFile = "robocub2-resize.jpg"
 menu_button_file = "menu_button.png"
-folder = "Assets"
 
-cwd = os.getcwd()
 
 path_to_welcome_file = os.path.join(cwd,folder,welcomeFile)
 path_to_menu_button_file = os.path.join(cwd,folder,menu_button_file)
@@ -56,8 +59,9 @@ welcomebg=canvas.create_image(0, 0, image=welcomeImObject, anchor="nw")
 menu_buttonbg = canvas.create_image(400, 500, image=menu_buttonIMobject, anchor="nw")
 canvas.tag_bind(menu_buttonbg,"<Button-1>", go_to_menu)
 canvas.pack()
+
 #=============================================================
-Frame_menu = tk.Frame(win,bg="black",width=1000,height=800)
+
 #=============================================================
 #create canvas for menu
 canvas_menu = tk.Canvas(Frame_menu, width=1000, height=800)
