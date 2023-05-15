@@ -14,17 +14,16 @@ jobs:
       - run:
           name: Run Tests
           command: pytest --cov
-      - run:
+      - codecov/codecov:
+          token: $CodeCov_Token
+      -run:
           name: Upload coverage report to Codecov
-          command: bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN -f coverage.xml
+          command: bash <(curl -s https://codecov.io/bash) -t $CodeCov_Token -f coverage.xml
+
 
 workflows:
   main:
     jobs:
     - build-and-test
-  upload-to-codecov:
-    jobs:
-      - checkout
-      - codecov/upload
 
 
