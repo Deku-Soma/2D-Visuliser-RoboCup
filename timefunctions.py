@@ -85,5 +85,3 @@ class Timer:
         minutes, seconds = divmod(seconds, 60)
         hours, minutes = divmod(minutes, 60)
         return "{:02d}:{:02d}:{:02d}".format(hours, minutes, seconds)
-
-

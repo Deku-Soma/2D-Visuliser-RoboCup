@@ -4,13 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8718d2d3-f398-483f-9944-739d152ecb8f" name="Changes" comment="">
+    <list default="true" id="8718d2d3-f398-483f-9944-739d152ecb8f" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/2D-Visuliser-RoboCup.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/2D-Visuliser-RoboCup.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Display_menu_visualiser.py" beforeDir="false" afterPath="$PROJECT_DIR$/Display_menu_visualiser.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Unittest_timefunctions.py" beforeDir="false" afterPath="$PROJECT_DIR$/timer_unitTest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/time2_unittest.py" beforeDir="false" afterPath="$PROJECT_DIR$/time2_unittest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/canvas_test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/parseJSON.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tempCodeRunnerFile.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/time2_unittest.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/timefunctions.py" beforeDir="false" afterPath="$PROJECT_DIR$/timefunctions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/timer class.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,10 +37,10 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Display_menu_visualiser.py" />
     <property name="settings.editor.selected.configurable" value="reference.idesettings.debugger.python" />
   </component>
-  <component name="RunManager" selected="Python tests.Unittests in time2_unittest.py">
+  <component name="RunManager" selected="Python.Display_menu_visualiser">
     <configuration name="Display_menu_visualiser" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="2D-Visuliser-RoboCup" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -43,7 +48,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="C:\Users\Best PC\AppData\Local\Microsoft\WindowsApps\python3.10.exe" />
+      <option name="SDK_HOME" value="C:\Users\Best Laptop\Documents\GitHub\2D-Visuliser-RoboCup\venv\Scripts\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
