@@ -1,4 +1,6 @@
 version : 2.1
+orbs:
+  codecov: codecov/codecov@3.2.4
 
 orbs: 
   python: circleci/python@0.3.2
@@ -21,4 +23,9 @@ workflows:
   main:
     jobs:
     - build-and-test
+  upload-to-codecov:
+    jobs:
+      - checkout
+      - codecov/upload
+
 
