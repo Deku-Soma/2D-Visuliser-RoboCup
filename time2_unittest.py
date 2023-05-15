@@ -1,22 +1,60 @@
 import unittest
 import tkinter as tk
-from timer import Timer
+import time
+from timefunctions import Timer
+
 
 class TestTimer(unittest.TestCase):
-    def test_timer(self):
-        root = tk.Tk()
-        timer = Timer(root)
-        
-        # Test initial time remaining
-        self.assertEqual(timer.time_step, 90 * 60) #90 minutes
-        
-        # Test timer_tick method
-        timer.timer_tick()
-        self.assertEqual(timer.format_time(timer.time_step), "01:29:59")
-        
-        # Test stop_timer method
+    win = tk.Tk()
+
+    def test_start(self):
+        timer = Timer(self.win)
+        timer.start_timer()
+
+        self.assertEqual(1, timer.speed_up)
+        self.assertFalse(timer.rewind)
+
+    def test_stop(self):
+        timer = Timer(self.win)
         timer.stop_timer()
-        self.assertIsNone(timer.master.after(1000, timer.timer_tick))
-        
+
+        timer.tick()
+
+        self.assertEqual(0, timer.time_step)
+        self.assertEqual(1, timer.speed_up)
+        self.assertFalse(timer.rewind)
+        self.assertFalse(timer.ticking)
+
+    def test_tick(self):
+        timer = Timer(self.win)
+        timer.start_timer()
+        timer.tick()
+
+        self.assertEqual(1, timer.time_step)
+
+    def test_rewind(self):
+        timer = Timer(self.win)
+
+        timer.tick()
+        timer.rewind_timer()
+        timer.tick()
+
+        self.assertEqual(0, timer.time_step)
+        self.assertTrue(timer.rewind)
+
+    def test_speedup(self):
+        timer = Timer(self.win)
+
+        timer.start_timer()
+        timer.speedup_timer()
+
+        start_time = time.time()
+        timer.tick()
+        duration = time.time() - start_time
+
+        self.assertEqual(2, timer.speed_up)
+        self.assertAlmostEqual(timer.tick_duration / timer.speed_up, round(duration, 1))
+
+
 if __name__ == '__main__':
     unittest.main()

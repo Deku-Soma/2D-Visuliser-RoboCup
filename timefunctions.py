@@ -1,5 +1,5 @@
 import tkinter as tk
-
+import time
 
 class Timer:
     # Set the duration of the game in seconds
@@ -28,6 +28,7 @@ class Timer:
         # Speed up is determines the tick speed, Ticking determines if the clock is running
         # Rewind determines if the clock is ticking backwards
         self.speed_up = 1
+        self.tick_duration = 1
         self.ticking = False
         self.rewind = False
 
@@ -38,7 +39,7 @@ class Timer:
 
         if not self.ticking:
             self.ticking = True
-            self.timer_tick()
+            #self.timer_tick()
 
     #This pasues the clock
     def stop_timer(self):
@@ -74,11 +75,15 @@ class Timer:
             # This determines the rate at which the clock ticks, 1000 = 1 sec
             self.timer = self.master.after(int(1000/self.speed_up), self.timer_tick)
 
+    def tick(self):
+        self.time_step += self.ticking * (-1) ** self.rewind
+        
+        time.sleep(self.tick_duration / self.speed_up)
+
     # This formats the clock for the TKinter window display
     def format_time(self, seconds):
         minutes, seconds = divmod(seconds, 60)
         hours, minutes = divmod(minutes, 60)
         return "{:02d}:{:02d}:{:02d}".format(hours, minutes, seconds)
-
 
 
