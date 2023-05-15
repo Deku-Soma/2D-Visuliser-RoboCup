@@ -1,12 +1,12 @@
-version : 2.1
+version: 2.1
 
-orbs: 
+orbs:
   python: circleci/python@0.3.2
   codecov: codecov/codecov@1.0.5
 
 jobs:
   build-and-test:
-    executor : python/default
+    executor: python/default
     steps:
       - checkout
       - python/install-deps
@@ -14,10 +14,12 @@ jobs:
       - run:
           name: Run Tests
           command: pytest --cov
-      - codecov/upload  # Use the 'codecov/upload' command instead of 'codecov/codecov'
+
+      - codecov/upload:
           token: $CodeCov_Token
           flags: unittests
-          files: coverage.xml
+          files: coverage.
+
       - run:
           name: Upload coverage report to Codecov
           command: bash <(curl -s https://codecov.io/bash) -t $CodeCov_Token -f coverage.xml
@@ -26,6 +28,4 @@ jobs:
 workflows:
   main:
     jobs:
-    - build-and-test
-
-
+      - build-and-test
