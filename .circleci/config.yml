@@ -16,7 +16,7 @@ jobs:
           command: pytest --cov
       - codecov/codecov:
           token: $CodeCov_Token
-      -run:
+      - run:
           name: Upload coverage report to Codecov
           command: bash <(curl -s https://codecov.io/bash) -t $CodeCov_Token -f coverage.xml
 
