@@ -13,6 +13,8 @@ win.geometry("1000x800") #aspect ratio
 win.config(bg="green")# background colour
 #============================================================
 #functions
+def add(a,b):
+    return a+b
 def go_to_menu(event):
         Frame_welcome.pack_forget()
         Frame_menu.pack(fill="both",expand=True)
