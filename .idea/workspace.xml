@@ -9,13 +9,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Display_menu_visualiser.py" beforeDir="false" afterPath="$PROJECT_DIR$/Display_menu_visualiser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Unittest_timefunctions.py" beforeDir="false" afterPath="$PROJECT_DIR$/timer_unitTest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/canvas_test.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/parseJSON.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tempCodeRunnerFile.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/time2_unittest.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/timefunctions.py" beforeDir="false" afterPath="$PROJECT_DIR$/timefunctions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/timer class.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,12 +27,13 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Display_menu_visualiser.py" />
-    <property name="settings.editor.selected.configurable" value="reference.idesettings.debugger.python" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/GitHub/2D-Visuliser-RoboCup",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
+  }
+}]]></component>
   <component name="RunManager" selected="Python.Display_menu_visualiser">
     <configuration name="Display_menu_visualiser" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="2D-Visuliser-RoboCup" />
@@ -48,9 +42,9 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="C:\Users\Best Laptop\Documents\GitHub\2D-Visuliser-RoboCup\venv\Scripts\python.exe" />
+      <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Display_menu_visualiser.py" />
@@ -90,9 +84,9 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="C:\Users\Best Laptop\Documents\GitHub\2D-Visuliser-RoboCup\venv\Scripts\python.exe" />
+      <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/timefunctions.py" />
@@ -146,6 +140,14 @@
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.Display_menu_visualiser" />
+      <item itemvalue="Python.time2_unittest" />
+      <item itemvalue="Python.timefunctions" />
+      <item itemvalue="Python tests.Unittests for time2_unittest.TestTimer.test_stop" />
+      <item itemvalue="Python tests.Unittests for time2_unittest.TestTimer.test_tick" />
+      <item itemvalue="Python tests.Unittests in time2_unittest.py" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python tests.Unittests in time2_unittest.py" />

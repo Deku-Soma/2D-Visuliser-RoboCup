@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import *
 import os
-from PIL import ImageTk, Image
 from Team import *
 from Field_Objects import *
 from timefunctions import Timer
@@ -12,6 +11,7 @@ win = tk.Tk()
 win.geometry("1000x800")  # aspect ratio
 win.config(bg="green")  # background colour
 
+frame_vis = False  # Bool for Frame Visualiser is packed
 
 # ============================================================
 # functions
@@ -21,7 +21,8 @@ def go_to_menu(event):
     Frame_menu.pack(fill="both", expand=True)
 
 
-def go_to_visualiser(event, ):
+def go_to_visualiser():
+
     if menu.get() == "Game 1":
         Frame_menu.pack_forget()
         Frame_visualiser.pack(fill="both", expand=True)
@@ -30,16 +31,24 @@ def go_to_visualiser(event, ):
 
         timer.start_timer()
 
-        while timer.time_step <= 10:
-
+        while timer.time_step < 5:
             timer.tick()
 
             print(timer.time_step)
 
-
     else:
         messagebox.showinfo("Warning", "You have not selected a game. \n Please selecte a game")
 
+def update_visualiser(event):
+
+    timer = Timer(Frame_visualiser)
+
+    timer.start_timer()
+
+    while timer.time_step < 10:
+        timer.tick()
+
+        print(timer.time_step)
 
 # =============================================================
 Frame_welcome = tk.Frame(win, bg="blue", width=1000, height=800)
@@ -82,12 +91,12 @@ menubgIMobject = ImageTk.PhotoImage(menubgIm)
 menubg = canvas_menu.create_image(0, 0, image=menubgIMobject, anchor="nw")
 
 # button to go to visualiser
-visualiser_button_file = "match_button.png"
+'''visualiser_button_file = "match_button.png"
 path_to_visualiser_button = os.path.join(cwd, folder, visualiser_button_file)
 visualiser_buttonIM = Image.open(path_to_visualiser_button)
 visualiser_buttonIM = visualiser_buttonIM.resize((200, 75), Image.LANCZOS)
 visualiser_buttonIMobject = ImageTk.PhotoImage(visualiser_buttonIM)
-visualiser_buttonbg = canvas_menu.create_image(400, 500, image=visualiser_buttonIMobject, anchor="nw")
+visualiser_buttonbg = canvas_menu.create_image(400, 500, image=visualiser_buttonIMobject, anchor="nw")'''
 # menu frame components
 label_menu = tk.Label(Frame_menu, text="Welcome to the RoboCup Visualiser", font=50, bg="blue", fg="white")
 menu = tk.StringVar()
@@ -101,7 +110,18 @@ drop.place(x=500, y=300)
 Frame_visualiser = tk.Frame(win, bg="white", width=1000, height=800)
 
 Frame_welcome.pack(expand=True, fill="both")
-canvas_menu.tag_bind(visualiser_buttonbg, "<Button-1>", go_to_visualiser)
+#canvas_menu.tag_bind(visualiser_buttonbg, "<Button-1>", go_to_visualiser)
+
+def combine_funcs(*funcs):
+    def combined_func(*args, **kwargs):
+        for f in funcs:
+            f(*args, **kwargs)
+    return combined_func
+
+vis_button = tk.Button(canvas_menu, text="poes", command=combine_funcs(go_to_visualiser))
+
+vis_button.pack()
+
 canvas_menu.focus()
 canvas_menu.pack(fill="both", expand=True)
 # =============================================================
