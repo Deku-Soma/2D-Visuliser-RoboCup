@@ -13,6 +13,15 @@ win.config(bg="green")  # background colour
 
 frame_vis = False  # Bool for Frame Visualiser is packed
 
+Frame_visualiser = tk.Frame(win, bg="black", width=1000, height=800)
+
+frameTimer = Frame(Frame_visualiser, width=50, height=20)
+frameTimer.pack()
+frameTimer.place(anchor=NW, relx=0.8, rely=0.01)
+
+timer = Timer(Frame_visualiser, tps=20)
+
+
 # ============================================================
 # functions
 
@@ -22,33 +31,22 @@ def go_to_menu(event):
 
 
 def go_to_visualiser():
-
     if menu.get() == "Game 1":
         Frame_menu.pack_forget()
         Frame_visualiser.pack(fill="both", expand=True)
-
-        timer = Timer(frameTimer)
-
-        timer.start_timer()
-
-        while timer.time_step < 5:
-            timer.tick()
-
-            print(timer.time_step)
-
     else:
         messagebox.showinfo("Warning", "You have not selected a game. \n Please selecte a game")
 
-def update_visualiser(event):
+# Keresh You must add the motion to the update_visualiser function
+def update_visualiser():
 
-    timer = Timer(Frame_visualiser)
+    timer.tick() #This increments the timer by 1
 
-    timer.start_timer()
+    # Keresh  add your part here
+    # keresh_function(timer.time_step)
 
-    while timer.time_step < 10:
-        timer.tick()
-
-        print(timer.time_step)
+    frameTimer.after(int(1000/(timer.speed_up * timer.tps)), update_visualiser)
+    # Above Determines how long each tick in the game is gonna last
 
 # =============================================================
 Frame_welcome = tk.Frame(win, bg="blue", width=1000, height=800)
@@ -107,20 +105,15 @@ drop = tk.OptionMenu(canvas_menu, menu, "Game 1")
 drop.pack()
 drop.place(x=500, y=300)
 
-Frame_visualiser = tk.Frame(win, bg="white", width=1000, height=800)
 
 Frame_welcome.pack(expand=True, fill="both")
-#canvas_menu.tag_bind(visualiser_buttonbg, "<Button-1>", go_to_visualiser)
 
-def combine_funcs(*funcs):
-    def combined_func(*args, **kwargs):
-        for f in funcs:
-            f(*args, **kwargs)
-    return combined_func
 
-vis_button = tk.Button(canvas_menu, text="poes", command=combine_funcs(go_to_visualiser))
+# canvas_menu.tag_bind(visualiser_buttonbg, "<Button-1>", go_to_visualiser)
 
-vis_button.pack()
+start_game_button = tk.Button(canvas_menu, text="start", command=lambda: [go_to_visualiser(), update_visualiser()])
+
+start_game_button.pack()
 
 canvas_menu.focus()
 canvas_menu.pack(fill="both", expand=True)
@@ -142,9 +135,7 @@ time_button_frame.pack()
 time_button_frame.place(anchor=N, relx=0.5, rely=0.9)
 
 # frame for timer 
-frameTimer = Frame(Frame_visualiser, width=50, height=20)
-frameTimer.pack()
-frameTimer.place(anchor=NW, relx=0.8, rely=0.01)
+
 
 # ===============================================================================================================
 
