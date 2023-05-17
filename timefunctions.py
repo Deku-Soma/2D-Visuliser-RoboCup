@@ -7,12 +7,12 @@ class Timer:
 
     GAME_DURATION = 0  # or (20 * 60) for the match to end in 20 minutes
 
-    def __init__(self, master, game_duration=1000000000, tps=1):
+    def __init__(self, master, tps=1, max_ticks=0):
 
         self.master = master
         self.time_step = 0 # This stores what is the current time step
-        self.game_duration = game_duration #This stores the max time_steps
         self.tps = tps #Stores how many tick happen per second
+        self.max_ticks = max_ticks # This sets what are the total ticks the timer should run
 
         # Create buttons and added it to a TKinter Label
 

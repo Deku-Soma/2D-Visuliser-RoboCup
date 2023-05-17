@@ -19,6 +19,7 @@ frameTimer = Frame(Frame_visualiser, width=50, height=20)
 frameTimer.pack()
 frameTimer.place(anchor=NW, relx=0.8, rely=0.01)
 
+# Keresh please add in the Timer declaration max_ticks=Keresh_get_max_tick_function
 timer = Timer(Frame_visualiser, tps=20)
 
 
