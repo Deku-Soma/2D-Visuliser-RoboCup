@@ -1,3 +1,4 @@
+import threading
 import tkinter as tk
 import time
 
@@ -6,15 +7,16 @@ class Timer:
 
     GAME_DURATION = 0  # or (20 * 60) for the match to end in 20 minutes
 
-    def __init__(self, master, game_duration=1000000000):
+    def __init__(self, master, tps=1, max_ticks=0):
+
+        self.master = master
+        self.time_step = 0 # This stores what is the current time step
+        self.tps = tps #Stores how many tick happen per second
+        self.max_ticks = max_ticks # This sets what are the total ticks the timer should run
 
         # Create buttons and added it to a TKinter Label
-        self.master = master
-        self.time_step = 0
-        self.game_duration = game_duration
 
-
-        self.timer_label = tk.Label(master, text=self.format_time(self.GAME_DURATION))
+        self.timer_label = tk.Label(master, text=self.format_time())
         self.timer_label.pack()
         self.start_button = tk.Button(master, text="Start", command=self.start_timer)
         self.start_button.pack(side=tk.LEFT, padx=5)
@@ -48,12 +50,12 @@ class Timer:
         self.rewind = False
 
         if self.ticking:
-            self.master.after_cancel(self.timer)
+            #self.master.after_cancel(self.timer)
             self.ticking = False
 
     # This sets the clock to rewind mode
     def rewind_timer(self):
-        self.rewind = True
+        self.rewind = not self.rewind
 
     # This speeds up the tick rate of the clock
     def speedup_timer(self):
@@ -65,23 +67,20 @@ class Timer:
 
     # This is where the clock updates, If rewind = True it will run backwards, speed_up will determine
     # the clock tick rate
-    def timer_tick(self):
-        self.time_step += 1 * (-1) ** self.rewind
-
-        self.timer_label.configure(text=self.format_time(self.time_step))
-        if self.time_step <= 0: # This needs to be altered in the future
-            self.timer_label.configure(text="Game over!")
-        else:
-            # This determines the rate at which the clock ticks, 1000 = 1 sec
-            self.timer = self.master.after(int(1000/self.speed_up), self.timer_tick)
 
     def tick(self):
         self.time_step += self.ticking * (-1) ** self.rewind
-        
-        time.sleep(self.tick_duration / self.speed_up)
+
+        if self.time_step < 0:
+            self.time_step = 0
+
+        self.timer_label.configure(text=self.format_time())
 
     # This formats the clock for the TKinter window display
-    def format_time(self, seconds):
+    def format_time(self):
+        seconds, ticks =  divmod(self.time_step, self.tps)
         minutes, seconds = divmod(seconds, 60)
         hours, minutes = divmod(minutes, 60)
         return "{:02d}:{:02d}:{:02d}".format(hours, minutes, seconds)
+
+
