@@ -13,11 +13,12 @@ jobs:
       - run:
           name: Run Tests
           command: pytest --cov
+          environment:
+            CODECOV_TOKEN: $CodeCov_Token
 
       - run:
           name: Upload coverage report to Codecov
-          command: |
-            bash <(curl -s https://codecov.io/bash) -t $CodeCov_Token
+          command: bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
 
 workflows:
   main:
