@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8718d2d3-f398-483f-9944-739d152ecb8f" name="Changes" comment="Changes">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Display_menu_visualiser.py" beforeDir="false" afterPath="$PROJECT_DIR$/Display_menu_visualiser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/timefunctions.py" beforeDir="false" afterPath="$PROJECT_DIR$/timefunctions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/timer_unitTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/timer_unitTest.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,13 +24,13 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;git-widget-placeholder&quot;: &quot;integrate-timer-and-visualiser&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/GitHub/2D-Visuliser-RoboCup&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/GitHub/2D-Visuliser-RoboCup",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Python.Display_menu_visualiser">
     <configuration name="Display_menu_visualiser" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="2D-Visuliser-RoboCup" />
@@ -47,27 +45,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Display_menu_visualiser.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="time2_unittest" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="2D-Visuliser-RoboCup" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/time2_unittest.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -95,6 +72,20 @@
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
       <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests in timer_unitTest.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="2D-Visuliser-RoboCup" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/timer_unitTest.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
     <configuration name="Unittests for time2_unittest.TestTimer.test_stop" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
@@ -125,7 +116,7 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Unittests in time2_unittest.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration name="Unittests in C:/GitHub/2D-Visuliser-RoboCup/time2_unittest.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="2D-Visuliser-RoboCup" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -141,19 +132,19 @@
     </configuration>
     <list>
       <item itemvalue="Python.Display_menu_visualiser" />
-      <item itemvalue="Python.time2_unittest" />
       <item itemvalue="Python.timefunctions" />
+      <item itemvalue="Python tests.Python tests in timer_unitTest.py" />
+      <item itemvalue="Python tests.Unittests in C:/GitHub/2D-Visuliser-RoboCup/time2_unittest.py" />
       <item itemvalue="Python tests.Unittests for time2_unittest.TestTimer.test_stop" />
       <item itemvalue="Python tests.Unittests for time2_unittest.TestTimer.test_tick" />
-      <item itemvalue="Python tests.Unittests in time2_unittest.py" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.Python tests in timer_unitTest.py" />
         <item itemvalue="Python.timefunctions" />
-        <item itemvalue="Python tests.Unittests in time2_unittest.py" />
+        <item itemvalue="Python tests.Unittests in C:/GitHub/2D-Visuliser-RoboCup/time2_unittest.py" />
         <item itemvalue="Python tests.Unittests for time2_unittest.TestTimer.test_stop" />
         <item itemvalue="Python tests.Unittests for time2_unittest.TestTimer.test_tick" />
-        <item itemvalue="Python.time2_unittest" />
       </list>
     </recent_temporary>
   </component>
