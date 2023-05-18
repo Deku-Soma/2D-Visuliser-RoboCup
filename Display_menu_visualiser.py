@@ -6,29 +6,9 @@ from Team import *
 from Field_Objects import *
 from timefunctions import Timer
 
-win = tk.Tk()
-
-win.geometry("1000x800")  # aspect ratio
-win.config(bg="green")  # background colour
-
-frame_vis = False  # Bool for Frame Visualiser is packed
-
-Frame_visualiser = tk.Frame(win, bg="black", width=1000, height=800)
-
-frameTimer = Frame(Frame_visualiser, width=50, height=20)
-frameTimer.pack()
-frameTimer.place(anchor=NW, relx=0.8, rely=0.01)
-
-time_button_frame = Frame(Frame_visualiser, width=500, height=50, )
-time_button_frame.pack()
-time_button_frame.place(anchor=N, relx=0.5, rely=0.9)
 
 
-# Keresh please add in the Timer declaration max_ticks=Keresh_get_max_tick_function
-timer = Timer(time_button_frame, tps=20)
-
-
-# ============================================================
+# ======================================================================================================================
 # functions
 
 def go_to_menu(event):
@@ -51,8 +31,69 @@ def update_visualiser():
     # Keresh  add your part here
     # keresh_function(timer.time_step)
 
-    frameTimer.after(int(1000/(timer.speed_up * timer.tps)), update_visualiser)
+    time_button_frame.after(int(1000 / (timer.speed_up * timer.tps)), update_visualiser)
     # Above Determines how long each tick in the game is gonna last
+
+
+# ======================================================================================================================
+# Create the Tkinter Window
+win = tk.Tk()
+
+win.geometry("1000x800")  # aspect ratio
+win.config(bg="green")  # background colour
+
+# ======================================================================================================================
+
+# Create the field image and Resize
+
+field_file = "Soccer_Field_HD-downsized.png"
+
+folder = "Assets"
+
+cwd = os.getcwd()
+
+path_to_field_file = os.path.join(cwd, folder, field_file)
+# Create a field object that taks up 75% of total screen space
+fieldImage = Image.open(
+    path_to_field_file)  # fetchs field image, note the field image must be in the same folder for this function to work
+fieldImage = fieldImage.resize((750, 600),
+                               Image.LANCZOS)  # resize the field image so it matches the desired aspect ratio
+fieldImageObject = ImageTk.PhotoImage(
+    fieldImage)  # this variable is used to create a viable image object that can be called\
+
+# =============================================================
+# visualiser screen
+
+Frame_visualiser = tk.Frame(win, bg="black", width=fieldImage.width, height=fieldImage.height)
+
+# creating the frams that will be used to place all the elements of the gui design
+
+# this is the frame that is set to house the field image and is already set to 75% of screen space
+canvas_visualiser = Canvas(Frame_visualiser, bg="black", width=1920, height=1080)
+canvas_visualiser.pack()
+
+# ======================================================================================================================
+
+# create image objects from image
+fieldIM = canvas_visualiser.create_image(0, 0, image=fieldImageObject, anchor=NW)
+
+# ======================================================================================================================
+# Create the frame that will display the player stats
+
+display_stats_frame = Frame(Frame_visualiser, width=50, height=20)
+display_stats_frame.pack()
+display_stats_frame.place(anchor=NW, relx=0.8, rely=0.01)
+
+# ======================================================================================================================
+# Frame to add the timer and timer initialisation
+
+time_button_frame = Frame(Frame_visualiser, width=500, height=50, )
+time_button_frame.pack()
+time_button_frame.place(anchor=N, relx=0.5, rely=0.9)
+
+
+# Keresh please add in the Timer declaration max_ticks=Keresh_get_max_tick_function
+timer = Timer(time_button_frame, tps=20)
 
 # =============================================================
 Frame_welcome = tk.Frame(win, bg="blue", width=1000, height=800)
@@ -123,13 +164,7 @@ start_game_button.pack()
 
 canvas_menu.focus()
 canvas_menu.pack(fill="both", expand=True)
-# =============================================================
-# visualiser screen
-# creating the frams that will be used to place all the elements of the gui design
 
-# this is the frame that is set to house the field image and is already set to 75% of screen space
-canvas_visualiser = Canvas(Frame_visualiser, bg="black", width=1920, height=1080)
-canvas_visualiser.pack()
 # the relx and rely values are values between 0 and 1, 
 # the x and y values specify the position of the top left corner of the frame
 # used to place the frame on a percentace value on the screens x,y values
@@ -140,24 +175,7 @@ canvas_visualiser.pack()
 # frame for timer 
 
 
-# ===============================================================================================================
 
-field_file = "Soccer_Field_HD-downsized.png"
-
-folder = "Assets"
-
-cwd = os.getcwd()
-
-path_to_field_file = os.path.join(cwd, folder, field_file)
-# Create a field object that taks up 75% of total screen space
-fieldImage = Image.open(
-    path_to_field_file)  # fetchs field image, note the field image must be in the same folder for this function to work
-fieldImage = fieldImage.resize((750, 600),
-                               Image.LANCZOS)  # resize the field image so it matches the desired aspect ratio
-fieldImageObject = ImageTk.PhotoImage(
-    fieldImage)  # this variable is used to create a viable image object that can be called\
-# create image objects
-fieldIM = canvas_visualiser.create_image(0, 0, image=fieldImageObject, anchor=NW)
 
 # ================================================================================================================
 # Create a Label Widget to display the field
