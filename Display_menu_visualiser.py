@@ -43,14 +43,17 @@ win.config(bg="green")  # background colour
 
 #=============================================================
 # Frame to be used as screens
-Frame_welcome = tk.Frame(win,bg="blue",width=1000,height=800)
+
 Frame_menu = tk.Frame(win,bg="black",width=1000,height=800)
 #=============================================================
 #welcome frame components
+Frame_welcome = tk.Frame(win,bg="blue",width=1000,height=800)
+
+canvas = tk.Canvas(Frame_welcome, bg="black", width=1000, height=800)
 folder = "Assets"
 
 cwd = os.getcwd()
-canvas = tk.Canvas(Frame_welcome, bg="black", width=1000, height=800)
+
 
 
 welcomeFile = "robocub2-resize.jpg"
@@ -71,45 +74,14 @@ menu_buttonIMobject = ImageTk.PhotoImage(menu_buttonIM)
 
 welcomebg=canvas.create_image(0, 0, image=welcomeImObject, anchor="nw")
 menu_buttonbg = canvas.create_image(400, 500, image=menu_buttonIMobject, anchor="nw")
+
 canvas.tag_bind(menu_buttonbg,"<Button-1>", go_to_menu)
 canvas.pack()
 
-#=============================================================
-
-#=============================================================
-#create canvas for menu
-canvas_menu = tk.Canvas(Frame_menu, width=1000, height=800)
-menubgfile = "menubg.jpg"
-path_to_menu_bg = os.path.join(cwd,folder,menubgfile)
-
-menubgIm = Image.open(path_to_menu_bg)
-menubgIm = menubgIm.resize((1000,800),Image.LANCZOS)
-menubgIMobject = ImageTk.PhotoImage(menubgIm)
-menubg = canvas_menu.create_image(0,0,image=menubgIMobject,anchor="nw")
-
-#button to go to visualiser
-visualiser_button_file = "match_button.png"
-path_to_visualiser_button = os.path.join(cwd,folder,visualiser_button_file)
-visualiser_buttonIM = Image.open(path_to_visualiser_button)
-visualiser_buttonIM = visualiser_buttonIM.resize((200,75),Image.LANCZOS)
-visualiser_buttonIMobject = ImageTk.PhotoImage(visualiser_buttonIM)
-visualiser_buttonbg = canvas_menu.create_image(400,500,image=visualiser_buttonIMobject,anchor="nw")
-# menu frame components
-label_menu = tk.Label(Frame_menu,text="Welcome to the RoboCup Visualiser",font= 50,bg="blue", fg = "white")
-menu = tk.StringVar()
-menu.set("Select a game")
-
-#Create a dropdown Menu
-drop= tk.OptionMenu(canvas_menu, menu,"Game 1")
-drop.pack()
-drop.place(x=500,y=300)
+Frame_welcome.pack(expand=True,fill="both")
+#==========================================================
 
 Frame_visualiser = tk.Frame(win,bg="white",width=1000,height=800)
-
-Frame_welcome.pack(expand=True,fill="both")
-canvas_menu.tag_bind(visualiser_buttonbg,"<Button-1>", go_to_visualiser)
-canvas_menu.focus()
-canvas_menu.pack(fill="both",expand=True)
 #=============================================================
 #visualiser screen
 # creating the frams that will be used to place all the elements of the gui design
@@ -187,33 +159,6 @@ time_button_frame.place(anchor=N, relx=0.5, rely=0.9)
 # Keresh please add in the Timer declaration max_ticks=Keresh_get_max_tick_function
 timer = Timer(time_button_frame, tps=20)
 
-# =============================================================
-Frame_welcome = tk.Frame(win, bg="blue", width=1000, height=800)
-# =============================================================
-# welcome frame components
-canvas = tk.Canvas(Frame_welcome, bg="black", width=1000, height=800)
-
-welcomeFile = "robocub2-resize.jpg"
-menu_button_file = "menu_button.png"
-folder = "Assets"
-
-cwd = os.getcwd()
-
-path_to_welcome_file = os.path.join(cwd, folder, welcomeFile)
-path_to_menu_button_file = os.path.join(cwd, folder, menu_button_file)
-
-welcomeIm = Image.open(path_to_welcome_file)
-welcomeIm = welcomeIm.resize((1000, 800), Image.LANCZOS)
-welcomeImObject = ImageTk.PhotoImage(welcomeIm)
-
-menu_buttonIM = Image.open(path_to_menu_button_file)
-menu_buttonIM = menu_buttonIM.resize((200, 75), Image.LANCZOS)
-menu_buttonIMobject = ImageTk.PhotoImage(menu_buttonIM)
-
-welcomebg = canvas.create_image(0, 0, image=welcomeImObject, anchor="nw")
-menu_buttonbg = canvas.create_image(400, 500, image=menu_buttonIMobject, anchor="nw")
-canvas.tag_bind(menu_buttonbg, "<Button-1>", go_to_menu)
-canvas.pack()
 # =============================================================
 Frame_menu = tk.Frame(win, bg="black", width=1000, height=800)
 # =============================================================
