@@ -23,26 +23,22 @@ class TestTimer(unittest.TestCase):
         timer.time_step = 3661
         self.assertEqual(timer.format_time(), '01:01:01')
 
-    def test_start_timer(self):
+    def test_play_pause_timer(self):
         timer = Timer(self.win)
 
-        timer.start_timer()
+        timer.play_pause()
 
         self.assertEqual(1, timer.speed_up)
         self.assertTrue(timer.ticking)
 
-    def test_stop_timer(self):
-        timer = Timer(self.win)
+        timer.play_pause()
 
-        timer.stop_timer()
-
-        self.assertEqual(1, timer.speed_up)
         self.assertFalse(timer.ticking)
 
     def test_tick_timer(self):
         timer = Timer(self.win)
 
-        timer.start_timer()
+        timer.play_pause()
 
         timer.tick()
 
@@ -52,7 +48,7 @@ class TestTimer(unittest.TestCase):
     def test_rewind_timer(self):
         timer = Timer(self.win)
 
-        timer.start_timer()
+        timer.play_pause()
         timer.tick()
         timer.rewind_timer()
 
@@ -69,7 +65,7 @@ class TestTimer(unittest.TestCase):
     def test_speedup_timer(self):
         timer = Timer(self.win)
 
-        timer.start_timer()
+        timer.play_pause()
         timer.speedup_timer()
         self.assertEqual(2, timer.speed_up)
 
@@ -84,7 +80,7 @@ class TestTimer(unittest.TestCase):
     def test_slowdown_timer(self):
         timer = Timer(self.win)
 
-        timer.start_timer()
+        timer.play_pause()
         timer.slowdown_timer()
         self.assertEqual(0.5, timer.speed_up)
 
@@ -92,6 +88,22 @@ class TestTimer(unittest.TestCase):
         timer.slowdown_timer()
         self.assertEqual(1, timer.speed_up)
 
+    def test_skip_forward_timer(self):
+        timer = Timer(self.win)
+
+        timer.skip_forward()
+
+        self.assertEqual(30, timer.time_step)
+
+    def test_skip_backwards_timer(self):
+        timer = Timer(self.win)
+
+        timer.time_step = 31
+        timer.skip_backwards()
+        self.assertEqual(1, timer.time_step)
+
+        timer.skip_backwards()
+        self.assertEqual(0, timer.time_step)
 
 
 if __name__ == '__main__':

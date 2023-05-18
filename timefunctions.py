@@ -19,16 +19,24 @@ class Timer:
 
         self.timer_label = tk.Label(master, text=self.format_time())
         self.timer_label.pack()
-        self.start_button = tk.Button(master, text="Start", command=self.start_timer)
-        self.start_button.pack(side=tk.LEFT, padx=5)
-        self.stop_button = tk.Button(master, text="Pause", command=self.stop_timer)
-        self.stop_button.pack(side=tk.LEFT, padx=5)
+
+        self.play_pause_button = tk.Button(master, text="Play", command=self.play_pause)
+        self.play_pause_button.pack()
+
         self.rewind_button = tk.Button(master, text="Rewind", command=self.rewind_timer)
         self.rewind_button.pack(side=tk.LEFT, padx=5)
+
         self.speedup_button = tk.Button(master, text="Speed Up", command=self.speedup_timer)
         self.speedup_button.pack(side=tk.LEFT, padx=5)
+
         self.slowdown_button = tk.Button(master, text="Slow Down", command=self.slowdown_timer)
         self.slowdown_button.pack()
+
+        self.skip_forward_button = tk.Button(master, text="Skip Forward", command=self.skip_forward)
+        self.skip_forward_button.pack()
+
+        self.skip_backwards_button = tk.Button(master, text="Skip Backwards", command=self.skip_backwards)
+        self.skip_backwards_button.pack()
 
         # Speed up is determines the tick speed, Ticking determines if the clock is running
         # Rewind determines if the clock is ticking backwards
@@ -37,20 +45,15 @@ class Timer:
         self.rewind = False
 
     # This gets the clock to start moving forward
-    def start_timer(self):
+    def play_pause(self):
         self.speed_up = 1
 
         if not self.ticking:
             self.ticking = True
-
-    # This pasues the clock
-    def stop_timer(self):
-        # Pause function
-        self.speed_up = 1
-
-        if self.ticking:
-            # self.master.after_cancel(self.timer)
+            self.play_pause_button.configure(text="Pause")
+        else:
             self.ticking = False
+            self.play_pause_button.configure(text="Play")
 
     # This sets the clock to rewind mode
     def rewind_timer(self):
@@ -91,6 +94,15 @@ class Timer:
             self.time_step = 0
 
         self.timer_label.configure(text=self.format_time() + "    Speed Up = " + str(self.speed_up))
+
+    def skip_forward(self):
+        self.time_step += 30 * self.tps
+
+    def skip_backwards(self):
+        self.time_step -= 30 * self.tps
+
+        if self.time_step < 0:
+            self.time_step = 0
 
     # This formats the clock for the TKinter window display
     def format_time(self):

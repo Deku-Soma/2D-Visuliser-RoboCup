@@ -54,8 +54,6 @@ folder = "Assets"
 
 cwd = os.getcwd()
 
-
-
 welcomeFile = "robocub2-resize.jpg"
 menu_button_file = "menu_button.png"
 
@@ -95,15 +93,6 @@ canvas_visualiser.pack()
 # basically if the x runs from 0-100 a relx=0,3 will place the center x of the frame at x = 30 (30% to the right of x =0)
 # Anchor is the alignemnt of the frame
 
-time_button_frame = Frame(Frame_visualiser, width=500, height=50, )
-time_button_frame.pack()
-time_button_frame.place(anchor=N, relx=0.5, rely=0.9)
-
-# frame for timer 
-frameTimer = Frame(Frame_visualiser, width=50, height=20)
-frameTimer.pack()
-frameTimer.place(anchor=NW, relx=0.8, rely=0.01)
-
 #===============================================================================================================
 # Create the field image and Resize
 
@@ -125,12 +114,12 @@ fieldImageObject = ImageTk.PhotoImage(
 # =============================================================
 # visualiser screen
 
-Frame_visualiser = tk.Frame(win, bg="black", width=fieldImage.width, height=fieldImage.height)
+Frame_visualiser = tk.Frame(win, bg="black", width=fieldImage.width+200, height=fieldImage.height)
 
 # creating the frams that will be used to place all the elements of the gui design
 
 # this is the frame that is set to house the field image and is already set to 75% of screen space
-canvas_visualiser = Canvas(Frame_visualiser, bg="black", width=1920, height=1080)
+canvas_visualiser = Canvas(Frame_visualiser, bg="black", width=fieldImage.width+ 1920, height=1080)
 canvas_visualiser.pack()
 
 # ======================================================================================================================
@@ -151,9 +140,9 @@ player_stats_label.pack()
 # ======================================================================================================================
 # Frame to add the timer and timer initialisation
 
-time_button_frame = Frame(Frame_visualiser, width=500, height=50, )
+time_button_frame = Frame(Frame_visualiser, width=1000, height=50, )
 time_button_frame.pack()
-time_button_frame.place(anchor=N, relx=0.5, rely=0.9)
+time_button_frame.place(anchor=N, relx=0.5, rely=0.8)
 
 
 # Keresh please add in the Timer declaration max_ticks=Keresh_get_max_tick_function
