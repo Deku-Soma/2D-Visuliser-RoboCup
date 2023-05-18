@@ -11,8 +11,8 @@ jobs:
       - python/install-deps
       - python/test
       - run:
-          name: Run Tests
-          command: pytest --cov
+          override:
+            - pytest --cov=pyTest,timer_unitTest
 
       - run:
           name: Upload coverage report to Codecov
