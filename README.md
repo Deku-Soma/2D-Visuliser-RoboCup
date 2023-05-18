@@ -1,6 +1,10 @@
 This is the RoboCup git repository for the MacroHard group
 
+<<<<<<< HEAD
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/Deku-Soma/2D-Visuliser-RoboCup/tree/tkinter.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/Deku-Soma/2D-Visuliser-RoboCup/tree/tkinter)
+=======
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/Deku-Soma/2D-Visuliser-RoboCup/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/Deku-Soma/2D-Visuliser-RoboCup/tree/master)
+>>>>>>> dean
 
 Field_Objects Class:
 

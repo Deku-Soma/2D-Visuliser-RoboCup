@@ -30,22 +30,22 @@ class TestTimer(unittest.TestCase):
         self.timer.stop_timer()
 
     def test_rewind_timer(self):
-        initial_remaining = self.timer.remaining
+        initial_remaining = self.timer.time_step
         self.timer.rewind_timer()
-        self.assertEqual(self.timer.remaining, initial_remaining + 60)
+        self.assertEqual(self.timer.time_step, initial_remaining + 60)
 
     def test_speedup_timer(self):
-        initial_remaining = self.timer.remaining
+        initial_remaining = self.timer.time_step
         self.timer.speedup_timer()
-        self.assertEqual(self.timer.remaining, initial_remaining - 60)
+        self.assertEqual(self.timer.time_step, initial_remaining - 60)
 
     def test_timer_tick(self):
-        initial_remaining = self.timer.remaining
+        initial_remaining = self.timer.time_step
         self.timer.timer_tick()
-        self.assertEqual(self.timer.remaining, initial_remaining - 1)
+        self.assertEqual(self.timer.time_step, initial_remaining - 1)
 
     def test_game_over(self):
-        self.timer.remaining = 0
+        self.timer.time_step = 0
         self.timer.timer_tick()
         self.assertEqual(self.timer.timer_label['text'], 'Game over!')
 
