@@ -84,6 +84,9 @@ display_stats_frame = Frame(Frame_visualiser, width=50, height=20)
 display_stats_frame.pack()
 display_stats_frame.place(anchor=NW, relx=0.8, rely=0.01)
 
+player_stats_label = tk.Label(display_stats_frame, text="Player Perspective Stats")
+player_stats_label.pack()
+
 # ======================================================================================================================
 # Frame to add the timer and timer initialisation
 
