@@ -19,8 +19,13 @@ frameTimer = Frame(Frame_visualiser, width=50, height=20)
 frameTimer.pack()
 frameTimer.place(anchor=NW, relx=0.8, rely=0.01)
 
+time_button_frame = Frame(Frame_visualiser, width=500, height=50, )
+time_button_frame.pack()
+time_button_frame.place(anchor=N, relx=0.5, rely=0.9)
+
+
 # Keresh please add in the Timer declaration max_ticks=Keresh_get_max_tick_function
-timer = Timer(Frame_visualiser, tps=20)
+timer = Timer(time_button_frame, tps=20)
 
 
 # ============================================================
@@ -131,9 +136,6 @@ canvas_visualiser.pack()
 # basically if the x runs from 0-100 a relx=0,3 will place the center x of the frame at x = 30 (30% to the right of x =0)
 # Anchor is the alignemnt of the frame
 
-time_button_frame = Frame(Frame_visualiser, width=500, height=50, )
-time_button_frame.pack()
-time_button_frame.place(anchor=N, relx=0.5, rely=0.9)
 
 # frame for timer 
 
@@ -206,21 +208,5 @@ for x in range(0, 2):
             # canvas.tag_bind(playerIM,"<Button-"+cts+">", key)
 
 # =================================================================================================================
-
-
-# =================================================================================================================
-
-#   creating test buttons for GUI design purposes, these buttons will later be changed to match the desired effects
-#   as of right now these buttons have no effect (change this list as buttons are implemeneted)
-'''buttonPlay = Button(time_button_frame, text = "Pause/player",bg="grey") #not initiated yet
-buttonRewind = Button(time_button_frame, text= "Rewind",bg="grey")# not initiated yet
-buttonForward = Button(time_button_frame,text = "Forward",bg="grey")# not initiated yet
-buttonRewind.pack(side=LEFT) # used the side property to place the buttons next to each other.
-buttonPlay.pack(side=LEFT)
-buttonForward.pack(side=LEFT)
-#=================================================================================================================
-# label for timer 
-labelTimer = Label(frameTimer,text ="00:00",bg="grey",padx=5 )
-labelTimer.pack()'''
 
 win.mainloop()
