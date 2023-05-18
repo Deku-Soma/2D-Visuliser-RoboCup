@@ -4,6 +4,7 @@ from PIL import ImageTk, Image
 import os
 from Field_Objects import *
 from Team import *
+from timefunctions import *
 #===========================================================================================================
 #function section
 def key(event):
@@ -139,8 +140,7 @@ buttonPlay.pack(side=LEFT)
 buttonForward.pack(side=LEFT)
 #=================================================================================================================
 # label for timer 
-labelTimer = Label(frameTimer,text ="00:00",bg="grey",padx=5 )
-labelTimer.pack()
+
 
 
 win.mainloop()# main loop that runs the window, defualt exit condition is clicking the close button.

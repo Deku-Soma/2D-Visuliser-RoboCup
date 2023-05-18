@@ -5,8 +5,6 @@ import os
 from Team import *
 from Field_Objects import *
 from timefunctions import Timer
-
-
 # ======================================================================================================================
 # functions
 
@@ -43,8 +41,70 @@ win = tk.Tk()
 win.geometry("1000x800")  # aspect ratio
 win.config(bg="green")  # background colour
 
-# ======================================================================================================================
+#=============================================================
+# Frame to be used as screens
 
+Frame_menu = tk.Frame(win,bg="black",width=1000,height=800)
+#=============================================================
+#welcome frame components
+Frame_welcome = tk.Frame(win,bg="blue",width=1000,height=800)
+
+canvas = tk.Canvas(Frame_welcome, bg="black", width=1000, height=800)
+folder = "Assets"
+
+cwd = os.getcwd()
+
+
+
+welcomeFile = "robocub2-resize.jpg"
+menu_button_file = "menu_button.png"
+
+path_to_welcome_file = os.path.join(cwd, folder,welcomeFile)
+path_to_menu_button_file = os.path.join(cwd, folder,menu_button_file)
+
+
+welcomeIm = Image.open(path_to_welcome_file)
+welcomeIm = welcomeIm.resize((1000,800),Image.LANCZOS)
+welcomeImObject = ImageTk.PhotoImage(welcomeIm)
+
+menu_buttonIM = Image.open(path_to_menu_button_file)
+menu_buttonIM = menu_buttonIM.resize((200,75),Image.LANCZOS)
+menu_buttonIMobject = ImageTk.PhotoImage(menu_buttonIM)
+
+
+welcomebg=canvas.create_image(0, 0, image=welcomeImObject, anchor="nw")
+menu_buttonbg = canvas.create_image(400, 500, image=menu_buttonIMobject, anchor="nw")
+
+canvas.tag_bind(menu_buttonbg,"<Button-1>", go_to_menu)
+canvas.pack()
+
+Frame_welcome.pack(expand=True,fill="both")
+#==========================================================
+
+Frame_visualiser = tk.Frame(win,bg="white",width=1000,height=800)
+#=============================================================
+#visualiser screen
+# creating the frams that will be used to place all the elements of the gui design
+
+# this is the frame that is set to house the field image and is already set to 75% of screen space
+canvas_visualiser = Canvas(Frame_visualiser, bg="black", width=1920, height=1080)
+canvas_visualiser.pack()
+# the relx and rely values are values between 0 and 1, 
+# the x and y values specify the position of the top left corner of the frame
+#used to place the frame on a percentace value on the screens x,y values
+# basically if the x runs from 0-100 a relx=0,3 will place the center x of the frame at x = 30 (30% to the right of x =0)
+# Anchor is the alignemnt of the frame
+
+time_button_frame = Frame(Frame_visualiser, width=500, height=50, )
+time_button_frame.pack()
+time_button_frame.place(anchor=N, relx=0.5, rely=0.9)
+
+# frame for timer 
+frameTimer = Frame(Frame_visualiser, width=50, height=20)
+frameTimer.pack()
+frameTimer.place(anchor=NW, relx=0.8, rely=0.01)
+
+#===============================================================================================================
 # Create the field image and Resize
 
 field_file = "Soccer_Field_HD-downsized.png"
@@ -99,35 +159,6 @@ time_button_frame.place(anchor=N, relx=0.5, rely=0.9)
 # Keresh please add in the Timer declaration max_ticks=Keresh_get_max_tick_function
 timer = Timer(time_button_frame, tps=20)
 
-# =============================================================
-Frame_welcome = tk.Frame(win, bg="blue", width=1000, height=800)
-# =============================================================
-# welcome frame components
-canvas = tk.Canvas(Frame_welcome, bg="black", width=1000, height=800)
-
-welcomeFile = "robocub2-resize.jpg"
-menu_button_file = "menu_button.png"
-folder = "Assets"
-
-cwd = os.getcwd()
-
-path_to_welcome_file = os.path.join(cwd, folder, welcomeFile)
-path_to_menu_button_file = os.path.join(cwd, folder, menu_button_file)
-
-welcomeIm = Image.open(path_to_welcome_file)
-welcomeIm = welcomeIm.resize((1000, 800), Image.LANCZOS)
-welcomeImObject = ImageTk.PhotoImage(welcomeIm)
-
-menu_buttonIM = Image.open(path_to_menu_button_file)
-menu_buttonIM = menu_buttonIM.resize((200, 75), Image.LANCZOS)
-menu_buttonIMobject = ImageTk.PhotoImage(menu_buttonIM)
-
-welcomebg = canvas.create_image(0, 0, image=welcomeImObject, anchor="nw")
-menu_buttonbg = canvas.create_image(400, 500, image=menu_buttonIMobject, anchor="nw")
-canvas.tag_bind(menu_buttonbg, "<Button-1>", go_to_menu)
-canvas.pack()
-# =============================================================
-Frame_menu = tk.Frame(win, bg="black", width=1000, height=800)
 # =============================================================
 # create canvas for menu
 canvas_menu = tk.Canvas(Frame_menu, width=1000, height=800)
