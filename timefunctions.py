@@ -42,7 +42,6 @@ class Timer:
 
         if not self.ticking:
             self.ticking = True
-            #self.timer_tick()
 
     #This pasues the clock
     def stop_timer(self):

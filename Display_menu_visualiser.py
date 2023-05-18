@@ -7,7 +7,6 @@ from Field_Objects import *
 from timefunctions import Timer
 
 
-
 # ======================================================================================================================
 # functions
 
@@ -30,6 +29,8 @@ def update_visualiser():
 
     # Keresh  add your part here
     # keresh_function(timer.time_step)
+
+    player_stats_label.configure(text="Player Perspective Stats \n" + "'stats'")
 
     time_button_frame.after(int(1000 / (timer.speed_up * timer.tps)), update_visualiser)
     # Above Determines how long each tick in the game is gonna last
@@ -80,11 +81,11 @@ fieldIM = canvas_visualiser.create_image(0, 0, image=fieldImageObject, anchor=NW
 # ======================================================================================================================
 # Create the frame that will display the player stats
 
-display_stats_frame = Frame(Frame_visualiser, width=50, height=20)
-display_stats_frame.pack()
-display_stats_frame.place(anchor=NW, relx=0.8, rely=0.01)
+player_stats_frame = Frame(Frame_visualiser, width=50, height=20)
+player_stats_frame.pack()
+player_stats_frame.place(anchor=NW, relx=0.8, rely=0.01)
 
-player_stats_label = tk.Label(display_stats_frame, text="Player Perspective Stats")
+player_stats_label = tk.Label(player_stats_frame, text="Player Perspective Stats")
 player_stats_label.pack()
 
 # ======================================================================================================================
