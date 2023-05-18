@@ -1,8 +1,29 @@
 import unittest
 import Visualiser
+from xvfbwrapper import Xvfb
+import os
 
 
 class TestStringMethods(unittest.TestCase):
+
+    @unittest.skipIf("DISPLAY" not in os.environ, "Skipping GUI test in headless environment")
+    def test_gui(self):
+        if "DISPLAY" not in os.environ:
+            # Headless environment, use xvfb
+            
+            with Xvfb() as xvfb:
+                self.test_function()
+                self.test_upper()
+                self.test_isupper()
+                self.test_split()
+                
+        else:
+            # GUI test code goes here
+            self.test_function()
+            self.test_upper()
+            self.test_isupper()
+            self.test_split()
+            
 
     def test_function(self):
         self.assertEqual(Visualiser.function(1,2),3)

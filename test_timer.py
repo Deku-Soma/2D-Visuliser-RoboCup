@@ -3,6 +3,8 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 from unittest.mock import patch
+import os
+import xvfbwrapper
 
 from timefunctions import Timer
 
@@ -10,6 +12,30 @@ from timefunctions import Timer
 class TestTimer(unittest.TestCase):
 
     win = tk.Tk()
+
+    @unittest.skipIf("DISPLAY" not in os.environ, "Skipping GUI test in headless environment")
+    def test_gui(self):
+        if "DISPLAY" not in os.environ:
+            # Headless environment, use xvfb
+            from xvfbwrapper import Xvfb
+            with Xvfb() as xvfb:
+                self.test_format_time()
+                self.test_start_timer()
+                self.test_stop_timer()
+                self.test_tick_timer()
+                self.test_rewind_timer()
+                self.test_speedup_timer()
+                self.test_slowdown_timer()
+        else:
+            # GUI test code goes here
+            self.test_format_time()
+            self.test_start_timer()
+            self.test_stop_timer()
+            self.test_tick_timer()
+            self.test_rewind_timer()
+            self.test_speedup_timer()
+            self.test_slowdown_timer()
+
 
     def test_format_time(self):
         timer = Timer(self.win)
