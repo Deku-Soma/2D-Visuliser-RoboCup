@@ -1,6 +1,9 @@
 This is the RoboCup git repository for the MacroHard group
-
+Cricle CI test results:
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/Deku-Soma/2D-Visuliser-RoboCup/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/Deku-Soma/2D-Visuliser-RoboCup/tree/master)
+CodeCov:
+[![codecov](https://codecov.io/gh/Deku-Soma/2D-Visuliser-RoboCup/branch/master/graph/badge.svg?token=WKYPNDC727)](https://codecov.io/gh/Deku-Soma/2D-Visuliser-RoboCup)
+
 
 Field_Objects Class:
 
