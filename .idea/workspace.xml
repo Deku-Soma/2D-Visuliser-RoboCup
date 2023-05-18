@@ -26,13 +26,11 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;git-widget-placeholder&quot;: &quot;integrate-timer-and-visualiser&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/GitHub/2D-Visuliser-RoboCup&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
-  }
-}</component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
   <component name="RunManager" selected="Python.Display_menu_visualiser">
     <configuration name="Display_menu_visualiser" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="2D-Visuliser-RoboCup" />
@@ -178,5 +176,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

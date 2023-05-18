@@ -160,8 +160,6 @@ time_button_frame.place(anchor=N, relx=0.5, rely=0.9)
 timer = Timer(time_button_frame, tps=20)
 
 # =============================================================
-Frame_menu = tk.Frame(win, bg="black", width=1000, height=800)
-# =============================================================
 # create canvas for menu
 canvas_menu = tk.Canvas(Frame_menu, width=1000, height=800)
 menubgfile = "menubg.jpg"
