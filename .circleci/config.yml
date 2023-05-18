@@ -12,7 +12,7 @@ jobs:
       - python/test
       - run:
           name: Run Tests
-          command: pytest --cov=pyTest,timer_unitTest
+          command: pytest --cov
           environment:
             CODECOV_TOKEN: $CodeCov_Token
 
