@@ -8,6 +8,7 @@ import updatedmotion as motion
 from PIL import ImageTk, Image
 import time
 import timesimple as ts
+import math
 
 win = tk.Tk()
 
@@ -33,25 +34,27 @@ def go_to_menu(event):
     Frame_welcome.grid_forget()
     Frame_menu.grid()
     
-
+def back_to_menu(gameFile):
+    Frame_visualiser.grid_forget()
+    Frame_menu.grid()
+    del gameFile 
 def go_to_visualiser(optvar):
     print(optvar.get())
-    if optvar.get() == 1:
+    if optvar.get()>0 :
         Frame_menu.grid_forget()
         Frame_visualiser.grid()
     else:
         messagebox.showinfo("Warning", "You have not selected a game. \n Please selecte a game")
 
-# Keresh You must add the motion to the update_visualiser function
 def update_visualiser():
-    
-    #This increments the timer by 1
-    gameFile=motion.writeGlobalJSONFile(optvar.get())
-    # Keresh  add your part here
-    # keresh_function(timer.time_step)
 
-    #frameTimer.after(int(1000/(timer.speed_up * timer.tps)), update_visualiser)
-    # Above Determines how long each tick in the game is gonna last
+    #Loads json files into array
+    gameFile=motion.writeGlobalJSONFile(optvar.get())
+    #back_menu_button = tk.Button(Frame_visualiser, text="Back", command=lambda: back_to_menu(gameFile))
+    #back_menu_button.grid(row=0,column=0)
+
+
+    #determines shortest gamelength
     gameLengthList=[]
 
     for i in range(11):
@@ -64,35 +67,53 @@ def update_visualiser():
     
     #visualiser
     total=0
-    playerview=0
+    playerview=11
     t=0
     nextT=0
+    timer.speed_up=1
+    tps= round(gameLength/(20*60))#sets amount of lines of log to cover per second
+    while(timer.time_step<(20*60)):
 
-    while(t<gameLength):
+        #displays player info
+        playerInfo=gameFile[optPlayerInfovar.get()]
+        
+        playerdataValueBallPosition_label.configure(text=str(round(playerInfo[t]["BallPosition"][0],2))+" "+str(round(playerInfo[t]["BallPosition"][1],2)))
+        playerdataValueMyPosition_label.configure(text=str(round(playerInfo[t]["MyPosition"][0],2))+" "+str(round(playerInfo[t]["MyPosition"][1],2)))
+        for i in range(11):
+            playerdataValueOppPosition_label[i].configure(text=str(round(playerInfo[t]["OpponentPositions"]["OPP"+str(i+1)][0],2))+" "+str(round(playerInfo[t]["OpponentPositions"]["OPP"+str(i+1)][1],2)))
+            playerdataValueTeamDistance_label[i].configure(text=str(round(playerInfo[t]["TeamMateDistanceToBall"][str(i+1)],2)))
+            playerdataValueTeamPosition_label[i].configure(text=str(round(playerInfo[t]["TeamMatePositions"]["TEAM"+str(i+1)][0],2))+" "+str(round(playerInfo[t]["OpponentPositions"]["OPP"+str(i+1)][1],2)))
+
+
+        #time functions        
+        tps= round(gameLength/(20*60))
+        if t>gameLength or t+tps>gameLength:
+            messagebox.showinfo("Game Over", "End of log file")
+            break
+            
         if timer.ticking==True and timer.rewind==False:
-            nextT=1*timer.speed_up
+            nextT=tps*timer.speed_up
             timer.time_step+=1*timer.speed_up
             timer_label.configure(text=timer.format_time())
         elif timer.ticking==False:
             nextT=0
             timer_label.configure(text=timer.format_time())
         elif timer.rewind==True:
-            nextT=-1*timer.speed_up
+            nextT=-tps*timer.speed_up
             timer.time_step-=1*timer.speed_up
             timer_label.configure(text=timer.format_time())
-            
+        playerview=optPlayervar.get()    
         start=time.time()
-        if playerview==11:
-                
-                
-                
-                
+
+        #player motion updates
+        
+        if playerview==11:#general view
                 
     #calculates next and current coords based on average distance
             OpponentCurrCoords=motion.getAverageOpponentPosition(t,gameFile)
             OpponentNextCoords=motion.getAverageOpponentPosition(t+nextT,gameFile)
             BallCurrCoords=motion.getAverageBallPosition(t,gameFile)
-            BallNextCoords=motion.getAverageBallPosition(t+NextT,gameFile)
+            BallNextCoords=motion.getAverageBallPosition(t+nextT,gameFile)
                                                                                                                
     #converts coords to place accurately on soccer field
             convBallCurrCoords= motion.convert(BallCurrCoords[0],BallCurrCoords[1])
@@ -127,20 +148,21 @@ def update_visualiser():
         
 
     
-    
-    #update ticker
-    
         else:
                 
-                
+            #selected player view   
             gameLength=gameLengthList[playerview]
             step=1200/gameLength
-            playerData=gameFile[playerview]
+            playerData=gameFile[playerview]#retrieves log json file from array
+            
+            #update ball
             BallCurrCoords=playerData[t]["BallPosition"]
             BallNextCoords=playerData[t+nextT]["BallPosition"]
             convBallCurrCoords= motion.convert(BallCurrCoords[0],BallCurrCoords[1])
             convBallNextCoords= motion.convert(BallNextCoords[0],BallNextCoords[1])
             canvas_visualiser.move(ballIM,convBallNextCoords[0]-convBallCurrCoords[0], convBallNextCoords[1]-convBallCurrCoords[1] )
+
+            #update team mate and opponent positions
             TeamMatePositionsPresent=playerData[t]['TeamMatePositions']
             TeamMatePositionsFuture=playerData[t+nextT]['TeamMatePositions']
             OpponentPositionsPresent=playerData[t]['OpponentPositions']
@@ -148,8 +170,7 @@ def update_visualiser():
                 
             for x in range(11):
                     
-                        
-                        
+                #update teammate position        
                 TeamMateCurrentPosition=TeamMatePositionsPresent["TEAM" + str(x+1)]
                 TeamMateNextPosition=TeamMatePositionsFuture["TEAM" + str(x+1)]
                 convCurrCoords= motion.convert(TeamMateCurrentPosition[0],TeamMateCurrentPosition[1])
@@ -157,6 +178,8 @@ def update_visualiser():
                 moveX=convNextCoords[0]-convCurrCoords[0]
                 moveY=convNextCoords[1]-convCurrCoords[1]
                 canvas_visualiser.move(playerIM[x],moveX,moveY)
+
+                #update opponent position
                 OpponentCurrentPosition=OpponentPositionsPresent["OPP" + str(x+1)]
                 OpponentNextPosition=OpponentPositionsFuture["OPP" + str(x+1)]
                 convCurrCoords= motion.convert(OpponentCurrentPosition[0],OpponentCurrentPosition[1])
@@ -166,32 +189,33 @@ def update_visualiser():
                 canvas_visualiser.move(opponentIM[x],moveX,moveY)
                 
             win.update()
-            end=time.time()
-            delay=step-(end-start)
-            if delay>0:
-                    time.sleep(delay)
+
         
-                #print(end-start)
+        #timer functions
         if timer.ticking==True:
             if timer.rewind==True:
-                t-=1*timer.speed_up
-                nextT=-1*timer.speed_up
+                t-=tps*timer.speed_up
+                nextT=-tps*timer.speed_up
                 timer.time_step-=1*timer.speed_up
                 timer_label.configure(text=timer.format_time())
                 if t<0:
                     t=0
-                    nextT=1
+                    nextT=tps
                     timer.time_step=0
                     timer_label.configure(text=timer.format_time())
                     timer.rewind=False
+                    timer.speed_up=1
                 if t+nextT<0:
                     t=0
-                    nextT=1
+                    nextT=tps
                     timer.time_step=0
                     timer_label.configure(text=timer.format_time())
                     timer.rewind=False
+                    timer.speed_up=1
             else:
-                t+=1*timer.speed_up
+                t+=nextT*timer.speed_up
+                timer.time_step+=1
+                timer_label.configure(text=timer.format_time())
         else:
             t+=0
             nextT=0
@@ -260,8 +284,9 @@ gameselection = Menubutton(l, text="Select a game")
 gameselection.menu = Menu(gameselection, tearoff=0)
 gameselection["menu"] = gameselection.menu
 # Create a dropdown Menu
-gameselection.menu.add_radiobutton(label = "Game 1", value=1,variable=optvar,command=lambda:print(optvar.get()))
-gameselection.menu.add_radiobutton(label = "Game 2", value=2,variable=optvar,command=lambda:print(optvar.get())) 
+gameselection.menu.add_radiobutton(label = "WITS-FC_vs_WITS-GOTO", value=1,variable=optvar)
+gameselection.menu.add_radiobutton(label = "WITS-FC_vs_WITS-FC", value=2,variable=optvar)
+gameselection.menu.add_radiobutton(label = "WITS-FC_vs_STAND", value=3,variable=optvar) 
 gameselection.place(x=400,y=400)
 
 
@@ -297,14 +322,14 @@ width, height = fieldimage.width(), fieldimage.height()
 
 # this is the frame that is set to house the field image and is already set to 75% of screen space
 canvas_visualiser = Canvas(Frame_visualiser, bg="black", width=width, height=height)
-canvas_visualiser.grid(row=1,column=2)
+canvas_visualiser.grid(row=1,column=0)
 # the relx and rely values are values between 0 and 1, 
 # the x and y values specify the position of the top left corner of the frame
 # used to place the frame on a percentace value on the screens x,y values
 # basically if the x runs from 0-100 a relx=0,3 will place the center x of the frame at x = 30 (30% to the right of x =0)
 # Anchor is the alignemnt of the frame
 timer_label = tk.Label(Frame_visualiser, text=timer.format_time())
-timer_label.grid(row=0,column=2)
+timer_label.grid(row=0,column=1)
 start_button = tk.Button(Frame_visualiser, text="Start", command=timer.start_timer)
 start_button.grid(row=10,column=0)
 stop_button = tk.Button(Frame_visualiser, text="Pause", command=timer.stop_timer)
@@ -312,14 +337,72 @@ stop_button.grid(row=10,column=1)
 rewind_button = tk.Button(Frame_visualiser, text="Rewind", command=timer.rewind_timer)
 rewind_button.grid(row=10,column=2)
 speedup_button = tk.Button(Frame_visualiser, text="Speed Up", command=timer.speedup_timer)
-speedup_button.grid(row=10,column=3)
-'''time_button_frame = Frame(Frame_visualiser, width=200, height=50, )
-time_button_frame.pack()
-time_button_frame.place(anchor=N, relx=0.5, rely=0.9)
-'''
-# frame for timer 
+speedup_button.grid(row=11,column=1,columnspan=2)
 
 
+
+
+optPlayervar=tk.IntVar(value=11)
+playerselection = Menubutton(Frame_visualiser, text="Select perspective")
+#gameselection.grid(row=3, column=4, padx=5, pady=5)
+playerselection.menu = Menu(playerselection, tearoff=0)
+playerselection["menu"] = playerselection.menu
+# Create a dropdown Menu
+for i in range(11):
+    playerselection.menu.add_radiobutton(label = "Player "+ str(i+1), value=i,variable=optPlayervar,command=lambda:print(optPlayervar.get()))
+playerselection.menu.add_radiobutton(label = "Average Player", value=11,variable=optPlayervar,command=lambda:print(optPlayervar.get()))
+playerselection.grid(row=12,column=0)
+
+#player info display
+playerdata_label = tk.Label(Frame_visualiser)
+playerdata_label.grid(column=3,row=0, padx=5, pady=5,rowspan=20)
+playerdataFieldBallPosition_label = tk.Label(playerdata_label, text="BallPosition")
+playerdataValueBallPosition_label=tk.Label(playerdata_label,text="Value")
+playerdataFieldBallPosition_label.grid(column=1,row=1, padx=2, pady=5)
+playerdataValueBallPosition_label.grid(column=2,row=1, padx=2, pady=5)
+playerdataFieldMyPosition_label=tk.Label(playerdata_label, text="MyPosition")
+playerdataValueMyPosition_label=tk.Label(playerdata_label,text="Value")
+playerdataFieldMyPosition_label.grid(column=1,row=2, padx=2, pady=5)
+playerdataValueMyPosition_label.grid(column=2,row=2, padx=2, pady=5)
+playerdataOpponentPosition_label=tk.Label(playerdata_label, text="Opponent Position:")
+playerdataOpponentPosition_label.grid(column=1,row=3,columnspan=2, padx=2, pady=5)
+playerdataFieldOppPosition_label=[None]*11
+playerdataValueOppPosition_label=[None]*11
+for i in range(11):
+    playerdataFieldOppPosition_label[i]=tk.Label(playerdata_label, text="OPP"+str(i+1))
+    playerdataValueOppPosition_label[i]=tk.Label(playerdata_label, text="Value")
+    playerdataFieldOppPosition_label[i].grid(column=1,row=4+i, pady=5)
+    playerdataValueOppPosition_label[i].grid(column=2,row=4+i, padx=2, pady=5)
+
+playerdataTeamMatePosition_label=tk.Label(playerdata_label, text="TeamMate Position:")
+playerdataTeamMatePosition_label.grid(column=3,row=1,columnspan=2, padx=2, pady=5)
+playerdataFieldTeamPosition_label=[None]*11
+playerdataValueTeamPosition_label=[None]*11
+for i in range(11):
+    playerdataFieldTeamPosition_label[i]=tk.Label(playerdata_label, text="TEAM"+str(i+1))
+    playerdataValueTeamPosition_label[i]=tk.Label(playerdata_label, text="Value")
+    playerdataFieldTeamPosition_label[i].grid(column=3,row=2+i, pady=5)
+    playerdataValueTeamPosition_label[i].grid(column=4,row=2+i, padx=2, pady=5)
+
+playerdataTeamMateDistance_label=tk.Label(playerdata_label, text="TeamMate Distance:")
+playerdataTeamMateDistance_label.grid(column=5,row=1,columnspan=2, padx=2, pady=5)
+playerdataFieldTeamDistance_label=[None]*11
+playerdataValueTeamDistance_label=[None]*11
+for i in range(11):
+    playerdataFieldTeamDistance_label[i]=tk.Label(playerdata_label, text="TEAM"+str(i+1))
+    playerdataValueTeamDistance_label[i]=tk.Label(playerdata_label, text="Value")
+    playerdataFieldTeamDistance_label[i].grid(column=5,row=2+i, pady=5)
+    playerdataValueTeamDistance_label[i].grid(column=6,row=2+i, padx=2, pady=5)
+
+optPlayerInfovar=tk.IntVar(value=0)
+playerInfoselection = Menubutton(Frame_visualiser, text="Select Player Info")
+#gameselection.grid(row=3, column=4, padx=5, pady=5)
+playerInfoselection.menu = Menu(playerInfoselection, tearoff=0)
+playerInfoselection["menu"] = playerInfoselection.menu
+# Create a dropdown Menu
+for i in range(11):
+    playerInfoselection.menu.add_radiobutton(label = "Player "+ str(i+1), value=i,variable=optPlayerInfovar,command=lambda:print(optPlayervar.get()))
+playerInfoselection.grid(row=13,column=0)
 # ===============================================================================================================
 
 
