@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="8718d2d3-f398-483f-9944-739d152ecb8f" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/timer_unitTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/timer_unitTest.py" afterDir="false" />
     </list>
+=======
+    <list default="true" id="8718d2d3-f398-483f-9944-739d152ecb8f" name="Changes" comment="Changes" />
+>>>>>>> Stashed changes
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -26,7 +30,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+<<<<<<< Updated upstream
     "git-widget-placeholder": "master",
+=======
+    "git-widget-placeholder": "integrate-timer-and-visualiser",
+>>>>>>> Stashed changes
     "last_opened_file_path": "C:/GitHub/2D-Visuliser-RoboCup",
     "settings.editor.selected.configurable": "preferences.lookFeel"
   }
@@ -170,4 +178,23 @@
       </map>
     </option>
   </component>
+<<<<<<< Updated upstream
+=======
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Display_menu_visualiser.py</url>
+          <line>318</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="timer" />
+      </configuration>
+    </watches-manager>
+  </component>
+>>>>>>> Stashed changes
 </project>
