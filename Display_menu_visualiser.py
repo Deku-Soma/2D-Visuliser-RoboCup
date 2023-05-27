@@ -25,7 +25,6 @@ Frame_visualiser = tk.Frame(win, bg="black", width=1200, height=800)
 
 # Keresh please add in the Timer declaration max_ticks=Keresh_get_max_tick_function
 
-timer = ts.Timer()
 
 # ============================================================
 # functions
@@ -68,52 +67,29 @@ def update_visualiser():
     #visualiser
     total=0
     playerview=11
-    t=0
-    nextT=0
-    timer.speed_up=1
-    tps= round(gameLength/(20*60))#sets amount of lines of log to cover per second
+    timer = ts.Timer(Frame_visualiser)
+
     while(timer.time_step<(20*60)):
 
         #displays player info
         playerInfo=gameFile[optPlayerInfovar.get()]
         
-        playerdataValueBallPosition_label.configure(text=str(round(playerInfo[t]["BallPosition"][0],2))+" "+str(round(playerInfo[t]["BallPosition"][1],2)))
-        playerdataValueMyPosition_label.configure(text=str(round(playerInfo[t]["MyPosition"][0],2))+" "+str(round(playerInfo[t]["MyPosition"][1],2)))
+        playerdataValueBallPosition_label.configure(text=str(round(playerInfo[timer.time_step]["BallPosition"][0],2))+" "+str(round(playerInfo[timer.time_step]["BallPosition"][1],2)))
+        playerdataValueMyPosition_label.configure(text=str(round(playerInfo[timer.time_step]["MyPosition"][0],2))+" "+str(round(playerInfo[timer.time_step]["MyPosition"][1],2)))
         for i in range(11):
-            playerdataValueOppPosition_label[i].configure(text=str(round(playerInfo[t]["OpponentPositions"]["OPP"+str(i+1)][0],2))+" "+str(round(playerInfo[t]["OpponentPositions"]["OPP"+str(i+1)][1],2)))
-            playerdataValueTeamDistance_label[i].configure(text=str(round(playerInfo[t]["TeamMateDistanceToBall"][str(i+1)],2)))
-            playerdataValueTeamPosition_label[i].configure(text=str(round(playerInfo[t]["TeamMatePositions"]["TEAM"+str(i+1)][0],2))+" "+str(round(playerInfo[t]["OpponentPositions"]["OPP"+str(i+1)][1],2)))
-
-
-        #time functions        
-        tps= round(gameLength/(20*60))
-        if t>gameLength or t+tps>gameLength:
-            messagebox.showinfo("Game Over", "End of log file")
-            break
-            
-        if timer.ticking==True and timer.rewind==False:
-            nextT=tps*timer.speed_up
-            timer.time_step+=1*timer.speed_up
-            timer_label.configure(text=timer.format_time())
-        elif timer.ticking==False:
-            nextT=0
-            timer_label.configure(text=timer.format_time())
-        elif timer.rewind==True:
-            nextT=-tps*timer.speed_up
-            timer.time_step-=1*timer.speed_up
-            timer_label.configure(text=timer.format_time())
-        playerview=optPlayervar.get()    
-        start=time.time()
+            playerdataValueOppPosition_label[i].configure(text=str(round(playerInfo[timer.time_step]["OpponentPositions"]["OPP"+str(i+1)][0],2))+" "+str(round(playerInfo[timer.time_step]["OpponentPositions"]["OPP"+str(i+1)][1],2)))
+            playerdataValueTeamDistance_label[i].configure(text=str(round(playerInfo[timer.time_step]["TeamMateDistanceToBall"][str(i+1)],2)))
+            playerdataValueTeamPosition_label[i].configure(text=str(round(playerInfo[timer.time_step]["TeamMatePositions"]["TEAM"+str(i+1)][0],2))+" "+str(round(playerInfo[timer.time_step]["OpponentPositions"]["OPP"+str(i+1)][1],2)))
 
         #player motion updates
         
         if playerview==11:#general view
                 
     #calculates next and current coords based on average distance
-            OpponentCurrCoords=motion.getAverageOpponentPosition(t,gameFile)
-            OpponentNextCoords=motion.getAverageOpponentPosition(t+nextT,gameFile)
-            BallCurrCoords=motion.getAverageBallPosition(t,gameFile)
-            BallNextCoords=motion.getAverageBallPosition(t+nextT,gameFile)
+            OpponentCurrCoords=motion.getAverageOpponentPosition(timer.time_step,gameFile)
+            OpponentNextCoords=motion.getAverageOpponentPosition(timer.next_time_step,gameFile)
+            BallCurrCoords=motion.getAverageBallPosition(timer.time_step,gameFile)
+            BallNextCoords=motion.getAverageBallPosition(timer.next_time_step,gameFile)
                                                                                                                
     #converts coords to place accurately on soccer field
             convBallCurrCoords= motion.convert(BallCurrCoords[0],BallCurrCoords[1])
@@ -127,8 +103,8 @@ def update_visualiser():
                     
                         
         #calculates distance to move player
-                currCoords=gameFile[i][t]['MyPosition']
-                nextCoords=gameFile[i][t+nextT]['MyPosition']
+                currCoords=gameFile[i][timer.time_step]['MyPosition']
+                nextCoords=gameFile[i][timer.next_time_step]['MyPosition']
         
         #converts distances to place on soccer field
                 convCurrCoords= motion.convert(currCoords[0],currCoords[1])
@@ -156,17 +132,17 @@ def update_visualiser():
             playerData=gameFile[playerview]#retrieves log json file from array
             
             #update ball
-            BallCurrCoords=playerData[t]["BallPosition"]
-            BallNextCoords=playerData[t+nextT]["BallPosition"]
+            BallCurrCoords=playerData[timer.time_step]["BallPosition"]
+            BallNextCoords=playerData[timer.next_time_step]["BallPosition"]
             convBallCurrCoords= motion.convert(BallCurrCoords[0],BallCurrCoords[1])
             convBallNextCoords= motion.convert(BallNextCoords[0],BallNextCoords[1])
             canvas_visualiser.move(ballIM,convBallNextCoords[0]-convBallCurrCoords[0], convBallNextCoords[1]-convBallCurrCoords[1] )
 
             #update team mate and opponent positions
-            TeamMatePositionsPresent=playerData[t]['TeamMatePositions']
-            TeamMatePositionsFuture=playerData[t+nextT]['TeamMatePositions']
-            OpponentPositionsPresent=playerData[t]['OpponentPositions']
-            OpponentPositionsFuture=playerData[t+nextT]['OpponentPositions']
+            TeamMatePositionsPresent=playerData[timer.time_step]['TeamMatePositions']
+            TeamMatePositionsFuture=playerData[timer.next_time_step]['TeamMatePositions']
+            OpponentPositionsPresent=playerData[timer.time_step]['OpponentPositions']
+            OpponentPositionsFuture=playerData[timer.next_time_step]['OpponentPositions']
                 
             for x in range(11):
                     
@@ -189,37 +165,6 @@ def update_visualiser():
                 canvas_visualiser.move(opponentIM[x],moveX,moveY)
                 
             win.update()
-
-        
-        #timer functions
-        if timer.ticking==True:
-            if timer.rewind==True:
-                t-=tps*timer.speed_up
-                nextT=-tps*timer.speed_up
-                timer.time_step-=1*timer.speed_up
-                timer_label.configure(text=timer.format_time())
-                if t<0:
-                    t=0
-                    nextT=tps
-                    timer.time_step=0
-                    timer_label.configure(text=timer.format_time())
-                    timer.rewind=False
-                    timer.speed_up=1
-                if t+nextT<0:
-                    t=0
-                    nextT=tps
-                    timer.time_step=0
-                    timer_label.configure(text=timer.format_time())
-                    timer.rewind=False
-                    timer.speed_up=1
-            else:
-                t+=nextT*timer.speed_up
-                timer.time_step+=1
-                timer_label.configure(text=timer.format_time())
-        else:
-            t+=0
-            nextT=0
-
 
 
 # =============================================================
@@ -328,19 +273,8 @@ canvas_visualiser.grid(row=1,column=0)
 # used to place the frame on a percentace value on the screens x,y values
 # basically if the x runs from 0-100 a relx=0,3 will place the center x of the frame at x = 30 (30% to the right of x =0)
 # Anchor is the alignemnt of the frame
-timer_label = tk.Label(Frame_visualiser, text=timer.format_time())
+timer_label = tk.Label(Frame_visualiser, text="Time needs to be added here")
 timer_label.grid(row=0,column=1)
-start_button = tk.Button(Frame_visualiser, text="Start", command=timer.start_timer)
-start_button.grid(row=10,column=0)
-stop_button = tk.Button(Frame_visualiser, text="Pause", command=timer.stop_timer)
-stop_button.grid(row=10,column=1)
-rewind_button = tk.Button(Frame_visualiser, text="Rewind", command=timer.rewind_timer)
-rewind_button.grid(row=10,column=2)
-speedup_button = tk.Button(Frame_visualiser, text="Speed Up", command=timer.speedup_timer)
-speedup_button.grid(row=11,column=1,columnspan=2)
-
-
-
 
 optPlayervar=tk.IntVar(value=11)
 playerselection = Menubutton(Frame_visualiser, text="Select perspective")
@@ -436,8 +370,8 @@ ballimage= ImageTk.PhotoImage(file=path_to_ball_file)
 playerIM=[None]*12
 opponentIM=[None]*12
 playerData=motion.loadJSONFile(1,1)
-TeamMatePositionsPresent=playerData[0]['TeamMatePositions']
-OpponentPositionsPresent=playerData[0]['OpponentPositions']
+TeamMatePositionsPresent=playerData[2]['TeamMatePositions']
+OpponentPositionsPresent=playerData[2]['OpponentPositions']
 for i in range(11):
     TeamMateCurrentPosition=TeamMatePositionsPresent["TEAM" + str(i+1)]
     OpponentCurrentPosition=OpponentPositionsPresent["OPP" + str(i+1)]
@@ -457,18 +391,5 @@ del playerData
 
 
 # =================================================================================================================
-
-#   creating test buttons for GUI design purposes, these buttons will later be changed to match the desired effects
-#   as of right now these buttons have no effect (change this list as buttons are implemeneted)
-'''buttonPlay = Button(time_button_frame, text = "Pause/player",bg="grey") #not initiated yet
-buttonRewind = Button(time_button_frame, text= "Rewind",bg="grey")# not initiated yet
-buttonForward = Button(time_button_frame,text = "Forward",bg="grey")# not initiated yet
-buttonRewind.pack(side=LEFT) # used the side property to place the buttons next to each other.
-buttonPlay.pack(side=LEFT)
-buttonForward.pack(side=LEFT)
-#=================================================================================================================
-# label for timer 
-labelTimer = Label(frameTimer,text ="00:00",bg="grey",padx=5 )
-labelTimer.pack()'''
 
 win.mainloop()
