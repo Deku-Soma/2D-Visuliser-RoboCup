@@ -5,6 +5,8 @@ import tkinter as tk
 import statistics 
 import time
 import os
+import math
+
 
 #Loads single json file
 #Can be used to store file as an object
@@ -55,8 +57,8 @@ def convert(xco,yco):
     x=0
     y=0
  
-    x=(xco*30.3333)+500
-    y=(yco*35.5)+400-30
+    x=(xco*24.6667)+395-10
+    y=(yco*23.5)+250-10
     ans=[]
     ans.append(x)
     ans.append(y)
@@ -87,6 +89,7 @@ def getAverageOpponentPosition(t,playerDataList):
     oppAvgPos=[oppxPos,oppyPos]        
     return oppAvgPos
 
+
 #Returns average ball position at time step
 #Arguments:
 #t-integer, timestep i.e current line in json file
@@ -100,8 +103,9 @@ def getAverageBallPosition(t,playerDataList):
         avgBallyPos[i]=playerData[t]['BallPosition'][1]
     avgBallPos=[statistics.fmean(avgBallxPos),statistics.fmean(avgBallyPos)]
     return avgBallPos
-        
 
+        
+'''
 #intitialise canvas
 win = Tk()
 t=0
@@ -114,11 +118,13 @@ ballimage= ImageTk.PhotoImage(file="soccerball-removebg-preview.png")
 width, height = fieldimage.width(), fieldimage.height()
 
 
+
 canvas = Canvas(win, bg="white", width=width, height=height)
 canvas.pack()
 #create image objects 
 fieldIM=canvas.create_image(0, 0, image=fieldimage, anchor=NW)
 test=writeGlobalJSONFile(1) #stores all json files of match1
+
 
 #places opponents and players on canvas
 playerIM=[None]*12
@@ -129,6 +135,7 @@ for i in range(11):
     convCoords= convert(myCoords[0],myCoords[1])
     playerIM[i]=canvas.create_image(convCoords[0],convCoords[1], image=playerimage, anchor=NW)  
 OpponentCoords=getAverageOpponentPosition(0,test)
+
 for i in range(11):
     oppCurr=[OpponentCoords[0][i],OpponentCoords[1][i]]
     convCoords= convert(oppCurr[0],oppCurr[1])
@@ -138,16 +145,19 @@ for i in range(11):
 #places ball on canvas
 BallCoords=getAverageBallPosition(0,test)
 convBallCoords= convert(BallCoords[0],BallCoords[1])
-ballIM=canvas.create_image(convBallCoords[0],convBallCoords[1], image=ballimage, anchor=NW)    
+ballIM=canvas.create_image(convBallCoords[0],convBallCoords[1], image=ballimage, anchor=NW)
+
 
 #Gets shortest game length file
 gameLengthList=[]
 print(" ")
 print("Game Length List:")
 for i in range(11):
+        
     playerData=test[i]
     gameLengthList.append(len(playerData))
-    print("Player " + str(i)+": " +str(gameLengthList[i]))  
+    print("Player " + str(i)+": " +str(gameLengthList[i]))
+    
 gameLength= min(gameLengthList)
 print(" ")
 print("-------------------")
@@ -155,50 +165,108 @@ print("Minimum Game Length: "+ str(gameLength))
 print("-------------------")
 print(" ")
 
+
 #visualiser
 total=0
-while (t<gameLength):
-    start=time.time()
+playerview=0
+
+
+while(t<gameLength):
+        start=time.time()
+        if playerview==11:
+                
     #calculates next and current coords based on average distance
-    OpponentCurrCoords=getAverageOpponentPosition(t,test)
-    OpponentNextCoords=getAverageOpponentPosition(t+1,test)
-    BallCurrCoords=getAverageBallPosition(t,test)
-    BallNextCoords=getAverageBallPosition(t+1,test)
-    
+                OpponentCurrCoords=getAverageOpponentPosition(t,test)
+                OpponentNextCoords=getAverageOpponentPosition(t+1,test)
+                BallCurrCoords=getAverageBallPosition(t,test)
+                BallNextCoords=getAverageBallPosition(t+1,test)
+
+                if( math.floor(BallNextCoords[0])==0 and math.floor(BallNextCoords[1])==0) and (BallCurrCoords[0]-math.floor(BallNextCoords[0])==BallCurrCoords[0]) and(BallCurrCoords[0]>1 or BallCurrCoords[1]<-1):
+                        if(BallCurrCoords[0]>0):
+                                
+                                print("Player Scored")
+                        else:
+                                print("Opponent Scored")
+                                                                                                               
     #converts coords to place accurately on soccer field
-    convBallCurrCoords= convert(BallCurrCoords[0],BallCurrCoords[1])
-    convBallNextCoords= convert(BallNextCoords[0],BallNextCoords[1])
+                convBallCurrCoords= convert(BallCurrCoords[0],BallCurrCoords[1])
+                convBallNextCoords= convert(BallNextCoords[0],BallNextCoords[1])
     
     #moves ball element on canvas
-    canvas.move(ballIM,convBallNextCoords[0]-convBallCurrCoords[0], convBallNextCoords[1]-convBallCurrCoords[1] )
-    win.update()
+                canvas.move(ballIM,convBallNextCoords[0]-convBallCurrCoords[0], convBallNextCoords[1]-convBallCurrCoords[1] )
     
     # moves opponent and player images on canvas
-    for i in range(11):
+                for i in range(11):
+                        
         #calculates distance to move player
-        currCoords=test[i][t]['MyPosition']
-        nextCoords=test[i][t+1]['MyPosition']
+                        currCoords=test[i][t]['MyPosition']
+                        nextCoords=test[i][t+1]['MyPosition']
         
         #converts distances to place on soccer field
-        convCurrCoords= convert(currCoords[0],currCoords[1])
-        convNextCoords= convert(nextCoords[0],nextCoords[1])
-        canvas.move(playerIM[i],convNextCoords[0]-convCurrCoords[0], convNextCoords[1]-convCurrCoords[1] )
+                        convCurrCoords= convert(currCoords[0],currCoords[1])
+                        convNextCoords= convert(nextCoords[0],nextCoords[1])
+                        canvas.move(playerIM[i],convNextCoords[0]-convCurrCoords[0], convNextCoords[1]-convCurrCoords[1] )
 
         #calculates distance to move opponent
-        oppCurr=[OpponentCurrCoords[0][i],OpponentCurrCoords[1][i]]
-        oppNext=[OpponentNextCoords[0][i],OpponentNextCoords[1][i]]
+                        oppCurr=[OpponentCurrCoords[0][i],OpponentCurrCoords[1][i]]
+                        oppNext=[OpponentNextCoords[0][i],OpponentNextCoords[1][i]]
 
         #converts distance to move player
-        convCurrCoords= convert(oppCurr[0],oppCurr[1])
-        convNextCoords=convert(oppNext[0],oppNext[1])
-        canvas.move(opponentIM[i],convNextCoords[0]-convCurrCoords[0], convNextCoords[1]-convCurrCoords[1] )
-        win.update()
-    end=time.time()
+                        convCurrCoords= convert(oppCurr[0],oppCurr[1])
+                        convNextCoords=convert(oppNext[0],oppNext[1])
+                        canvas.move(opponentIM[i],convNextCoords[0]-convCurrCoords[0], convNextCoords[1]-convCurrCoords[1] )
+        
+                win.update()
+        
+
+    
+    
     #update ticker
-    t+=1
+    
+        else:
+                
+                gameLength=gameLengthList[playerview]
+                step=1200/gameLength
+                playerData=test[playerview]
+                BallCurrCoords=playerData[t]["BallPosition"]
+                BallNextCoords=playerData[t+1]["BallPosition"]
+                convBallCurrCoords= convert(BallCurrCoords[0],BallCurrCoords[1])
+                convBallNextCoords= convert(BallNextCoords[0],BallNextCoords[1])
+                canvas.move(ballIM,convBallNextCoords[0]-convBallCurrCoords[0], convBallNextCoords[1]-convBallCurrCoords[1] )
+                TeamMatePositionsPresent=playerData[t]['TeamMatePositions']
+                TeamMatePositionsFuture=playerData[t+1]['TeamMatePositions']
+                OpponentPositionsPresent=playerData[t]['OpponentPositions']
+                OpponentPositionsFuture=playerData[t+1]['OpponentPositions']
+                for x in range(11):
+                        
+                        
+                        TeamMateCurrentPosition=TeamMatePositionsPresent["TEAM" + str(x+1)]
+                        TeamMateNextPosition=TeamMatePositionsFuture["TEAM" + str(x+1)]
+                        convCurrCoords= convert(TeamMateCurrentPosition[0],TeamMateCurrentPosition[1])
+                        convNextCoords= convert(TeamMateNextPosition[0],TeamMateNextPosition[1])
+                        moveX=convNextCoords[0]-convCurrCoords[0]
+                        moveY=convNextCoords[1]-convCurrCoords[1]
+                        canvas.move(playerIM[x],moveX,moveY)
+                        OpponentCurrentPosition=OpponentPositionsPresent["OPP" + str(x+1)]
+                        OpponentNextPosition=OpponentPositionsFuture["OPP" + str(x+1)]
+                        convCurrCoords= convert(OpponentCurrentPosition[0],OpponentCurrentPosition[1])
+                        convNextCoords= convert(OpponentNextPosition[0],OpponentNextPosition[1])
+                        moveX=convNextCoords[0]-convCurrCoords[0]
+                        moveY=convNextCoords[1]-convCurrCoords[1]
+                        canvas.move(opponentIM[x],moveX,moveY)
+                
+                win.update()
+                end=time.time()
+                delay=step-(end-start)
+                if delay>0:
+                        time.sleep(delay)
+        
+        print(end-start)
+        t+=1       
+             
 win.mainloop()
-
-
+        
+'''
          
 
 

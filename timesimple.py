@@ -26,7 +26,7 @@ class Timer:
         self.speedup_button = tk.Button(self.master, text="Speed Up", command=self.timer_speedup)
         self.speedup_button.grid(row=11, column=1, columnspan=2)
         self.slowdown_button = tk.Button(self.master, text="Slow Down")
-        self.slowdown_button.grid(row=11, column=1, columnspan=2)
+        self.slowdown_button.grid(row=11, column=2, columnspan=2)
 
         # here is where the time slider is set up
         self.time_step_slider_value = tk.IntVar()
