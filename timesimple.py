@@ -20,14 +20,18 @@ class Timer:
         self.rewind = False
 
         # Here is where we set up all the buttons
-        self.play_pause_button = tk.Button(self.master, text="Play", command=self.timer_play_pause, font=("Arial", 11))
-        self.play_pause_button.grid(row=8, column=0)
-        self.rewind_button = tk.Button(self.master, text="Rewind", command=self.timer_rewind, font=("Arial", 11))
-        self.rewind_button.grid(row=10, column=0)
-        self.speedup_button = tk.Button(self.master, text="Speed Up", command=self.timer_speedup, font=("Arial", 11))
-        self.speedup_button.grid(row=11, column=0, columnspan=2)
-        self.slowdown_button = tk.Button(self.master, text="Slow Down", font=("Arial", 11))
-        self.slowdown_button.grid(row=9, column=0, columnspan=2)
+        self.play_pause_button = tk.Button(self.master, text="▶", command=self.timer_play_pause, font=("Arial", 11))
+        self.play_pause_button.grid(row=8, column=0, columnspan=2)  # Set column span to 2 for equal width
+        self.tooltip_play_pause = Tooltip(self.play_pause_button, "Play/Pause")
+        self.rewind_button = tk.Button(self.master, text="⏩", command=self.timer_rewind, font=("Arial", 11))
+        self.rewind_button.grid(row=10, column=0, columnspan=2)  # Set column span to 2 for equal width
+        self.tooltip_rewind = Tooltip(self.rewind_button, "Rewind/Forward")
+        self.speedup_button = tk.Button(self.master, text="⏩⏩", command=self.timer_speedup, font=("Arial", 11))
+        self.speedup_button.grid(row=11, column=0, columnspan=2)  # Set column span to 2 for equal width
+        self.tooltip_speedup = Tooltip(self.speedup_button, "Speed Up")
+        self.slowdown_button = tk.Button(self.master, text="⏪⏪", font=("Arial", 11))
+        self.slowdown_button.grid(row=9, column=0, columnspan=2)  # Set column span to 2 for equal width
+        self.tooltip_slowdown = Tooltip(self.slowdown_button, "Slow Down")
 
         # Here is where the time slider is set up
         self.time_step_slider_value = tk.IntVar()
@@ -40,18 +44,18 @@ class Timer:
         self.ticking = not self.ticking
 
         if self.ticking:
-            self.play_pause_button.configure(text="Pause")
+            self.play_pause_button.configure(text="⏸")
         else:
-            self.play_pause_button.configure(text="Play")
+            self.play_pause_button.configure(text="▶")
 
     # This sets the clock to rewind mode
     def timer_rewind(self):
         self.rewind = not self.rewind
 
         if self.rewind:
-            self.rewind_button.configure(text="Forward")
+            self.rewind_button.configure(text="⏭")
         else:
-            self.rewind_button.configure(text="Rewind")
+            self.rewind_button.configure(text="⏪")
 
     # This speeds up the tick rate of the clock
     def timer_speedup(self):
@@ -91,4 +95,31 @@ class Timer:
         minutes, seconds = divmod(total_seconds, 60)
         hours, minutes = divmod(minutes, 60)
         return "{:02d}:{:02d}:{:02d}".format(int(hours), int(minutes), int(seconds))
+
+
+class Tooltip:
+    def __init__(self, widget, text):
+        self.widget = widget
+        self.text = text
+        self.tooltip = None
+        self.widget.bind("<Enter>", self.show_tooltip)
+        self.widget.bind("<Leave>", self.hide_tooltip)
+
+    def show_tooltip(self, event):
+        x, y, _, _ = self.widget.bbox("insert")
+        x += self.widget.winfo_rootx() + 25
+        y += self.widget.winfo_rooty() + 25
+
+        self.tooltip = tk.Toplevel(self.widget)
+        self.tooltip.wm_overrideredirect(True)
+        self.tooltip.wm_geometry(f"+{x}+{y}")
+
+        label = tk.Label(self.tooltip, text=self.text, background="lightyellow", relief="solid", borderwidth=1,
+                         font=("Arial", 10))
+        label.pack()
+
+    def hide_tooltip(self, event):
+        if self.tooltip:
+            self.tooltip.destroy()
+            self.tooltip = None
 
