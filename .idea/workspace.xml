@@ -7,7 +7,8 @@
     <list default="true" id="8718d2d3-f398-483f-9944-739d152ecb8f" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Display_menu_visualiser.py" beforeDir="false" afterPath="$PROJECT_DIR$/Display_menu_visualiser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/timefunctions.py" beforeDir="false" afterPath="$PROJECT_DIR$/timefunctions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/timer_unitTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/timer_unitTest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/timesimple.py" beforeDir="false" afterPath="$PROJECT_DIR$/timesimple.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,14 +27,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;git-widget-placeholder&quot;: &quot;integrate-timer-and-visualiser&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/GitHub/2D-Visuliser-RoboCup&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "git-widget-placeholder": "Visualiser",
+    "last_opened_file_path": "C:/GitHub/2D-Visuliser-RoboCup",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
-  <component name="RunManager" selected="Python.Display_menu_visualiser">
+}]]></component>
+  <component name="RunManager">
     <configuration name="Display_menu_visualiser" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="2D-Visuliser-RoboCup" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -178,5 +179,12 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="timer" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
