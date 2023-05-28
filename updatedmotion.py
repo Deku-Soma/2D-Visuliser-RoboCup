@@ -14,7 +14,7 @@ import math
 #match- Integer(takes match number which is directory to file named match1 or match2 which is a folder that stores the json files)
 #PlayerNum( takes num of json file) -Integer
 def loadJSONFile(match, PlayerNum):
-        folder="match"+str(match)
+        folder="matches\match"+str(match)
         cwd = os.getcwd()
         path_to_json_file = os.path.join(cwd, folder, str(PlayerNum))
         jsondata=[]
@@ -31,7 +31,7 @@ def loadJSONFile(match, PlayerNum):
 #match- integer (takes match number which is directory to file named match1 or match2 which is a folder that stores the json files)
 def writeGlobalJSONFile(match):
         total=0
-        folder="match"+str(match)
+        folder="matches\match"+str(match)
         cwd = os.getcwd()        
         globaldata=[]
         jsondata=[]
@@ -103,8 +103,34 @@ def getAverageBallPosition(t,playerDataList):
         avgBallyPos[i]=playerData[t]['BallPosition'][1]
     avgBallPos=[statistics.fmean(avgBallxPos),statistics.fmean(avgBallyPos)]
     return avgBallPos
-
-        
+def generateGeneralView(var):
+        folder="matches\match"+str(match)
+        cwd = os.getcwd()         
+        start=time.time()
+        gameFile=writeGlobalJSONFile(var)
+        file=[]
+        dictionary={"BallPosition": [0,0], "CurrGameTime":0,"OpponentPositions":{"OPP1":[0.0,0.0],"OPP10":[0.0,0.0],"OPP11":[0.0,0.0],"OPP2":[0.0,0.0],"OPP3":[0.0,0.0],"OPP4":[0.0,0.0],"OPP5":[0.0,0.0],"OPP6":[0.0,0.0],"OPP7":[0.0,0.0],"OPP8":[0.0,0.0],"OPP9":[0.0,0.0]},"TeamMatePositions":{"TEAM1":[0.0,0.0],"TEAM10":[0.0,0.0],"TEAM11":[0.0,0.0],"TEAM2":[0.0,0.0],"TEAM3":[0.0,0.0],"TEAM4":[0.0,0.0],"TEAM5":[0.0,0.0],"TEAM6":[0.0,0.0],"TEAM7":[0.0,0.0],"TEAM8":[0.0,0.0],"TEAM9":[0.0,0.0]}}
+        for t in range(len(gameFile[0])):
+                dictionary["CurrGameTime"]=gameFile[0][t]["CurrGameTime"]
+                OpponentCurrCoords=getAverageOpponentPosition(t,gameFile)
+                BallCurrCoords=getAverageBallPosition(t,gameFile)
+                dictionary["BallPosition"][0]=BallCurrCoords[0]
+                dictionary["BallPosition"][1]=BallCurrCoords[1]                                                                                     
+                for i in range(11):
+                        
+                        oppCurr=[OpponentCurrCoords[0][i],OpponentCurrCoords[1][i]]    
+                        currCoords=gameFile[i][t]['MyPosition']
+                        dictionary["OpponentPositions"]["OPP"+str(i+1)][0]=oppCurr[0]
+                        dictionary["OpponentPositions"]["OPP"+str(i+1)][1]=oppCurr[1]
+                        dictionary["TeamMatePositions"]["TEAM"+str(i+1)][0]=currCoords[0]
+                        dictionary["TeamMatePositions"]["TEAM"+str(i+1)][0]=currCoords[1]
+                file.append(dictionary)
+        print(len(file))
+        for line in file:
+                with open("sample.json", "a") as outfile:
+                        outfile.write(json.dumps(file[i])+"\n")        
+        print(time.time()-start)
+generateGeneralView(4)        
 '''
 #intitialise canvas
 win = Tk()
