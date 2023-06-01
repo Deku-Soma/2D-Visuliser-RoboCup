@@ -149,7 +149,7 @@ def update_visualiser():
 
                 if i == optPlayerInfovar.get():
                     playerIM[i] = canvas_visualiser.create_image(convNextCoords[0], convNextCoords[1],
-                                                                 image=opponentimage)
+                                                                 image=selected_player_image)
                 else:
                     playerIM[i] = canvas_visualiser.create_image(convNextCoords[0], convNextCoords[1],
                                                                  image=playerimage)
@@ -205,7 +205,7 @@ def update_visualiser():
 
                 if i == optPlayerInfovar.get():
                     playerIM[i] = canvas_visualiser.create_image(convNextCoords[0], convNextCoords[1],
-                                                                 image=opponentimage)
+                                                                 image=selected_player_image)
                 else:
                     playerIM[i] = canvas_visualiser.create_image(convNextCoords[0], convNextCoords[1],
                                                                  image=playerimage)
@@ -436,6 +436,7 @@ fieldIM = canvas_visualiser.create_image(0, 0, image=fieldimage, anchor=NW)
 # refer to the Co-ordinate system for soccer field tect file
 
 player1_file = "nonselectedplayer1.png"
+selected_player_file = "selected-player.png"
 player2_file = "nonselectedplayer2.png"
 ball_file = "soccerball-removebg-preview.png"
 folder = "Assets"
@@ -445,10 +446,12 @@ cwd = os.getcwd()
 path_to_player1_file = os.path.join(cwd, folder, player1_file)
 path_to_player2_file = os.path.join(cwd, folder, player2_file)
 path_to_ball_file = os.path.join(cwd, folder, ball_file)
+path_to_selected_player_file = os.path.join(cwd, folder, selected_player_file)
 
 playerimage = ImageTk.PhotoImage(file=path_to_player1_file)
 opponentimage = ImageTk.PhotoImage(file=path_to_player2_file)
 ballimage = ImageTk.PhotoImage(file=path_to_ball_file)
+selected_player_image = ImageTk.PhotoImage(file=path_to_selected_player_file)
 
 # =================================================================================================================
 

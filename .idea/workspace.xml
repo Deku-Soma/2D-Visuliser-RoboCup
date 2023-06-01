@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8718d2d3-f398-483f-9944-739d152ecb8f" name="Changes" comment="Changes">
-      <change beforePath="$PROJECT_DIR$/.idea/2D-Visuliser-RoboCup.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/2D-Visuliser-RoboCup.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/mainscreen.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/mainscreen.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Display_menu_visualiser.py" beforeDir="false" afterPath="$PROJECT_DIR$/Display_menu_visualiser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/timesimple.py" beforeDir="false" afterPath="$PROJECT_DIR$/timesimple.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,13 +25,13 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "E:/University/3rd Year/Coms3009/Project/GitHub/2D-Visuliser-RoboCup",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/University/3rd Year/Coms3009/Project/GitHub/2D-Visuliser-RoboCup&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Python.Display_menu_visualiser">
     <configuration name="Display_menu_visualiser" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="2D-Visuliser-RoboCup" />
