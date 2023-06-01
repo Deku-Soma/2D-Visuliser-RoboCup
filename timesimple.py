@@ -76,7 +76,7 @@ class Timer:
             self.time_step += self.ticking * (-1) ** self.rewind
             self.next_time_step = self.time_step + self.ticking * (-1) ** self.rewind
 
-        time.sleep(0.02 / self.speed_up)
+            time.sleep(0.02 / self.speed_up)
 
         if self.time_step < 0 or self.next_time_step < 0:
             self.time_step = 0

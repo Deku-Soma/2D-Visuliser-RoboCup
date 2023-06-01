@@ -59,6 +59,26 @@ def update_visualiser():
     # determines shortest gamelength
     gameLengthList = []
 
+    # places opponents and players on canvas
+    playerIM = [None] * 12
+    opponentIM = [None] * 12
+    playerData = motion.loadJSONFile(1, 1)
+    TeamMatePositionsPresent = playerData[2]['TeamMatePositions']
+    OpponentPositionsPresent = playerData[2]['OpponentPositions']
+    for i in range(11):
+        TeamMateCurrentPosition = TeamMatePositionsPresent["TEAM" + str(i + 1)]
+        OpponentCurrentPosition = OpponentPositionsPresent["OPP" + str(i + 1)]
+        convCoords = motion.convert(TeamMateCurrentPosition[0], TeamMateCurrentPosition[1])
+        playerIM[i] = canvas_visualiser.create_image(convCoords[0], convCoords[1], image=playerimage, anchor=NW)
+        convCoords = motion.convert(OpponentCurrentPosition[0], OpponentCurrentPosition[1])
+        opponentIM[i] = canvas_visualiser.create_image(convCoords[0], convCoords[1], image=opponentimage, anchor=NW)
+
+    # places ball on canvas
+    BallCurrCoords = playerData[0]["BallPosition"]
+    convBallCoords = motion.convert(BallCurrCoords[0], BallCurrCoords[1])
+    ballIM = canvas_visualiser.create_image(convBallCoords[0], convBallCoords[1], image=ballimage, anchor=NW)
+    del playerData
+
     for i in range(11):
         playerData = gameFile[i]
         gameLengthList.append(len(playerData))
@@ -71,7 +91,7 @@ def update_visualiser():
     playerview = 11
     timer = ts.Timer(Frame_visualiser)
 
-    while (timer.time_step < (20 * 60)):
+    while (timer.time_step < gameLength):
 
         timer.timer_tick()
 
@@ -109,8 +129,9 @@ def update_visualiser():
             convBallNextCoords = motion.convert(BallNextCoords[0], BallNextCoords[1])
 
             # moves ball element on canvas
-            canvas_visualiser.move(ballIM, convBallNextCoords[0] - convBallCurrCoords[0],
-                                   convBallNextCoords[1] - convBallCurrCoords[1])
+            canvas_visualiser.delete(ballIM)
+
+            ballIM = canvas_visualiser.create_image(convBallNextCoords[0], convBallNextCoords[1], image=ballimage)
 
             # moves opponent and player images on canvas
             for i in range(11):
@@ -121,8 +142,17 @@ def update_visualiser():
                 # converts distances to place on soccer field
                 convCurrCoords = motion.convert(currCoords[0], currCoords[1])
                 convNextCoords = motion.convert(nextCoords[0], nextCoords[1])
-                canvas_visualiser.move(playerIM[i], convNextCoords[0] - convCurrCoords[0],
-                                       convNextCoords[1] - convCurrCoords[1])
+
+
+
+                canvas_visualiser.delete(playerIM[i])
+
+                if i == optPlayerInfovar.get():
+                    playerIM[i] = canvas_visualiser.create_image(convNextCoords[0], convNextCoords[1],
+                                                                 image=opponentimage)
+                else:
+                    playerIM[i] = canvas_visualiser.create_image(convNextCoords[0], convNextCoords[1],
+                                                                 image=playerimage)
 
                 # calculates distance to move opponent
                 oppCurr = [OpponentCurrCoords[0][i], OpponentCurrCoords[1][i]]
@@ -131,8 +161,11 @@ def update_visualiser():
                 # converts distance to move player
                 convCurrCoords = motion.convert(oppCurr[0], oppCurr[1])
                 convNextCoords = motion.convert(oppNext[0], oppNext[1])
-                canvas_visualiser.move(opponentIM[i], convNextCoords[0] - convCurrCoords[0],
-                                       convNextCoords[1] - convCurrCoords[1])
+
+
+                canvas_visualiser.delete(opponentIM[i])
+                opponentIM[i] = canvas_visualiser.create_image(convNextCoords[0], convNextCoords[1], image=opponentimage)
+
 
             win.update()
 
@@ -150,8 +183,10 @@ def update_visualiser():
             BallNextCoords = playerData[timer.next_time_step]["BallPosition"]
             convBallCurrCoords = motion.convert(BallCurrCoords[0], BallCurrCoords[1])
             convBallNextCoords = motion.convert(BallNextCoords[0], BallNextCoords[1])
-            canvas_visualiser.move(ballIM, convBallNextCoords[0] - convBallCurrCoords[0],
-                                   convBallNextCoords[1] - convBallCurrCoords[1])
+
+            canvas_visualiser.delete(ballIM)
+
+            ballIM = canvas_visualiser.create_image(convBallNextCoords[0], convBallNextCoords[1], image=ballimage)
 
             # update team mate and opponent positions
             TeamMatePositionsPresent = playerData[timer.time_step]['TeamMatePositions']
@@ -165,20 +200,29 @@ def update_visualiser():
                 TeamMateNextPosition = TeamMatePositionsFuture["TEAM" + str(x + 1)]
                 convCurrCoords = motion.convert(TeamMateCurrentPosition[0], TeamMateCurrentPosition[1])
                 convNextCoords = motion.convert(TeamMateNextPosition[0], TeamMateNextPosition[1])
-                moveX = convNextCoords[0] - convCurrCoords[0]
-                moveY = convNextCoords[1] - convCurrCoords[1]
-                canvas_visualiser.move(playerIM[x], moveX, moveY)
+
+                canvas_visualiser.delete(playerIM[i])
+
+                if i == optPlayerInfovar.get():
+                    playerIM[i] = canvas_visualiser.create_image(convNextCoords[0], convNextCoords[1],
+                                                                 image=opponentimage)
+                else:
+                    playerIM[i] = canvas_visualiser.create_image(convNextCoords[0], convNextCoords[1],
+                                                                 image=playerimage)
+
+
 
                 # update opponent position
                 OpponentCurrentPosition = OpponentPositionsPresent["OPP" + str(x + 1)]
                 OpponentNextPosition = OpponentPositionsFuture["OPP" + str(x + 1)]
                 convCurrCoords = motion.convert(OpponentCurrentPosition[0], OpponentCurrentPosition[1])
                 convNextCoords = motion.convert(OpponentNextPosition[0], OpponentNextPosition[1])
-                moveX = convNextCoords[0] - convCurrCoords[0]
-                moveY = convNextCoords[1] - convCurrCoords[1]
-                canvas_visualiser.move(opponentIM[x], moveX, moveY)
+
+                canvas_visualiser.delete(opponentIM[i])
+                opponentIM[i] = canvas_visualiser.create_image(convNextCoords[0], convNextCoords[1], image=opponentimage)
 
             win.update()
+
 
 
 # =============================================================
@@ -238,7 +282,8 @@ l.image = selectImObject  # Keep a reference to the image object to prevent it f
 l.place(x=0, y=0)
 
 # button to go to visualiser
-start_game_button = tk.Button(Frame_menu, text="Start the Visualiser", command=lambda: [go_to_visualiser(optvar), update_visualiser()], font=("Arial", 12))
+start_game_button = tk.Button(Frame_menu, text="Start the Visualiser",
+                              command=lambda: [go_to_visualiser(optvar), update_visualiser()], font=("Arial", 12))
 start_game_button.place(x=400, y=500)
 # canvas_menu.grid()
 # button to go to visualiser
@@ -330,7 +375,7 @@ playerselection.grid(row=12, column=0)
 # player info display
 playerdata_label = tk.Label(Frame_visualiser)
 playerdata_label.grid(column=3, row=0, padx=5, pady=5, rowspan=20)
-playerdataFieldBallPosition_label = tk.Label(playerdata_label, text="BallPosition",font=("Arial", 10))
+playerdataFieldBallPosition_label = tk.Label(playerdata_label, text="BallPosition", font=("Arial", 10))
 playerdataValueBallPosition_label = tk.Label(playerdata_label, text="Value", font=("Arial", 10))
 playerdataFieldBallPosition_label.grid(column=1, row=1, padx=2, pady=5)
 playerdataValueBallPosition_label.grid(column=2, row=1, padx=2, pady=5)
@@ -377,7 +422,7 @@ playerInfoselection["menu"] = playerInfoselection.menu
 for i in range(11):
     playerInfoselection.menu.add_radiobutton(label="Player " + str(i + 1), value=i, variable=optPlayerInfovar,
                                              command=lambda: print(optPlayervar.get()), font=("Arial", 10))
-playerInfoselection.grid(row=13, column=0, columnspan = 1)
+playerInfoselection.grid(row=13, column=0, columnspan=1)
 # ===============================================================================================================
 
 
@@ -406,25 +451,6 @@ opponentimage = ImageTk.PhotoImage(file=path_to_player2_file)
 ballimage = ImageTk.PhotoImage(file=path_to_ball_file)
 
 # =================================================================================================================
-# places opponents and players on canvas
-playerIM = [None] * 12
-opponentIM = [None] * 12
-playerData = motion.loadJSONFile(1, 1)
-TeamMatePositionsPresent = playerData[2]['TeamMatePositions']
-OpponentPositionsPresent = playerData[2]['OpponentPositions']
-for i in range(11):
-    TeamMateCurrentPosition = TeamMatePositionsPresent["TEAM" + str(i + 1)]
-    OpponentCurrentPosition = OpponentPositionsPresent["OPP" + str(i + 1)]
-    convCoords = motion.convert(TeamMateCurrentPosition[0], TeamMateCurrentPosition[1])
-    playerIM[i] = canvas_visualiser.create_image(convCoords[0], convCoords[1], image=playerimage, anchor=NW)
-    convCoords = motion.convert(OpponentCurrentPosition[0], OpponentCurrentPosition[1])
-    opponentIM[i] = canvas_visualiser.create_image(convCoords[0], convCoords[1], image=opponentimage, anchor=NW)
-
-# places ball on canvas
-BallCurrCoords = playerData[0]["BallPosition"]
-convBallCoords = motion.convert(BallCurrCoords[0], BallCurrCoords[1])
-ballIM = canvas_visualiser.create_image(convBallCoords[0], convBallCoords[1], image=ballimage, anchor=NW)
-del playerData
 
 # =================================================================================================================
 
