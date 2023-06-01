@@ -125,7 +125,7 @@ def generateGeneralView(var):
                         dictionary["OpponentPositions"]["OPP"+str(i+1)][0]=oppCurr[0]
                         dictionary["OpponentPositions"]["OPP"+str(i+1)][1]=oppCurr[1]
                         dictionary["TeamMatePositions"]["TEAM"+str(i+1)][0]=currCoords[0]
-                        dictionary["TeamMatePositions"]["TEAM"+str(i+1)][0]=currCoords[1]
+                        dictionary["TeamMatePositions"]["TEAM"+str(i+1)][1]=currCoords[1]
 
                 
                 with open(path_to_json_file, "a") as outfile:
