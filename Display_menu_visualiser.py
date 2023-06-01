@@ -18,6 +18,13 @@ win.config(bg="black")  # background colour
 frame_vis = False  # Bool for Frame Visualiser is packed
 
 Frame_visualiser = tk.Frame(win, bg="black", width=1200, height=800)
+Frame_visualiser.rowconfigure(1,weight=500)
+Frame_visualiser.rowconfigure(2,weight=50)
+Frame_visualiser.columnconfigure(0,weight=round(1200/7))
+for i in range(8):
+    Frame_visualiser.columnconfigure(i,weight=round(1200/7))
+for i in range(3,10):
+    Frame_visualiser.rowconfigure(i,weight=40)
 
 
 # frameTimer = Frame(Frame_visualiser, width=50, height=20)
@@ -41,7 +48,7 @@ def back_to_menu(gameFile):
     del gameFile
 
 
-def go_to_visualiser(optvar):
+def go_to_visualiser():
     print(optvar.get())
     if optvar.get() > 0:
         Frame_menu.grid_forget()
@@ -51,18 +58,35 @@ def go_to_visualiser(optvar):
 
 
 def update_visualiser():
+    player1_file = "nonselectedplayer1.png"
+    selected_player_file = "selected-player.png"
+    player2_file = "nonselectedplayer2.png"
+    ball_file = "soccerball-removebg-preview.png"
+    folder = "Assets"
+
+    cwd = os.getcwd()
+
+    path_to_player1_file = os.path.join(cwd, folder, player1_file)
+    path_to_player2_file = os.path.join(cwd, folder, player2_file)
+    path_to_ball_file = os.path.join(cwd, folder, ball_file)
+    path_to_selected_player_file = os.path.join(cwd, folder, selected_player_file)
+
+    playerimage = ImageTk.PhotoImage(file=path_to_player1_file)
+    opponentimage = ImageTk.PhotoImage(file=path_to_player2_file)
+    ballimage = ImageTk.PhotoImage(file=path_to_ball_file)
+    selected_player_image = ImageTk.PhotoImage(file=path_to_selected_player_file)
     # Loads json files into array
-    gameFile = motion.writeGlobalJSONFile(optvar.get())
+    generalPerspective = motion.loadJSONFile(optvar.get(), 0)
+    gameFile=[None] * 12
     # back_menu_button = tk.Button(Frame_visualiser, text="Back", command=lambda: back_to_menu(gameFile))
     # back_menu_button.grid(row=0,column=0)
-
-    # determines shortest gamelength
-    gameLengthList = []
+    
+   
 
     # places opponents and players on canvas
     playerIM = [None] * 12
     opponentIM = [None] * 12
-    playerData = motion.loadJSONFile(1, 1)
+    playerData = motion.loadJSONFile(optvar.get(), 1)
     TeamMatePositionsPresent = playerData[2]['TeamMatePositions']
     OpponentPositionsPresent = playerData[2]['OpponentPositions']
     for i in range(11):
@@ -77,52 +101,67 @@ def update_visualiser():
     BallCurrCoords = playerData[0]["BallPosition"]
     convBallCoords = motion.convert(BallCurrCoords[0], BallCurrCoords[1])
     ballIM = canvas_visualiser.create_image(convBallCoords[0], convBallCoords[1], image=ballimage, anchor=NW)
+    gameLength = len(playerData)
     del playerData
 
-    for i in range(11):
-        playerData = gameFile[i]
-        gameLengthList.append(len(playerData))
-    print("Player " + str(i) + ": " + str(gameLengthList[i]))
 
-    gameLength = min(gameLengthList)
-
+    initialTime=generalPerspective[0]["CurrGameTime"]
+    finalTime=generalPerspective[-1]["CurrGameTime"]
+    line=[None]*60
     # visualiser
     total = 0
     playerview = 11
-    timer = ts.Timer(Frame_visualiser)
-
+    timer = ts.Timer(Frame_visualiser,max_ticks=gameLength-1)
+    timer_label.configure(text=timer.format_time())
+    gameFile[optPlayerInfovar.get()]=motion.loadJSONFile(optvar.get(), optPlayerInfovar.get())
+    k=0
     while (timer.time_step < gameLength):
 
         timer.timer_tick()
-
+        timer.gametime=generalPerspective[timer.time_step]["CurrGameTime"]-initialTime
+        timer_label.configure(text=timer.format_time())
+        playerview=optPlayervar.get()
         # displays player info
-        playerInfo = gameFile[optPlayerInfovar.get()]
-
-        playerdataValueBallPosition_label.configure(
+        if gameFile[optPlayerInfovar.get()]==None:
+            gameFile[optPlayerInfovar.get()]=motion.loadJSONFile(optvar.get(), optPlayerInfovar.get())
+        else:
+            playerInfo = gameFile[optPlayerInfovar.get()]
+            playerdataFieldBallPosition_label.configure(text="BallPosition")
+            playerdataValueBallPosition_label.configure(
             text=str(round(playerInfo[timer.time_step]["BallPosition"][0], 2)) + " " + str(
                 round(playerInfo[timer.time_step]["BallPosition"][1], 2)))
-        playerdataValueMyPosition_label.configure(
+            playerdataValueMyPosition_label.configure(
             text=str(round(playerInfo[timer.time_step]["MyPosition"][0], 2)) + " " + str(
                 round(playerInfo[timer.time_step]["MyPosition"][1], 2)))
-        for i in range(11):
-            playerdataValueOppPosition_label[i].configure(
+            playerdataFieldMyPosition_label.configure(text="MyPosition")
+            playerdataOpponentPosition_label.configure(text="Opponent Position:")
+            playerdataTeamMateDistance_label.configure(text="TeamMate Distance:")
+            playerdataTeamMatePosition_label.configure(text="TeamMate Position:")
+            for i in range(11):
+                playerdataValueOppPosition_label[i].configure(
                 text=str(round(playerInfo[timer.time_step]["OpponentPositions"]["OPP" + str(i + 1)][0], 2)) + " " + str(
                     round(playerInfo[timer.time_step]["OpponentPositions"]["OPP" + str(i + 1)][1], 2)))
-            playerdataValueTeamDistance_label[i].configure(
+                playerdataValueTeamDistance_label[i].configure(
                 text=str(round(playerInfo[timer.time_step]["TeamMateDistanceToBall"][str(i + 1)], 2)))
-            playerdataValueTeamPosition_label[i].configure(text=str(
+                playerdataValueTeamPosition_label[i].configure(text=str(
                 round(playerInfo[timer.time_step]["TeamMatePositions"]["TEAM" + str(i + 1)][0], 2)) + " " + str(
                 round(playerInfo[timer.time_step]["OpponentPositions"]["OPP" + str(i + 1)][1], 2)))
+                playerdataFieldOppPosition_label[i].configure(text="OPP"+str(i+1))
+                playerdataFieldTeamDistance_label[i].configure(text="TEAM"+str(i+1))
+                playerdataFieldTeamPosition_label[i].configure(text="TEAM"+str(i+1))
 
         # player motion updates
+        
+        if optPlayervar.get() == 11:  # general view
 
-        if playerview == 11:  # general view
-
+    
             # calculates next and current coords based on average distance
-            OpponentCurrCoords = motion.getAverageOpponentPosition(timer.time_step, gameFile)
-            OpponentNextCoords = motion.getAverageOpponentPosition(timer.next_time_step, gameFile)
-            BallCurrCoords = motion.getAverageBallPosition(timer.time_step, gameFile)
-            BallNextCoords = motion.getAverageBallPosition(timer.next_time_step, gameFile)
+            TeamMatePositionsPresent = generalPerspective[timer.time_step]['TeamMatePositions']
+            TeamMatePositionsFuture = generalPerspective[timer.next_time_step]['TeamMatePositions']
+            OpponentPositionsPresent = generalPerspective[timer.time_step]['OpponentPositions']
+            OpponentPositionsFuture = generalPerspective[timer.next_time_step]['OpponentPositions']
+            BallCurrCoords = generalPerspective[timer.time_step]["BallPosition"]
+            BallNextCoords = generalPerspective[timer.next_time_step]["BallPosition"]
 
             # converts coords to place accurately on soccer field
             convBallCurrCoords = motion.convert(BallCurrCoords[0], BallCurrCoords[1])
@@ -136,14 +175,24 @@ def update_visualiser():
             # moves opponent and player images on canvas
             for i in range(11):
                 # calculates distance to move player
-                currCoords = gameFile[i][timer.time_step]['MyPosition']
-                nextCoords = gameFile[i][timer.next_time_step]['MyPosition']
+                TeamMateCurrentPosition = TeamMatePositionsPresent["TEAM" + str(i + 1)]
+                TeamMateNextPosition = TeamMatePositionsFuture["TEAM" + str(i + 1)]
+
 
                 # converts distances to place on soccer field
-                convCurrCoords = motion.convert(currCoords[0], currCoords[1])
-                convNextCoords = motion.convert(nextCoords[0], nextCoords[1])
-
-
+                convCurrCoords = motion.convert(TeamMateCurrentPosition[0], TeamMateCurrentPosition[1])
+                convNextCoords = motion.convert(TeamMateNextPosition[0], TeamMateNextPosition[1])
+                if optPlayerPathvar.get()==i+1:
+                    if k>=60 :
+                        
+                        canvas_visualiser.delete(line[k%60])
+                    line[k%60]=canvas_visualiser.create_line(convCurrCoords[0],convCurrCoords[1],convNextCoords[0],convNextCoords[1], fill="red", width=5)
+                    k+=1
+                    
+                if optPlayerPathvar.get()==0:
+                    for u in range(k):
+                        canvas_visualiser.delete(line[u%60])             
+                    k=0
 
                 canvas_visualiser.delete(playerIM[i])
 
@@ -155,18 +204,17 @@ def update_visualiser():
                                                                  image=playerimage)
 
                 # calculates distance to move opponent
-                oppCurr = [OpponentCurrCoords[0][i], OpponentCurrCoords[1][i]]
-                oppNext = [OpponentNextCoords[0][i], OpponentNextCoords[1][i]]
+                OpponentCurrentPosition = OpponentPositionsPresent["OPP" + str(i + 1)]
+                OpponentNextPosition = OpponentPositionsFuture["OPP" + str(i + 1)]
 
                 # converts distance to move player
-                convCurrCoords = motion.convert(oppCurr[0], oppCurr[1])
-                convNextCoords = motion.convert(oppNext[0], oppNext[1])
-
-
+                convCurrCoords = motion.convert(OpponentCurrentPosition[0], OpponentCurrentPosition[1])
+                convNextCoords = motion.convert(OpponentNextPosition[0], OpponentNextPosition[1])
                 canvas_visualiser.delete(opponentIM[i])
                 opponentIM[i] = canvas_visualiser.create_image(convNextCoords[0], convNextCoords[1], image=opponentimage)
+            
 
-
+                
             win.update()
 
 
@@ -174,54 +222,69 @@ def update_visualiser():
         else:
 
             # selected player view
-            gameLength = gameLengthList[playerview]
-            step = 1200 / gameLength
-            playerData = gameFile[playerview]  # retrieves log json file from array
+
+            if gameFile[optPlayervar.get()]==None:
+                gameFile[optPlayervar.get()]=motion.loadJSONFile(optvar.get(), playerview)
+            else:
+                
+                playerData = gameFile[optPlayervar.get()]  # retrieves log json file from array
 
             # update ball
-            BallCurrCoords = playerData[timer.time_step]["BallPosition"]
-            BallNextCoords = playerData[timer.next_time_step]["BallPosition"]
-            convBallCurrCoords = motion.convert(BallCurrCoords[0], BallCurrCoords[1])
-            convBallNextCoords = motion.convert(BallNextCoords[0], BallNextCoords[1])
+                BallCurrCoords = playerData[timer.time_step]["BallPosition"]
+                BallNextCoords = playerData[timer.next_time_step]["BallPosition"]
+                convBallCurrCoords = motion.convert(BallCurrCoords[0], BallCurrCoords[1])
+                convBallNextCoords = motion.convert(BallNextCoords[0], BallNextCoords[1])
 
-            canvas_visualiser.delete(ballIM)
+                canvas_visualiser.delete(ballIM)
 
-            ballIM = canvas_visualiser.create_image(convBallNextCoords[0], convBallNextCoords[1], image=ballimage)
+                ballIM = canvas_visualiser.create_image(convBallNextCoords[0], convBallNextCoords[1], image=ballimage)
 
-            # update team mate and opponent positions
-            TeamMatePositionsPresent = playerData[timer.time_step]['TeamMatePositions']
-            TeamMatePositionsFuture = playerData[timer.next_time_step]['TeamMatePositions']
-            OpponentPositionsPresent = playerData[timer.time_step]['OpponentPositions']
-            OpponentPositionsFuture = playerData[timer.next_time_step]['OpponentPositions']
+                # update team mate and opponent positions
+                TeamMatePositionsPresent = playerData[timer.time_step]['TeamMatePositions']
+                TeamMatePositionsFuture = playerData[timer.next_time_step]['TeamMatePositions']
+                OpponentPositionsPresent = playerData[timer.time_step]['OpponentPositions']
+                OpponentPositionsFuture = playerData[timer.next_time_step]['OpponentPositions']
 
-            for x in range(11):
-                # update teammate position
-                TeamMateCurrentPosition = TeamMatePositionsPresent["TEAM" + str(x + 1)]
-                TeamMateNextPosition = TeamMatePositionsFuture["TEAM" + str(x + 1)]
-                convCurrCoords = motion.convert(TeamMateCurrentPosition[0], TeamMateCurrentPosition[1])
-                convNextCoords = motion.convert(TeamMateNextPosition[0], TeamMateNextPosition[1])
+                for i in range(11):
+                    # update teammate position
+                    TeamMateCurrentPosition = TeamMatePositionsPresent["TEAM" + str(i + 1)]
+                    TeamMateNextPosition = TeamMatePositionsFuture["TEAM" + str(i + 1)]
+                    convCurrCoords = motion.convert(TeamMateCurrentPosition[0], TeamMateCurrentPosition[1])
+                    convNextCoords = motion.convert(TeamMateNextPosition[0], TeamMateNextPosition[1])
 
-                canvas_visualiser.delete(playerIM[i])
+                    canvas_visualiser.delete(playerIM[i])
 
-                if i == optPlayerInfovar.get():
-                    playerIM[i] = canvas_visualiser.create_image(convNextCoords[0], convNextCoords[1],
-                                                                 image=selected_player_image)
-                else:
-                    playerIM[i] = canvas_visualiser.create_image(convNextCoords[0], convNextCoords[1],
-                                                                 image=playerimage)
+                    if i == optPlayerInfovar.get():
+                        playerIM[i] = canvas_visualiser.create_image(convNextCoords[0], convNextCoords[1],
+                                                                     image=selected_player_image)
+                    else:
+                        playerIM[i] = canvas_visualiser.create_image(convNextCoords[0], convNextCoords[1],
+                                                                     image=playerimage)
 
+                    if optPlayerPathvar.get()==i+1:
+                        if k>=60 :
+                        
+                            canvas_visualiser.delete(line[k%60])
+                        line[k%60]=canvas_visualiser.create_line(convCurrCoords[0],convCurrCoords[1],convNextCoords[0],convNextCoords[1], fill="red", width=5)
+                        k+=1
+                    
+                    if optPlayerPathvar.get()==0:
+                        for u in range(k):
+                            canvas_visualiser.delete(line[u%60])             
+                        k=0
+                        
 
+                    # update opponent position
+                    OpponentCurrentPosition = OpponentPositionsPresent["OPP" + str(i + 1)]
+                    OpponentNextPosition = OpponentPositionsFuture["OPP" + str(i + 1)]
+                    convCurrCoords = motion.convert(OpponentCurrentPosition[0], OpponentCurrentPosition[1])
+                    convNextCoords = motion.convert(OpponentNextPosition[0], OpponentNextPosition[1])
 
-                # update opponent position
-                OpponentCurrentPosition = OpponentPositionsPresent["OPP" + str(x + 1)]
-                OpponentNextPosition = OpponentPositionsFuture["OPP" + str(x + 1)]
-                convCurrCoords = motion.convert(OpponentCurrentPosition[0], OpponentCurrentPosition[1])
-                convNextCoords = motion.convert(OpponentNextPosition[0], OpponentNextPosition[1])
-
-                canvas_visualiser.delete(opponentIM[i])
-                opponentIM[i] = canvas_visualiser.create_image(convNextCoords[0], convNextCoords[1], image=opponentimage)
-
-            win.update()
+                    canvas_visualiser.delete(opponentIM[i])
+                    opponentIM[i] = canvas_visualiser.create_image(convNextCoords[0], convNextCoords[1], image=opponentimage)
+                    
+                    
+                win.update()
 
 
 
@@ -283,7 +346,7 @@ l.place(x=0, y=0)
 
 # button to go to visualiser
 start_game_button = tk.Button(Frame_menu, text="Start the Visualiser",
-                              command=lambda: [go_to_visualiser(optvar), update_visualiser()], font=("Arial", 12))
+                              command=lambda: [go_to_visualiser(), update_visualiser()], font=("Arial", 12))
 start_game_button.place(x=400, y=500)
 # canvas_menu.grid()
 # button to go to visualiser
@@ -297,7 +360,7 @@ visualiser_buttonbg = canvas_menu.create_image(400, 500, image=visualiser_button
 # label_menu = tk.Label(l, text="Welcome to the RoboCup Visualiser", font=50, bg="blue", fg="white")
 # label_menu.place(x=400,y=0)
 # Create a variable to store the selected option
-optvar = tk.IntVar(value=1)
+optvar = tk.IntVar(value=4)
 # Create a style for the menu button and radio buttons
 style = ttk.Style()
 style.configure("TMenubutton", font=("Arial", 12))
@@ -310,9 +373,9 @@ gameselection.menu = tk.Menu(gameselection, tearoff=0)
 # Associate the menu with the menu button
 gameselection["menu"] = gameselection.menu
 # Add radio buttons to the dropdown menu
-gameselection.menu.add_radiobutton(label="WITS-FC_vs_WITS-GOTO", value=1, variable=optvar, font=("Arial", 12))
-gameselection.menu.add_radiobutton(label="WITS-FC_vs_WITS-FC", value=2, variable=optvar, font=("Arial", 12))
-gameselection.menu.add_radiobutton(label="WITS-FC_vs_STAND", value=3, variable=optvar, font=("Arial", 12))
+gameselection.menu.add_radiobutton(label="WITS-FC_vs_WITS-GOTO1", value=4, variable=optvar, font=("Arial", 12))
+gameselection.menu.add_radiobutton(label="WITS-FC_vs_WITS-GOTO2", value=5, variable=optvar, font=("Arial", 12))
+#gameselection.menu.add_radiobutton(label="WITS-FC_vs_WITS-GOTO3", value=6, variable=optvar, font=("Arial", 12))
 # Configure the style for the radio buttons
 for rb in gameselection.menu.winfo_children():
     gameselection.menu.entryconfigure(rb, font=("Arial", 10), style="TRadiobutton")
@@ -322,7 +385,7 @@ gameselection.place(x=400, y=400)
 
 # canvas_menu.tag_bind(visualiser_buttonbg, "<Button-1>", go_to_visualiser)
 
-start_game_button = tk.Button(l, text="start", command=lambda: [go_to_visualiser(optvar), update_visualiser()])
+start_game_button = tk.Button(l, text="start", command=lambda: [go_to_visualiser(), update_visualiser()])
 
 # start_game_button.grid(row=9,column=4)
 start_game_button.place(x=400, y=500)
@@ -350,14 +413,17 @@ width, height = fieldimage.width(), fieldimage.height()
 
 # this is the frame that is set to house the field image and is already set to 75% of screen space
 canvas_visualiser = Canvas(Frame_visualiser, bg="black", width=width, height=height)
-canvas_visualiser.grid(row=1, column=0)
+
+    
+
+canvas_visualiser.grid(row=1, column=0,columnspan=10)
 # the relx and rely values are values between 0 and 1,
 # the x and y values specify the position of the top left corner of the frame
 # used to place the frame on a percentace value on the screens x,y values
 # basically if the x runs from 0-100 a relx=0,3 will place the center x of the frame at x = 30 (30% to the right of x =0)
 # Anchor is the alignemnt of the frame
 timer_label = tk.Label(Frame_visualiser, text="Time needs to be added here", font=("Arial", 12))
-timer_label.grid(row=0, column=0)
+timer_label.grid(row=0, column=1)
 
 optPlayervar = tk.IntVar(value=11)
 playerselection = Menubutton(Frame_visualiser, text="Select perspective", font=("Arial", 11))
@@ -370,11 +436,11 @@ for i in range(11):
                                          command=lambda: print(optPlayervar.get()))
 playerselection.menu.add_radiobutton(label="Average Player", value=11, variable=optPlayervar,
                                      command=lambda: print(optPlayervar.get()))
-playerselection.grid(row=12, column=0)
+playerselection.grid(row=2, column=5)
 
 # player info display
 playerdata_label = tk.Label(Frame_visualiser)
-playerdata_label.grid(column=3, row=0, padx=5, pady=5, rowspan=20)
+playerdata_label.grid(column=10, row=0, padx=5, pady=5, rowspan=20)
 playerdataFieldBallPosition_label = tk.Label(playerdata_label, text="BallPosition", font=("Arial", 10))
 playerdataValueBallPosition_label = tk.Label(playerdata_label, text="Value", font=("Arial", 10))
 playerdataFieldBallPosition_label.grid(column=1, row=1, padx=2, pady=5)
@@ -413,16 +479,26 @@ for i in range(11):
     playerdataFieldTeamDistance_label[i].grid(column=5, row=2 + i, pady=5)
     playerdataValueTeamDistance_label[i].grid(column=6, row=2 + i, padx=2, pady=5)
 
-optPlayerInfovar = tk.IntVar(value=0)
+optPlayerInfovar = tk.IntVar(value=1)
 playerInfoselection = Menubutton(Frame_visualiser, text="Select Player Info", font=("Arial", 11))
 # gameselection.grid(row=3, column=4, padx=5, pady=5)
 playerInfoselection.menu = Menu(playerInfoselection, tearoff=0)
 playerInfoselection["menu"] = playerInfoselection.menu
 # Create a dropdown Menu
 for i in range(11):
-    playerInfoselection.menu.add_radiobutton(label="Player " + str(i + 1), value=i, variable=optPlayerInfovar,
-                                             command=lambda: print(optPlayervar.get()), font=("Arial", 10))
-playerInfoselection.grid(row=13, column=0, columnspan=1)
+    playerInfoselection.menu.add_radiobutton(label="Player " + str(i + 1), value=i, variable=optPlayerInfovar, font=("Arial", 10))
+playerInfoselection.grid(row=2, column=4, columnspan=1)
+
+optPlayerPathvar = tk.IntVar(value=0)
+playerPathselection = Menubutton(Frame_visualiser, text="Select Player Path", font=("Arial", 11))
+# gameselection.grid(row=3, column=4, padx=5, pady=5)
+playerPathselection.menu = Menu(playerPathselection, tearoff=0)
+playerPathselection["menu"] = playerPathselection.menu
+# Create a dropdown Menu
+playerPathselection.menu.add_radiobutton(label="None", value=0, variable=optPlayerPathvar, font=("Arial", 10))
+for i in range(11):
+    playerPathselection.menu.add_radiobutton(label="Player " + str(i + 1), value=i+1, variable=optPlayerPathvar, font=("Arial", 10))
+playerPathselection.grid(row=2, column=10, columnspan=1)
 # ===============================================================================================================
 
 
