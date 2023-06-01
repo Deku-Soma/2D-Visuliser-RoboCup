@@ -35,10 +35,10 @@ class Timer:
 
         # Here is where the time slider is set up
         self.time_step_slider_value = tk.IntVar()
-        self.time_step_slider = tk.Scale(from_=0, to=self.max_ticks, orient="horizontal",
+        self.time_step_slider = tk.Scale(self.master,from_=0, to=self.max_ticks, orient="horizontal",
                                          variable=self.time_step_slider_value, font=("Arial", 12),
                                          length=700)  # Adjust the length of the time slider here
-        self.time_step_slider.grid(row=12, column=0, columnspan=2)
+        self.time_step_slider.grid(row=12, column=0,columnspan=40)
 
     def timer_play_pause(self):
         self.ticking = not self.ticking

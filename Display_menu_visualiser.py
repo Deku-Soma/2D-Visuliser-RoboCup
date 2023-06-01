@@ -42,10 +42,10 @@ def go_to_menu(event):
     Frame_menu.grid()
 
 
-def back_to_menu(gameFile):
+def back_to_menu():
     Frame_visualiser.grid_forget()
     Frame_menu.grid()
-    del gameFile
+    
 
 
 def go_to_visualiser():
@@ -78,8 +78,8 @@ def update_visualiser():
     # Loads json files into array
     generalPerspective = motion.loadJSONFile(optvar.get(), 0)
     gameFile=[None] * 12
-    # back_menu_button = tk.Button(Frame_visualiser, text="Back", command=lambda: back_to_menu(gameFile))
-    # back_menu_button.grid(row=0,column=0)
+    back_menu_button = tk.Button(Frame_visualiser, text="Back", command=lambda: back_to_menu())
+    back_menu_button.grid(row=0,column=0)
     
    
 
