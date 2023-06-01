@@ -131,7 +131,7 @@ def generateGeneralView(var):
                 with open(path_to_json_file, "a") as outfile:
                         outfile.write(json.dumps(dictionary)+"\n")        
         print(time.time()-start)
-generateGeneralView(4)     
+     
 '''
 #intitialise canvas
 win = Tk()
