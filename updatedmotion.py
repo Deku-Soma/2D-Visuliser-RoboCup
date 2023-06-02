@@ -31,7 +31,7 @@ def loadJSONFile(match, PlayerNum):
 #match- integer (takes match number which is directory to file named match1 or match2 which is a folder that stores the json files)
 def writeGlobalJSONFile(match):
         total=0
-        folder="matches\match"+str(match)
+        folder="matches"+ os.path.sep +"match"+str(match)
         cwd = os.getcwd()        
         globaldata=[]
         jsondata=[]
