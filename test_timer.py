@@ -1,110 +1,119 @@
-import pytest
+import unittest
 import tkinter as tk
-from tkinter import ttk
-from tkinter import messagebox
-from unittest.mock import patch
-import os
-from xvfbwrapper import Xvfb
-from timesimple import Timer
+import timesimple as ts
+import time
 
 
-class TestTimer:
+class TimerTest(unittest.TestCase):
+    win = tk.Tk()
 
-    @classmethod
-    def setUpClass(cls):
-        if "DISPLAY" in os.environ:
-            cls.win = tk.Tk()
+    def test_play_pause(self):
+        timer = ts.Timer(self.win)
 
-    @classmethod
-    def tearDownClass(cls):
-        if cls.win is not None:
-            cls.win.destroy()
+        self.assertFalse(timer.ticking)
+        self.assertEqual("Play", timer.play_pause_button.cget("text"))
 
-    @pytest.mark.skipif("DISPLAY" not in os.environ, reason="Skipping GUI test in headless environment")
-    def test_gui(self):
-        if "DISPLAY" not in os.environ:
-            # Headless environment, use xvfb
-            with Xvfb() as xvfb:
-                self.test_format_time()
-                self.test_start_timer()
-                self.test_stop_timer()
-                self.test_tick_timer()
-                self.test_rewind_timer()
-                self.test_speedup_timer()
-                self.test_slowdown_timer()
-        else:
-            # GUI test code goes here
-            self.test_format_time()
-            self.test_start_timer()
-            self.test_stop_timer()
-            self.test_tick_timer()
-            self.test_rewind_timer()
-            self.test_speedup_timer()
-            self.test_slowdown_timer()
+        timer.timer_play_pause()
+        self.assertTrue(timer.ticking)
+        self.assertEqual("Pause", timer.play_pause_button.cget("text"))
 
-    def setUp(self):
-        self.root = tk.Tk()
-        self.timer = Timer(self.root, max_ticks=100000, tick_rate=20)
+        timer.timer_play_pause()
+        self.assertFalse(timer.ticking)
+        self.assertEqual("Play", timer.play_pause_button.cget("text"))
 
-    def tearDown(self):
-        self.root.destroy()
+    def test_rewind(self):
+        timer = ts.Timer(self.win)
 
-    def test_format_time(self):
-        self.timer.gametime = 3723
-        assert self.timer.format_time() == "01:02:03"
+        self.assertFalse(timer.rewind)
+        self.assertEqual("Rewind", timer.rewind_button.cget("text"))
 
-    def test_start_timer(self):
-        assert not self.timer.ticking
-        self.timer.timer_play_pause()
-        assert self.timer.ticking
-        assert self.timer.play_pause_button["text"] == "⏸"
-        self.timer.timer_play_pause()
-        assert not self.timer.ticking
-        assert self.timer.play_pause_button["text"] == "▶"
+        timer.timer_rewind()
+        self.assertTrue(timer.rewind)
+        self.assertEqual("Forward", timer.rewind_button.cget("text"))
 
-    def test_stop_timer(self):
-        self.timer.timer_play_pause()
-        assert self.timer.ticking
-        self.timer.timer_play_pause()
-        assert not self.timer.ticking
+        timer.timer_rewind()
+        self.assertFalse(timer.rewind)
+        self.assertEqual("Rewind", timer.rewind_button.cget("text"))
 
-    def test_tick_timer(self):
-        self.timer.time_step_slider_value.set(0)
-        self.timer.ticking = True
-        self.timer.timer_tick()
-        assert self.timer.time_step.get() == 1
-        assert self.timer.next_time_step.get() == 1
+    def test_speedup(self):
+        timer = ts.Timer(self.win)
 
-        self.timer.ticking = False
-        self.timer.rewind = True
-        self.timer.timer_tick()
-        assert self.timer.time_step.get() == 0
-        assert self.timer.next_time_step.get() == 1
+        self.assertEqual(1, timer.speed_up)
 
-    def test_rewind_timer(self):
-        assert not self.timer.rewind
-        self.timer.timer_rewind()
-        assert self.timer.rewind
-        assert self.timer.rewind_button["text"] == "⏭"
-        self.timer.timer_rewind()
-        assert not self.timer.rewind
-        assert self.timer.rewind_button["text"] == "⏪"
+        timer.timer_speedup()
+        self.assertEqual(2, timer.speed_up)
 
-    def test_speedup_timer(self):
-        assert self.timer.speed_up.get() == 1
-        self.timer.timer_speedup()
-        assert self.timer.speed_up.get() == 2
-        self.timer.timer_speedup()
-        assert self.timer.speed_up.get() == 4
+    def test_slowdown(self):
+        timer = ts.Timer(self.win)
 
-    def test_slowdown_timer(self):
-        assert self.timer.speed_up.get() == 1
-        self.timer.timer_speedup()
-        self.timer.timer_slowdown()
-        assert self.timer.speed_up.get() == 2
-        self.timer.timer_slowdown()
-        assert self.timer.speed_up.get() == 1
+        timer.timer_slowdown()
+        self.assertEqual(0.5, timer.speed_up)
 
-   
+    def test_tick(self):
+        timer = ts.Timer(self.win)
+
+        timer.timer_tick()
+        self.assertEqual(0, timer.time_step)
+        self.assertEqual(0, timer.next_time_step)
+
+        timer.timer_play_pause()
+        timer.timer_tick()
+        self.assertEqual(1, timer.time_step)
+        self.assertEqual(2, timer.next_time_step)
+
+        timer.speed_up = 2
+        timer.time_step = 0
+        timer.timer_tick()
+        self.assertEqual(2, timer.time_step)
+        self.assertEqual(4, timer.next_time_step)
+
+        timer.speed_up = 1
+        timer.rewind = True
+        timer.time_step = 10
+        timer.timer_tick()
+        self.assertEqual(9, timer.time_step)
+        self.assertEqual(8, timer.next_time_step)
+
+        timer.speed_up = 1/2
+        timer.rewind = False
+        timer.time_step = 0
+
+        start_time = time.time()
+        timer.timer_tick()
+        end_time = time.time() - start_time
+
+        self.assertEqual(1, timer.time_step)
+        self.assertEqual(2, timer.next_time_step)
+        self.assertEqual(0.04, round(end_time, 2))
+
+        timer.time_step = -1
+        timer.ticking = True
+        timer.rewind = True
+        timer.speed_up = 1
+        timer.timer_tick()
+        self.assertEqual(0, timer.time_step)
+        self.assertFalse(timer.ticking)
+        self.assertFalse(timer.rewind)
+        self.assertEqual(1, timer.speed_up)
+
+        timer.time_step = 1
+        timer.ticking = True
+        timer.rewind = True
+        timer.speed_up = 1
+        timer.timer_tick()
+        self.assertEqual(0, timer.time_step)
+        self.assertFalse(timer.ticking)
+        self.assertFalse(timer.rewind)
+        self.assertEqual(1, timer.speed_up)
+
+        timer.time_step = timer.max_ticks
+        timer.ticking = True
+        timer.speed_up = 5
+        timer.timer_tick()
+        self.assertEqual(timer.max_ticks, timer.time_step)
+        self.assertFalse(timer.ticking)
+        self.assertEqual(1, timer.speed_up)
+
+
 if __name__ == '__main__':
-    pytest.main()
+    unittest.main()
