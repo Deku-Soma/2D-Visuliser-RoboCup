@@ -6,7 +6,7 @@ from unittest.mock import patch
 import os
 from xvfbwrapper import Xvfb
 
-from timefunctions import Timer
+from timesimple import Timer
 
 
 class TestTimer(unittest.TestCase):
