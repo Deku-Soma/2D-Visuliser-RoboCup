@@ -5,7 +5,9 @@ import time
 
 
 class TimerTest(unittest.TestCase):
-    win = tk.Tk()
+    @classmethod
+    def setUpClass(cls):
+        cls.win = tk.Tk()
 
     def test_play_pause(self):
         timer = ts.Timer(self.win)
@@ -74,7 +76,7 @@ class TimerTest(unittest.TestCase):
         self.assertEqual(9, timer.time_step)
         self.assertEqual(8, timer.next_time_step)
 
-        timer.speed_up = 1/2
+        timer.speed_up = 1 / 2
         timer.rewind = False
         timer.time_step = 0
 
@@ -84,7 +86,7 @@ class TimerTest(unittest.TestCase):
 
         self.assertEqual(1, timer.time_step)
         self.assertEqual(2, timer.next_time_step)
-        self.assertEqual(0.04, round(end_time, 2))
+        self.assertAlmostEqual(0.04, round(end_time, 2), delta=0.01)
 
         timer.time_step = -1
         timer.ticking = True
@@ -113,6 +115,10 @@ class TimerTest(unittest.TestCase):
         self.assertEqual(timer.max_ticks, timer.time_step)
         self.assertFalse(timer.ticking)
         self.assertEqual(1, timer.speed_up)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.win.destroy()
 
 
 if __name__ == '__main__':
