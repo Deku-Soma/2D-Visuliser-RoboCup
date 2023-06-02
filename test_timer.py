@@ -2,12 +2,14 @@ import unittest
 import tkinter as tk
 import timesimple as ts
 import time
+import os
 
 
 class TimerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.win = tk.Tk()
+        if os.environ.get('DISPLAY'):
+            cls.win = tk.Tk()
 
     def test_play_pause(self):
         timer = ts.Timer(self.win)
@@ -118,7 +120,8 @@ class TimerTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.win.destroy()
+        if os.environ.get('DISPLAY'):
+            cls.win.destroy()
 
 
 if __name__ == '__main__':
