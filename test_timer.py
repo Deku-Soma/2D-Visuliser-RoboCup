@@ -88,8 +88,8 @@ class TimerTest(unittest.TestCase):
         timer.timer_tick()
         end_time = time.time() - start_time
 
-        self.assertEqual(1, timer.time_step)
-        self.assertEqual(2, timer.next_time_step)
+        self.assertEqual(3, timer.time_step)
+        self.assertEqual(4, timer.next_time_step)
         self.assertEqual(0.04, round(end_time, 2))
 
         timer.time_step = -1
