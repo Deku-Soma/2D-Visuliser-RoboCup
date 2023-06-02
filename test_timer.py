@@ -119,7 +119,7 @@ class TimerTest(unittest.TestCase):
         self.assertEqual(timer.max_ticks,100000)
         self.assertFalse(timer.ticking)
         self.assertFalse(timer.rewind)
-        self.assertEqual(5, timer.speed_up)
+        self.assertEqual(1, timer.speed_up)
 
     @classmethod
     def tearDownClass(cls):
