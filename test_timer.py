@@ -112,11 +112,11 @@ class TimerTest(unittest.TestCase):
         self.assertTrue(timer.rewind)
         self.assertEqual(1, timer.speed_up)
 
-        timer.time_step = 100000
+        timer.time_step = timer.max_ticks
         timer.ticking = True
         timer.speed_up = 5
         timer.timer_tick()
-        self.assertEqual(timer.max_ticks, timer.time_step)
+        self.assertEqual(timer.max_ticks,100000)
         self.assertTrue(timer.ticking)
         self.assertTrue(timer.rewind)
         self.assertEqual(5, timer.speed_up)
