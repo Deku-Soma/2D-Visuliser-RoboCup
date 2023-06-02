@@ -2,13 +2,21 @@ import unittest
 import tkinter as tk
 import timesimple as ts
 import time
+from xvfbwrapper import Xvfb
 
 
 class TimerTest(unittest.TestCase):
-    win = tk.Tk()
+    @classmethod
+    def setUpClass(cls):
+        cls.vdisplay = Xvfb()
+        cls.vdisplay.start()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.vdisplay.stop()
 
     def test_play_pause(self):
-        timer = ts.Timer(self.win)
+        timer = ts.Timer(tk.Tk())
 
         self.assertFalse(timer.ticking)
         self.assertEqual("Play", timer.play_pause_button.cget("text"))
@@ -22,7 +30,7 @@ class TimerTest(unittest.TestCase):
         self.assertEqual("Play", timer.play_pause_button.cget("text"))
 
     def test_rewind(self):
-        timer = ts.Timer(self.win)
+        timer = ts.Timer(tk.Tk())
 
         self.assertFalse(timer.rewind)
         self.assertEqual("Rewind", timer.rewind_button.cget("text"))
@@ -36,7 +44,7 @@ class TimerTest(unittest.TestCase):
         self.assertEqual("Rewind", timer.rewind_button.cget("text"))
 
     def test_speedup(self):
-        timer = ts.Timer(self.win)
+        timer = ts.Timer(tk.Tk())
 
         self.assertEqual(1, timer.speed_up)
 
@@ -44,13 +52,13 @@ class TimerTest(unittest.TestCase):
         self.assertEqual(2, timer.speed_up)
 
     def test_slowdown(self):
-        timer = ts.Timer(self.win)
+        timer = ts.Timer(tk.Tk())
 
         timer.timer_slowdown()
         self.assertEqual(0.5, timer.speed_up)
 
     def test_tick(self):
-        timer = ts.Timer(self.win)
+        timer = ts.Timer(tk.Tk())
 
         timer.timer_tick()
         self.assertEqual(0, timer.time_step)
@@ -74,7 +82,7 @@ class TimerTest(unittest.TestCase):
         self.assertEqual(9, timer.time_step)
         self.assertEqual(8, timer.next_time_step)
 
-        timer.speed_up = 1/2
+        timer.speed_up = 1 / 2
         timer.rewind = False
         timer.time_step = 0
 
