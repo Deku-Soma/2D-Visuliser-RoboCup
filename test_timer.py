@@ -12,10 +12,10 @@ class TimerTest(unittest.TestCase):
             cls.win = tk.Tk()
 
     def test_play_pause(self):
-        timer = ts.Timer(self.win)
+        timer = ts.Timer(TimerTest.win)
 
         self.assertFalse(timer.ticking)
-        self.assertEqual("▶", timer.play_pause_button.cget("text"))
+        self.assertEqual("Play", timer.play_pause_button.cget("text"))
 
         timer.timer_play_pause()
         self.assertTrue(timer.ticking)
@@ -23,13 +23,13 @@ class TimerTest(unittest.TestCase):
 
         timer.timer_play_pause()
         self.assertFalse(timer.ticking)
-        self.assertEqual("▶", timer.play_pause_button.cget("text"))
+        self.assertEqual("Play", timer.play_pause_button.cget("text"))
 
     def test_rewind(self):
-        timer = ts.Timer(self.win)
+        timer = ts.Timer(TimerTest.win)
 
         self.assertFalse(timer.rewind)
-        self.assertEqual("⏩", timer.rewind_button.cget("text"))
+        self.assertEqual("Rewind", timer.rewind_button.cget("text"))
 
         timer.timer_rewind()
         self.assertTrue(timer.rewind)
@@ -37,10 +37,10 @@ class TimerTest(unittest.TestCase):
 
         timer.timer_rewind()
         self.assertFalse(timer.rewind)
-        self.assertEqual("⏩", timer.rewind_button.cget("text"))
+        self.assertEqual("Rewind", timer.rewind_button.cget("text"))
 
     def test_speedup(self):
-        timer = ts.Timer(self.win)
+        timer = ts.Timer(TimerTest.win)
 
         self.assertEqual(1, timer.speed_up)
 
@@ -48,13 +48,13 @@ class TimerTest(unittest.TestCase):
         self.assertEqual(2, timer.speed_up)
 
     def test_slowdown(self):
-        timer = ts.Timer(self.win)
+        timer = ts.Timer(TimerTest.win)
 
         timer.timer_slowdown()
         self.assertEqual(0.5, timer.speed_up)
 
     def test_tick(self):
-        timer = ts.Timer(self.win)
+        timer = ts.Timer(TimerTest.win)
 
         timer.timer_tick()
         self.assertEqual(0, timer.time_step)
@@ -78,7 +78,7 @@ class TimerTest(unittest.TestCase):
         self.assertEqual(9, timer.time_step)
         self.assertEqual(8, timer.next_time_step)
 
-        timer.speed_up = 1 / 2
+        timer.speed_up = 1/2
         timer.rewind = False
         timer.time_step = 0
 
@@ -88,7 +88,7 @@ class TimerTest(unittest.TestCase):
 
         self.assertEqual(1, timer.time_step)
         self.assertEqual(2, timer.next_time_step)
-        self.assertAlmostEqual(0.04, round(end_time, 2), delta=0.01)
+        self.assertEqual(0.04, round(end_time, 2))
 
         timer.time_step = -1
         timer.ticking = True
@@ -116,7 +116,8 @@ class TimerTest(unittest.TestCase):
         timer.timer_tick()
         self.assertEqual(timer.max_ticks, timer.time_step)
         self.assertFalse(timer.ticking)
-        self.assertEqual(1, timer.speed_up)
+        self.assertFalse(timer.rewind)
+        self.assertEqual(5, timer.speed_up)
 
     @classmethod
     def tearDownClass(cls):
