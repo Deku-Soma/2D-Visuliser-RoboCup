@@ -10,14 +10,9 @@ jobs:
       - checkout
       - python/install-deps
       - run:
-          name: Install tkinter
-          command: sudo apt-get install python3-tk
-      - run:
           name: Install xvfbwrapper
           command: pip install xvfbwrapper
-      - run:
-          name: Install timesimple
-          command: pip install timesimple
+
       - run:
           name: Set up virtual display
           command: xvfb-run -s "-screen 0 1024x768x24" python -m unittest test_timer.py
