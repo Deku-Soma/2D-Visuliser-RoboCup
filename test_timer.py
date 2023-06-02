@@ -21,11 +21,11 @@ class TimerTest(unittest.TestCase):
 
         timer.timer_play_pause()
         self.assertTrue(timer.ticking)
-        self.assertEqual("Pause", timer.play_pause_button.cget("text"))
+        self.assertEqual("⏸", timer.play_pause_button.cget("text"))
 
         timer.timer_play_pause()
         self.assertFalse(timer.ticking)
-        self.assertEqual("Play", timer.play_pause_button.cget("text"))
+        self.assertEqual("▶", timer.play_pause_button.cget("text"))
 
     def test_rewind(self):
         timer = ts.Timer(TimerTest.win)
@@ -39,7 +39,7 @@ class TimerTest(unittest.TestCase):
 
         timer.timer_rewind()
         self.assertFalse(timer.rewind)
-        self.assertEqual("Rewind", timer.rewind_button.cget("text"))
+        self.assertEqual("⏪", timer.rewind_button.cget("text"))
 
     def test_speedup(self):
         timer = ts.Timer(TimerTest.win)
@@ -78,7 +78,7 @@ class TimerTest(unittest.TestCase):
         timer.time_step = 10
         timer.timer_tick()
         self.assertEqual(2, timer.time_step)
-        self.assertEqual(8, timer.next_time_step)
+        self.assertEqual(1, timer.next_time_step)
 
         timer.speed_up = 1/2
         timer.rewind = False
