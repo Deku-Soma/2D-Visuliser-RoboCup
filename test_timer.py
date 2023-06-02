@@ -105,6 +105,6 @@ class TestTimer:
         self.timer.timer_slowdown()
         assert self.timer.speed_up.get() == 1
 
-
+   
 if __name__ == '__main__':
     pytest.main()
