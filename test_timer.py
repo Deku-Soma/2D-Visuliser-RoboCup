@@ -3,13 +3,15 @@ import tkinter as tk
 import timesimple as ts
 import time
 import os
+from xvfbwrapper import Xvfb
 
 
 class TimerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        if os.environ.get('DISPLAY'):
-            cls.win = tk.Tk()
+        cls.vdisplay = Xvfb()
+        cls.vdisplay.start()
+        cls.win = tk.Tk()
 
     def test_play_pause(self):
         timer = ts.Timer(TimerTest.win)
@@ -121,8 +123,8 @@ class TimerTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        if os.environ.get('DISPLAY'):
-            cls.win.destroy()
+        cls.win.destroy()
+        cls.vdisplay.stop()
 
 
 if __name__ == '__main__':
