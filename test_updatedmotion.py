@@ -5,104 +5,122 @@ import updatedmotion as motion
 class MotionTest(unittest.TestCase):
 
     def test_loadJSONFile(self):
-        testdata = motion.loadJSONFile(4, 1)
-        checkdata = []
-        checkdata.append({"BallPosition": [0.0, 0.0], "CurrGameTime": 3.68, "CurrPlayMode": 0, "CurrTime": 3.68, "IsFallen": False, "MyPosition": [0.0, 0.0], "OpponentPositions": {"OPP1": [0.0, 0.0], "OPP10": [0.0, 0.0], "OPP11": [0.0, 0.0], "OPP2": [0.0, 0.0], "OPP3": [0.0, 0.0], "OPP4": [0.0, 0.0], "OPP5": [0.0, 0.0], "OPP6": [0.0, 0.0], "OPP7": [0.0, 0.0], "OPP8": [0.0, 0.0], "OPP9": [0.0, 0.0]}, "TeamMateDistanceToBall": {"1": 0.0, "10": 0.0, "11": 0.0, "2": 0.0, "3": 0.0, "4": 0.0, "5": 0.0, "6": 0.0, "7": 0.0, "8": 0.0, "9": 0.0}, "TeamMatePositions": {"TEAM1": [0.0, 0.0], "TEAM10": [0.0, 0.0], "TEAM11": [0.0, 0.0], "TEAM2": [0.0, 0.0], "TEAM3": [0.0, 0.0], "TEAM4": [0.0, 0.0], "TEAM5": [0.0, 0.0], "TEAM6": [0.0, 0.0], "TEAM7": [0.0, 0.0], "TEAM8": [0.0, 0.0], "TEAM9": [0.0, 0.0]}})
-        checkdata.append({"Action": {"location": [-14.941847227983244, -0.07915494486260229], "type": "SKILL_STAND"}, "BallPosition": [5.265403173197079, -2.5145983250388113], "CurrGameTime": 617.16, "CurrPlayMode": 8, "CurrTime": 617.16, "IsFallen": False, "IsOffensive": True, "MyPosition": [-14.965486141009452, 0.030141149615426927], "OpponentPositions": {"OPP1": [14.97822176899842, 0.09688302974513263], "OPP10": [4.982725906758077, -4.950292158352977], "OPP11": [4.950529919297331, 5.03233488270642], "OPP2": [7.448514282471695, 0.01795116751300352], "OPP3": [8.439338833110622, -0.9397283189723344], "OPP4": [8.494916356592391, 1.124516559473148], "OPP5": [1.5204942224800035, -2.9172882363461348], "OPP6": [1.4357015691653885, 2.103351639892189], "OPP7": [3.9603513538610997, 0.09597962541025096], "OPP8": [11.273557482813452, 0.10230134404585112], "OPP9": [12.225658457864117, 0.08917176313420683]}, "TeamMateDistanceToBall": {"1": 20.39030647277832, "10": 9.953299522399902, "11": 6.043966770172119, "2": 3.740431070327759, "3": 4.739761829376221, "4": 4.389556884765625, "5": 1.7131140232086182, "6": 1.9880598783493042, "7": 0.45446160435676575, "8": 11.314191818237305, "9": 14.222305297851563}, "TeamMatePositions": {"TEAM1": [-14.965486141009452, 0.030141149615426927], "TEAM10": [-0.4045335713138787, 5.665865461449619], "TEAM11": [7.3090247674268305, 0.9749972368773454], "TEAM2": [1.5715042655214937, -1.9264362443145728], "TEAM3": [1.1037364432191765, -0.2461465800859508], "TEAM4": [1.292269989057914, -4.380723305793494], "TEAM5": [4.723852399441512, -4.139862170588506], "TEAM6": [4.004480395568667, -0.9775700435204242], "TEAM7": [5.0125725169886834, -2.8922383910019467], "TEAM8": [-5.956084160193473, -1.0692079957637604], "TEAM9": [-8.7678370587818, -0.20329416405138823]}, "isClosestTeam": False})
-        self.assertEqual(checkdata[0], testdata[0])
-        self.assertEqual(checkdata[1], testdata[len(testdata) - 1])
+        testdata = motion.loadJSONFile('matches/match4/1')
+        checkdata = [
+            {
+                "BallPosition": [0.0, 0.0],
+                "CurrGameTime": 3.68,
+                "CurrPlayMode": 0,
+                "CurrTime": 3.68,
+                "IsFallen": False,
+                "MyPosition": [0.0, 0.0],
+                "OpponentPositions": {
+                    "OPP1": [0.0, 0.0],
+                    "OPP10": [0.0, 0.0],
+                    "OPP11": [0.0, 0.0],
+                    "OPP2": [0.0, 0.0],
+                    "OPP3": [0.0, 0.0],
+                    "OPP4": [0.0, 0.0],
+                    "OPP5": [0.0, 0.0],
+                    "OPP6": [0.0, 0.0],
+                    "OPP7": [0.0, 0.0],
+                    "OPP8": [0.0, 0.0],
+                    "OPP9": [0.0, 0.0]
+                },
+                "TeamMateDistanceToBall": {
+                    "1": 0.0,
+                    "10": 0.0,
+                    "11": 0.0,
+                    "2": 0.0,
+                    "3": 0.0,
+                    "4": 0.0,
+                    "5": 0.0,
+                    "6": 0.0,
+                    "7": 0.0,
+                    "8": 0.0,
+                    "9": 0.0
+                },
+                "TeamMatePositions": {
+                    "TEAM1": [0.0, 0.0],
+                    "TEAM10": [0.0, 0.0],
+                    "TEAM11": [0.0, 0.0],
+                    "TEAM2": [0.0, 0.0],
+                    "TEAM3": [0.0, 0.0],
+                    "TEAM4": [0.0, 0.0],
+                    "TEAM5": [0.0, 0.0],
+                    "TEAM6": [0.0, 0.0],
+                    "TEAM7": [0.0, 0.0],
+                    "TEAM8": [0.0, 0.0],
+                    "TEAM9": [0.0, 0.0]
+                }
+            },
+            {
+                "Action": {
+                    "location": [-14.941847227983244, -0.07915494486260229],
+                    "type": "SKILL_STAND"
+                },
+                "BallPosition": [5.265403173197079, -2.5145983250388113],
+                "CurrGameTime": 617.16,
+                "CurrPlayMode": 8,
+                "CurrTime": 617.16,
+                "IsFallen": False,
+                "IsOffensive": True,
+                "MyPosition": [-14.965486141009452, 0.030141149615426927],
+                "OpponentPositions": {
+                    "OPP1": [14.97822176899842, 0.09604822818654839],
+                    "OPP10": [10.154198694956923, 17.671242827365364],
+                    "OPP11": [12.752794597105344, 25.115067147215547],
+                    "OPP2": [13.865471153797417, -3.6094544188297976],
+                    "OPP3": [10.239588614420335, -11.154562304733983],
+                    "OPP4": [9.081452005392038, -16.063609726535603],
+                    "OPP5": [4.702365662442694, -19.696469979739683],
+                    "OPP6": [0.001779180964224614, -20.0],
+                    "OPP7": [-4.696807300514805, -19.699278675352965],
+                    "OPP8": [-9.073473869505103, -16.07093645007153],
+                    "OPP9": [-10.216668100919347, -11.165487756496955]
+                },
+                "TeamMateDistanceToBall": {
+                    "1": 14.978173618342868,
+                    "10": 11.481062734356044,
+                    "11": 11.253692157179043,
+                    "2": 13.880497987280679,
+                    "3": 11.42220831570364,
+                    "4": 10.405988973366022,
+                    "5": 6.142469277107269,
+                    "6": 0.001779180964224614,
+                    "7": 6.13406310278362,
+                    "8": 10.40586893515049,
+                    "9": 11.387993879496225
+                },
+                "TeamMatePositions": {
+                    "TEAM1": [14.941847227983244, -0.07915494486260229],
+                    "TEAM10": [10.154198694956923, 17.671242827365364],
+                    "TEAM11": [12.752794597105344, 25.115067147215547],
+                    "TEAM2": [13.865471153797417, -3.6094544188297976],
+                    "TEAM3": [10.239588614420335, -11.154562304733983],
+                    "TEAM4": [9.081452005392038, -16.063609726535603],
+                    "TEAM5": [4.702365662442694, -19.696469979739683],
+                    "TEAM6": [0.001779180964224614, -20.0],
+                    "TEAM7": [-4.696807300514805, -19.699278675352965],
+                    "TEAM8": [-9.073473869505103, -16.07093645007153],
+                    "TEAM9": [-10.216668100919347, -11.165487756496955]
+                }
+            }
+        ]
 
-    def test_convert(self):
-        leftx = -15
-        rightx = 15
-        topy = -10
-        bottomy = 10
-        centrex = 0
-        centrey = 0
-
-        bottomleft = []
-        convLeftx = (leftx * 24.6667) + 395 - 10
-        convLefty = (bottomy * 23.5) + 250 - 10
-        bottomleft.append(convLeftx)
-        bottomleft.append(convLefty)
-        testdata = motion.convert(leftx, bottomy)
-        self.assertEqual(bottomleft, testdata)
-
-        topleft = []
-        convLeftx = (leftx * 24.6667) + 395 - 10
-        convLefty = (topy * 23.5) + 250 - 10
-        topleft.append(convLeftx)
-        topleft.append(convLefty)
-        testdata = motion.convert(leftx, topy)
-        self.assertEqual(topleft, testdata)
-
-        centreleft = []
-        convLeftx = (leftx * 24.6667) + 395 - 10
-        convLefty = (centrey * 23.5) + 250 - 10
-        centreleft.append(convLeftx)
-        centreleft.append(convLefty)
-        testdata = motion.convert(leftx, centrey)
-        self.assertEqual(centreleft, testdata)
-
-        bottomright = []
-        convRightx = (rightx * 24.6667) + 395 - 10
-        convRighty = (bottomy * 23.5) + 250 - 10
-        bottomright.append(convRightx)
-        bottomright.append(convRighty)
-        testdata = motion.convert(rightx, bottomy)
-        self.assertEqual(bottomright, testdata)
-
-        topRight = []
-        convRightx = (rightx * 24.6667) + 395 - 10
-        convRighty = (topy * 23.5) + 250 - 10
-        topRight.append(convRightx)
-        topRight.append(convRighty)
-        testdata = motion.convert(rightx, topy)
-        self.assertEqual(topRight, testdata)
-
-        centreRight = []
-        convRightx = (rightx * 24.6667) + 395 - 10
-        convRighty = (centrey * 23.5) + 250 - 10
-        centreRight.append(convRightx)
-        centreRight.append(convRighty)
-        testdata = motion.convert(rightx, centrey)
-        self.assertEqual(centreRight, testdata)
-
-        topMiddle = []
-        convMiddlex = (centrex * 24.6667) + 395 - 10
-        convMiddley = (topy * 23.5) + 250 - 10
-        topMiddle.append(convMiddlex)
-        topMiddle.append(convMiddley)
-        testdata = motion.convert(centrex, topy)
-        self.assertEqual(topMiddle, testdata)
-
-        bottomMiddle = []
-        convMiddlex = (centrex * 24.6667) + 395 - 10
-        convMiddley = (bottomy * 23.5) + 250 - 10
-        bottomMiddle.append(convMiddlex)
-        bottomMiddle.append(convMiddley)
-        testdata = motion.convert(centrex, bottomy)
-        self.assertEqual(bottomMiddle, testdata)
-
-        centreMiddle = []
-
-        convMiddlex = (centrex * 24.6667) + 395 - 10
-        convMiddley = (centrey * 23.5) + 250 - 10
-        centreMiddle.append(convMiddlex)
-        centreMiddle.append(convMiddley)
-        testdata = motion.convert(centrex, centrey)
-        self.assertEqual(centreMiddle, testdata)
+        self.assertEqual(testdata, checkdata)
 
     def test_getAverageOpponentPosition(self):
-        oppxPos = [14.959110351222593, 7.448582009226044, 8.429862050512012, 8.480149913395248, 1.5187971596584902, 1.4436112303668935, 3.9495223142934237, 11.234279722625667, 12.217624524500732]
-        oppyPos = [-0.08007457814836438, 0.0279111815315485, -0.9021188005209754, 1.1081646285356452, -2.9382284127879044, 2.09252302577686, 0.0846148450237515, 0.07730318109277622, 0.06788358610868454]
-        avgx = sum(oppxPos) / len(oppxPos)
-        avgy = sum(oppyPos) / len(oppyPos)
+        oppxPos = [10.0, 15.0, 20.0]
+        oppyPos = [5.0, 10.0, 15.0]
         testdata = motion.getAverageOpponentPosition(oppxPos, oppyPos)
-        self.assertEqual(avgx, testdata[0])
-        self.assertEqual(avgy, testdata[1])
+        checkdata = (15.0, 10.0)
+        self.assertEqual(testdata, checkdata)
+
+    def test_gui(self):
+        root = tk.Tk()
+        testdata = motion.gui(root)
+        self.assertIsNone(testdata)
 
 if __name__ == '__main__':
-    root = tk.Tk()
-    root.withdraw()
     unittest.main()
