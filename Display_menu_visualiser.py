@@ -17,7 +17,7 @@ win.geometry("1200x800")  # aspect ratio
 win.config(bg="black")  # background colour
 
 frame_vis = False  # Bool for Frame Visualiser is packed
-
+#Creates frame for Visualiser screen
 Frame_visualiser = tk.Frame(win, bg="black", width=1200, height=800)
 Frame_visualiser.rowconfigure(1,weight=500)
 Frame_visualiser.rowconfigure(2,weight=50)
@@ -38,16 +38,16 @@ for i in range(3,10):
 # ============================================================
 # functions
 
-def go_to_menu(event):
+def go_to_menu(event): # function that sends user to Menu Screen
     Frame_welcome.grid_forget()
     Frame_menu.grid()
 
 
-def back_to_menu():
+def back_to_menu(): # function that sends user back to Menu Screen
     Frame_visualiser.grid_forget()
     Frame_menu.grid()
 
-def go_to_upload():
+def go_to_upload(): # function that sends user to upload screen
     upload_window = tk.Toplevel(win)
     upload_screen = UploadScreen(upload_window, win)
     win.withdraw()  # Hide the main window
@@ -56,7 +56,7 @@ def go_to_upload():
     
 
 
-def go_to_visualiser():
+def go_to_visualiser(): # Sends user to visualiser screen
     cur = os.getcwd()
     path = os.path.join(cur,"matches","match"+str(optvar.get()))
     file_list = os.listdir(path)
@@ -66,7 +66,7 @@ def go_to_visualiser():
             Frame_visualiser.grid()
         else:
             messagebox.showinfo("Warning", "You have not selected a game. \n Please select a game")
-    else:
+    else:#generates general view of log files
         motion.generateGeneralView(optvar.get())
         if optvar.get() > 0:
             Frame_menu.grid_forget()
@@ -75,10 +75,12 @@ def go_to_visualiser():
             messagebox.showinfo("Warning", "You have not selected a game. \n Please select a game")
 
 
-def update_visualiser():
-    player1_file = "nonselectedplayer1.png"
+def update_visualiser(): # updates canvas visualiser on visualiser screen
+    #player images 
+    player1_file = "nonselectedplayer1.png" 
     selected_player_file = "selected-player.png"
     player2_file = "nonselectedplayer2.png"
+    # ball image
     ball_file = "soccerball-removebg-preview.png"
     folder = "Assets"
 
@@ -93,10 +95,11 @@ def update_visualiser():
     opponentimage = ImageTk.PhotoImage(file=path_to_player2_file)
     ballimage = ImageTk.PhotoImage(file=path_to_ball_file)
     selected_player_image = ImageTk.PhotoImage(file=path_to_selected_player_file)
-    # Loads json files into array
+    # gets general view file
     generalPerspective = motion.loadJSONFile(optvar.get(), 0)
+    # sets empty gamefile array to be loaded
     gameFile=[None] * 12
-    back_menu_button = tk.Button(Frame_visualiser, text="Back", command=lambda: back_to_menu())
+    back_menu_button = tk.Button(Frame_visualiser, text="Back", command=lambda: back_to_menu()) #creates back button
     back_menu_button.grid(row=0,column=0)
     
    
@@ -104,7 +107,7 @@ def update_visualiser():
     # places opponents and players on canvas
     playerIM = [None] * 12
     opponentIM = [None] * 12
-    playerData = motion.loadJSONFile(optvar.get(), 1)
+    playerData = motion.loadJSONFile(optvar.get(), 1) #gets first log file to initialise positions
     TeamMatePositionsPresent = playerData[2]['TeamMatePositions']
     OpponentPositionsPresent = playerData[2]['OpponentPositions']
     for i in range(11):
@@ -122,32 +125,36 @@ def update_visualiser():
     gameLength = len(playerData)
     del playerData
 
-
+    #gets initial time found in logs
     initialTime=generalPerspective[0]["CurrGameTime"]
     finalTime=generalPerspective[-1]["CurrGameTime"]
-    line=[None]*60
+    line=[None]*60 #creates empty player path array
     # visualiser
     total = 0
-    playerview = 11
-    timer = ts.Timer(Frame_visualiser,max_ticks=gameLength-1)
-    timer_label.configure(text=timer.format_time())
-    gameFile[optPlayerInfovar.get()]=motion.loadJSONFile(optvar.get(), optPlayerInfovar.get())
-    k=0
+    playerview = 11 #general view
+    timer = ts.Timer(Frame_visualiser,max_ticks=gameLength-1) #creates timer class and sets upper boundary to num lines in json
+    timer_label.configure(text=timer.format_time()) #updates timer on screen
+    gameFile[optPlayerInfovar.get()]=motion.loadJSONFile(optvar.get(), optPlayerInfovar.get()) #loads first log file in memory
+    k=0 #count for length of path
     while (timer.time_step < gameLength):
-
+        #updates timer
         timer.timer_tick()
+        #sets time on screen
         timer.gametime=generalPerspective[timer.time_step]["CurrGameTime"]-initialTime
         timer_label.configure(text=timer.format_time())
+        #checks what player view is selected
         playerview=optPlayervar.get()
         # displays player info
-        if gameFile[optPlayerInfovar.get()]==None:
-            gameFile[optPlayerInfovar.get()]=motion.loadJSONFile(optvar.get(), optPlayerInfovar.get())
+        if gameFile[optPlayerInfovar.get()]==None: #checks if log file is in memory
+            gameFile[optPlayerInfovar.get()]=motion.loadJSONFile(optvar.get(), optPlayerInfovar.get()) #loads log file onto memory
         else:
-            playerInfo = gameFile[optPlayerInfovar.get()]
+            playerInfo = gameFile[optPlayerInfovar.get()] 
+            # displays ball position
             playerdataFieldBallPosition_label.configure(text="BallPosition")
             playerdataValueBallPosition_label.configure(
             text=str(round(playerInfo[timer.time_step]["BallPosition"][0], 2)) + " " + str(
                 round(playerInfo[timer.time_step]["BallPosition"][1], 2)))
+            #displays my position
             playerdataValueMyPosition_label.configure(
             text=str(round(playerInfo[timer.time_step]["MyPosition"][0], 2)) + " " + str(
                 round(playerInfo[timer.time_step]["MyPosition"][1], 2)))
@@ -155,15 +162,18 @@ def update_visualiser():
             playerdataOpponentPosition_label.configure(text="Opponent Position:")
             playerdataTeamMateDistance_label.configure(text="TeamMate Distance:")
             playerdataTeamMatePosition_label.configure(text="TeamMate Position:")
-            for i in range(11):
+            for i in range(11): 
+                #displays opponent position array
                 playerdataValueOppPosition_label[i].configure(
                 text=str(round(playerInfo[timer.time_step]["OpponentPositions"]["OPP" + str(i + 1)][0], 2)) + " " + str(
                     round(playerInfo[timer.time_step]["OpponentPositions"]["OPP" + str(i + 1)][1], 2)))
+                #displays team mate distance to ball array
                 playerdataValueTeamDistance_label[i].configure(
                 text=str(round(playerInfo[timer.time_step]["TeamMateDistanceToBall"][str(i + 1)], 2)))
+                #displays team mate position array
                 playerdataValueTeamPosition_label[i].configure(text=str(
                 round(playerInfo[timer.time_step]["TeamMatePositions"]["TEAM" + str(i + 1)][0], 2)) + " " + str(
-                round(playerInfo[timer.time_step]["OpponentPositions"]["OPP" + str(i + 1)][1], 2)))
+                round(playerInfo[timer.time_step]["TeamMatePositions"]["TEAM" + str(i + 1)][1], 2)))
                 playerdataFieldOppPosition_label[i].configure(text="OPP"+str(i+1))
                 playerdataFieldTeamDistance_label[i].configure(text="TEAM"+str(i+1))
                 playerdataFieldTeamPosition_label[i].configure(text="TEAM"+str(i+1))
@@ -200,20 +210,21 @@ def update_visualiser():
                 # converts distances to place on soccer field
                 convCurrCoords = motion.convert(TeamMateCurrentPosition[0], TeamMateCurrentPosition[1])
                 convNextCoords = motion.convert(TeamMateNextPosition[0], TeamMateNextPosition[1])
+                #draws player path if selected
                 if optPlayerPathvar.get()==i+1:
                     if k>=60 :
-                        
+                        #removes old path lines
                         canvas_visualiser.delete(line[k%60])
                     line[k%60]=canvas_visualiser.create_line(convCurrCoords[0],convCurrCoords[1],convNextCoords[0],convNextCoords[1], fill="red", width=5)
                     k+=1
-                    
+                   #removes all path lines
                 if optPlayerPathvar.get()==0:
                     for u in range(k):
                         canvas_visualiser.delete(line[u%60])             
                     k=0
 
                 canvas_visualiser.delete(playerIM[i])
-
+                #changes image of selected player
                 if i == optPlayerInfovar.get():
                     playerIM[i] = canvas_visualiser.create_image(convNextCoords[0], convNextCoords[1],
                                                                  image=selected_player_image)
@@ -241,8 +252,8 @@ def update_visualiser():
 
             # selected player view
 
-            if gameFile[optPlayervar.get()]==None:
-                gameFile[optPlayervar.get()]=motion.loadJSONFile(optvar.get(), playerview)
+            if gameFile[optPlayervar.get()]==None: #checks if log file is in memory
+                gameFile[optPlayervar.get()]=motion.loadJSONFile(optvar.get(), playerview) #gets log file and stores into memory
             else:
                 
                 playerData = gameFile[optPlayervar.get()]  # retrieves log json file from array
@@ -271,21 +282,21 @@ def update_visualiser():
                     convNextCoords = motion.convert(TeamMateNextPosition[0], TeamMateNextPosition[1])
 
                     canvas_visualiser.delete(playerIM[i])
-
+                    #changes player image if selected
                     if i == optPlayerInfovar.get():
                         playerIM[i] = canvas_visualiser.create_image(convNextCoords[0], convNextCoords[1],
                                                                      image=selected_player_image)
                     else:
                         playerIM[i] = canvas_visualiser.create_image(convNextCoords[0], convNextCoords[1],
                                                                      image=playerimage)
-
+                    #draws path if selected
                     if optPlayerPathvar.get()==i+1:
                         if k>=60 :
-                        
+                            #deletes old path lines
                             canvas_visualiser.delete(line[k%60])
                         line[k%60]=canvas_visualiser.create_line(convCurrCoords[0],convCurrCoords[1],convNextCoords[0],convNextCoords[1], fill="red", width=5)
                         k+=1
-                    
+                    #deletes all path lines
                     if optPlayerPathvar.get()==0:
                         for u in range(k):
                             canvas_visualiser.delete(line[u%60])             
@@ -311,7 +322,7 @@ Frame_welcome = tk.Frame(win, bg="blue", width=1200, height=800)
 # =============================================================
 # welcome frame components
 canvas = tk.Canvas(Frame_welcome, bg="black", width=1200, height=800)
-
+#welcome and menu images
 welcomeFile = "mainscreen.png"
 menu_button_file = "menu.png"
 folder = "Assets"
