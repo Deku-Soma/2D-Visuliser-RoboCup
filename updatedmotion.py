@@ -14,7 +14,7 @@ import math
 #match- Integer(takes match number which is directory to file named match1 or match2 which is a folder that stores the json files)
 #PlayerNum( takes num of json file) -Integer
 def loadJSONFile(match, PlayerNum):
-        folder="matches\match"+str(match)
+        folder="matches"+ os.path.sep +"match"+str(match)
         cwd = os.getcwd()
         path_to_json_file = os.path.join(cwd, folder, str(PlayerNum))
         jsondata=[]
