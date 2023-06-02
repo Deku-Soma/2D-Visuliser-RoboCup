@@ -39,6 +39,7 @@ def writeGlobalJSONFile(match):
         for i in range(1,12):
                 jsondata=[]
                 path_to_json_file = os.path.join(cwd, folder,str(i))
+                
                 f= open(path_to_json_file+'.json','r')
                 for line in f:
                         jsondata.append(json.loads(line))
@@ -89,7 +90,6 @@ def getAverageOpponentPosition(t,playerDataList):
     oppAvgPos=[oppxPos,oppyPos]        
     return oppAvgPos
 
-
 #Returns average ball position at time step
 #Arguments:
 #t-integer, timestep i.e current line in json file
@@ -103,6 +103,7 @@ def getAverageBallPosition(t,playerDataList):
         avgBallyPos[i]=playerData[t]['BallPosition'][1]
     avgBallPos=[statistics.fmean(avgBallxPos),statistics.fmean(avgBallyPos)]
     return avgBallPos
+
 def generateGeneralView(var):
         folder="matches\match"+str(var)
         cwd = os.getcwd()

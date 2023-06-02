@@ -8,6 +8,7 @@ import updatedmotion as motion
 from PIL import ImageTk, Image
 import time
 import timesimple as ts
+from upload_screen import UploadScreen
 import math
 
 win = tk.Tk()
@@ -45,16 +46,33 @@ def go_to_menu(event):
 def back_to_menu():
     Frame_visualiser.grid_forget()
     Frame_menu.grid()
+
+def go_to_upload():
+    upload_window = tk.Toplevel(win)
+    upload_screen = UploadScreen(upload_window, win)
+    win.withdraw()  # Hide the main window
+    upload_screen.master.deiconify()
+    upload_window.mainloop()
     
 
 
 def go_to_visualiser():
-    print(optvar.get())
-    if optvar.get() > 0:
-        Frame_menu.grid_forget()
-        Frame_visualiser.grid()
+    cur = os.getcwd()
+    path = os.path.join(cur,"matches","match"+str(optvar.get()))
+    file_list = os.listdir(path)
+    if "0.json" in file_list:
+        if optvar.get() > 0:
+            Frame_menu.grid_forget()
+            Frame_visualiser.grid()
+        else:
+            messagebox.showinfo("Warning", "You have not selected a game. \n Please select a game")
     else:
-        messagebox.showinfo("Warning", "You have not selected a game. \n Please select a game")
+        motion.generateGeneralView(optvar.get())
+        if optvar.get() > 0:
+            Frame_menu.grid_forget()
+            Frame_visualiser.grid()
+        else:
+            messagebox.showinfo("Warning", "You have not selected a game. \n Please select a game")
 
 
 def update_visualiser():
@@ -348,6 +366,8 @@ l.place(x=0, y=0)
 start_game_button = tk.Button(Frame_menu, text="Start the Visualiser",
                               command=lambda: [go_to_visualiser(), update_visualiser()], font=("Arial", 12))
 start_game_button.place(x=400, y=500)
+upload_game_button = tk.Button(Frame_menu, text="upload",command=go_to_upload, font=("Arial", 12))
+upload_game_button.place(x=400, y=550)
 # canvas_menu.grid()
 # button to go to visualiser
 '''visualiser_button_file = "match_button.png"
