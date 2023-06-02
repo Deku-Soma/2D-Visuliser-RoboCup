@@ -72,14 +72,14 @@ class TestTimer:
         self.timer.time_step_slider_value.set(0)
         self.timer.ticking = True
         self.timer.timer_tick()
-        assert self.timer.time_step == 1
-        assert self.timer.next_time_step == 1
+        assert self.timer.time_step.get() == 1
+        assert self.timer.next_time_step.get() == 1
 
         self.timer.ticking = False
         self.timer.rewind = True
         self.timer.timer_tick()
-        assert self.timer.time_step == 1
-        assert self.timer.next_time_step == 1
+        assert self.timer.time_step.get() == 0
+        assert self.timer.next_time_step.get() == 1
 
     def test_rewind_timer(self):
         assert not self.timer.rewind
@@ -91,19 +91,19 @@ class TestTimer:
         assert self.timer.rewind_button["text"] == "⏪"
 
     def test_speedup_timer(self):
-        assert self.timer.speed_up == 1
+        assert self.timer.speed_up.get() == 1
         self.timer.timer_speedup()
-        assert self.timer.speed_up == 2
+        assert self.timer.speed_up.get() == 2
         self.timer.timer_speedup()
-        assert self.timer.speed_up == 4
+        assert self.timer.speed_up.get() == 4
 
     def test_slowdown_timer(self):
-        assert self.timer.speed_up == 1
+        assert self.timer.speed_up.get() == 1
         self.timer.timer_speedup()
         self.timer.timer_slowdown()
-        assert self.timer.speed_up == 2
+        assert self.timer.speed_up.get() == 2
         self.timer.timer_slowdown()
-        assert self.timer.speed_up == 1
+        assert self.timer.speed_up.get() == 1
 
 
 if __name__ == '__main__':
