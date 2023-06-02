@@ -10,17 +10,24 @@ jobs:
       - checkout
       - python/install-deps
       - run:
-          name: Install xvfbwrapper
-          command: pip install xvfbwrapper
+          name: Install xvfb and dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install xvfb -y
+            pip install xvfbwrapper
 
       - run:
           name: Set up virtual display
-          command: xvfb-run -s "-screen 0 1024x768x24" python -m unittest test_timer.py
-          environment:
-            DISPLAY: ":99"
+          command: |
+            Xvfb :99 -screen 0 1024x768x24 &
+            export DISPLAY=:99
 
       - run:
           name: Run Tests
+          command: python -m unittest test_timer.py
+
+      - run:
+          name: Run pytest for code coverage
           command: pytest --cov
           environment:
             CODECOV_TOKEN: $CodeCov_Token
