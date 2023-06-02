@@ -24,7 +24,7 @@ jobs:
 
       - run:
           name: Run Tests
-         command: python -m unittest /home/circleci/project/test_timer.py # Replace <path_to_test_file> with the actual path to your test file
+          command: python -m unittest /home/circleci/project/test_timer.py # Replace <path_to_test_file> with the actual path to your test file
 
       - run:
           name: Run pytest for code coverage
